@@ -19,7 +19,7 @@ public class TwoClassSum {
 		int ban2 = scanner.nextInt();
 		
 		double sum = banArray[ban1 - 1] + banArray[ban2 - 1];
-		System.out.println(ban1 + "반, " + ban2 + "반의 평균점수의 합: " + sum);
+		System.out.println(ban1 + "반, " + ban2 + "반의 평균점수 합: " + sum);
 
 	}
 
