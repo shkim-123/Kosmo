@@ -14,11 +14,9 @@ public class EvenArray {
 		String sc = scanner.nextLine();
 		
 		String[] num = sc.split(", ");
-		
-		int i = 0;
-		int sum = 0;
-		int avg = 0;
-		int cnt = 0;
+
+		int i, sum, avg, cnt;
+		i = sum = avg = cnt = 0;
 		
 		while(i < num.length) {
 			if(Integer.parseInt(num[i]) % 2 == 0) {
