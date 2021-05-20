@@ -15,8 +15,7 @@ public class EvenArray {
 		
 		String[] num = sc.split(", ");
 
-		int i, sum, avg, cnt;
-		i = sum = avg = cnt = 0;
+		int i = 0, sum = 0, avg = 0, cnt = 0;
 		
 		while(i < num.length) {
 			if(Integer.parseInt(num[i]) % 2 == 0) {
