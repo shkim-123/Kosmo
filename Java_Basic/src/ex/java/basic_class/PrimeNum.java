@@ -12,21 +12,39 @@ public class PrimeNum {
 		
 		System.out.println("숫자를 입력하세요.");
 		int num = scanner.nextInt();
-		int cnt;
-		String num2 = "";
+//		int cnt;
+//		
+//		for(int i = 1; i <= num; i++) {
+//			cnt = 0;
+//			for(int j = 1; j <= num; j++) {
+//				if(i%j == 0 ) {
+//					cnt++;
+//				}
+//			}
+//			if (i == 1 || cnt == 2) {
+//				System.out.print(i + " ");
+//			}			
+//		}
 		
-		for(int i = 1; i <= num; i++) {
-			cnt = 0;
-			for(int j = 1; j <= num; j++) {
-				if(i%j == 0 ) {
-					cnt++;
+		// simple
+		int i = 2; // i는 나눌 대상
+		boolean isPrime = true;
+		
+		while(i <= num) {
+			isPrime = true;
+			
+			for(int n = 2; n < i; n++) {
+				if(i % n == 0) {
+					isPrime = false;
 				}
+				continue;
 			}
-			if (i == 1 || cnt == 2) {
-				System.out.print(i + " ");
-			}			
+			if(isPrime == true) {
+				System.out.println(i);
+			}
+			i++;
 		}
-		
+		System.out.println("");
 	}
 
 }
