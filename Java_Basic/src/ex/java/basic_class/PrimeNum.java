@@ -22,7 +22,7 @@ public class PrimeNum {
 					cnt++;
 				}
 			}
-			if (cnt == 2) {
+			if (i == 1 || cnt == 2) {
 				System.out.print(i + " ");
 			}			
 		}
