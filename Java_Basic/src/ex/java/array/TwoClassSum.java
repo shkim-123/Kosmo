@@ -14,12 +14,18 @@ public class TwoClassSum {
 		Scanner scanner = new Scanner(System.in);
 		double[] banArray = {85.6, 79.5, 83.1, 80.0, 78.2, 75.0};
 		
-		System.out.println("반 번호를 2개 입력하세요. (엔터로 구분)");
+		System.out.println("1반 ~ 6반 중 반 번호를 2개 입력하세요. (엔터로 구분)");
 		int ban1 = scanner.nextInt();
 		int ban2 = scanner.nextInt();
 		
-		double sum = banArray[ban1 - 1] + banArray[ban2 - 1];
-		System.out.println(ban1 + "반, " + ban2 + "반의 평균점수 합: " + sum);
+		// 범위 내 값 입력했는지 확인
+		if(ban1 > banArray.length || ban2 > banArray.length || ban1 < 0 || ban2 < 0 ) {
+			System.out.println("1 ~ 6까지만 입력가능합니다.");
+		}else {
+			double sum = banArray[ban1 - 1] + banArray[ban2 - 1];
+			System.out.println(ban1 + "반, " + ban2 + "반의 평균점수 합: " + sum);			
+		}
+		
 
 	}
 
