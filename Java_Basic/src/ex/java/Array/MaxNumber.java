@@ -11,10 +11,10 @@ public class MaxNumber {
 		Scanner scanner = new Scanner(System.in);
 		int max = 0;
 		
-		System.out.println("정수 배열을 입력해 주세요. 구분자 \",\"");
+		System.out.println("정수 배열을 입력해 주세요. 구분자 \", \"");
 		String sc = scanner.nextLine();
 		
-		String[] num = sc.split(",");
+		String[] num = sc.split(", ");
 		
 		
 		// 큰 수 찾기
