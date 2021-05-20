@@ -14,7 +14,6 @@ public class ReverseOrder {
 		String sc = scanner.nextLine();
 		
 		String[] num = sc.split(" ");
-		int cnt = 0;
 		
 		for(int i = (num.length - 1); i > -1; i--) {
 			System.out.print(num[i] + " ");
