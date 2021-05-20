@@ -13,11 +13,13 @@ public class LocationArray {
 		Scanner scanner = new Scanner(System.in);
 		char[] exArray = {'P', 'R', 'O', 'G', 'R', 'A', 'M', 'M', 'I', 'N', 'G'};
 		
-		char target = scanner.next().charAt(0);
-		boolean find = false;
-		
 		System.out.println("문자 한 개를 입력해 주세요.");
 		
+		// 문자 입력 받기
+		char target = scanner.next().charAt(0);
+		boolean find = false; // 문자 찾았는지 체크용
+		
+		// 문자 위치 찾기
 		for(int i = 0; i < exArray.length; i++) {
 			if(target == exArray[i]) {
 				System.out.println(i + "번째 위치");
@@ -25,6 +27,7 @@ public class LocationArray {
 			} 
 		}
 		
+		// 없는 문자인 경우
 		if(!find) {
 			System.out.println("none");
 		}
