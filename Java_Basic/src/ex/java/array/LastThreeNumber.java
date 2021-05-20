@@ -16,12 +16,14 @@ public class LastThreeNumber {
 		
 		System.out.println("숫자를 입력해 주세요. -1 입력 시 종료됩니다.");
 		
+		// 숫자 입력 받기, -1 입력 시 종료
 		for(int i = 0; i < num.length; i++) {
 			num[i] = scanner.nextInt();
 			size++;
 			if(num[i] == -1) break;
 		}
 		
+		// 3개 이상 입력했는지 확인, 마지막 3개 정수 출력
 		if(size > 3) {
 			System.out.print(num[size-3] + " " + num[size-2] + " " + num[size-1]);
 		} else if(size <= 3 && size != 0) {
