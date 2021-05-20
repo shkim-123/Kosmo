@@ -14,7 +14,7 @@ public class Sandglass {
 		int num = scanner.nextInt() - 1;
 		
 		// 행
-		for(int i = 0; i < (2*num+2-1); i++) {
+		for(int i = 0; i < (2*num+1); i++) {
 			
 			if(i <= num) {
 				// 열 (공백 찍기)
