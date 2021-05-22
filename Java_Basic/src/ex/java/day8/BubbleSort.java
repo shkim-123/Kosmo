@@ -9,15 +9,16 @@ public class BubbleSort {
 		// 내림차순으로 정렬하여 출력
 		
 		Scanner scanner = new Scanner(System.in);
-		final int COUNT = 10;
+		final int COUNT = 3;
 		int cnt = 0, temp;
-		int[] bubbleArray = new int[10];
+		int[] bubbleArray = new int[COUNT];
 		
-		System.out.println("10개의 숫자를 입력해 주세요.");
+		System.out.println(COUNT + "개의 숫자를 입력해 주세요.");
 		
 		// 정수 입력 받기
 		while(cnt < COUNT) {
 			bubbleArray[cnt] = scanner.nextInt();
+			
 			cnt++;
 		}
 		
