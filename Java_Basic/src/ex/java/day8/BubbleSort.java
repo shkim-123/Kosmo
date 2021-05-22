@@ -9,7 +9,7 @@ public class BubbleSort {
 		// 내림차순으로 정렬하여 출력
 		
 		Scanner scanner = new Scanner(System.in);
-		final int COUNT = 3;
+		final int COUNT = 10;
 		int cnt = 0, temp;
 		int[] bubbleArray = new int[COUNT];
 		
