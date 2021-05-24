@@ -13,7 +13,7 @@ public class MoresCode {
 						"..-", "...-", ".--", "-..-", "-.--", "--.."};
 		
 		// 영문자 입력 받기
-		System.out.println("영문자를 입력해 주세요!");		
+		System.out.println("영문자를 입력해 주세요..");		
 		String[] scArray = scanner.nextLine().split("");
 		
 		for(int i = 0; i< scArray.length; i++) {
