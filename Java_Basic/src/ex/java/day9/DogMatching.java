@@ -10,19 +10,19 @@ public class DogMatching {
 		// 애완견 이름 입력되면 아래 같이 변환해서 출력
 		
 		Scanner scanner = new Scanner(System.in);
-		String[] dogArray = {"곰돌이", "복돌이", "흰둥이", "깨소금", "까만콩"};
-		String[] dogName = {"Bear", "Gift", "White", "Sesami", "Black"};
+		String[] dayName = {"곰돌이", "복돌이", "흰둥이", "깨소금", "까만콩"};
+		String[] EnglishName = {"Bear", "Gift", "White", "Sesami", "Black"};
 		
 		System.out.println("곰돌이, 복돌이, 흰둥이, 깨소금, 까만콩 중 입력해주세요.");
 		String sc = scanner.nextLine();
 		
-		for(int i = 0; i < dogArray.length; i++) {
-		/*	if(sc.equals(dogArray[i])) {
-				System.out.println(dogName[i]);
+		for(int i = 0; i < dayName.length; i++) {
+		/*	if(sc.equals(dayName[i])) {
+				System.out.println(EnglishName[i]);
 			} */
 			
-			if(sc.indexOf(dogArray[i]) == 0) {
-				System.out.println(dogName[i]);
+			if(sc.indexOf(dayName[i]) == 0) {
+				System.out.println(EnglishName[i]);
 			}
 		}
 		
