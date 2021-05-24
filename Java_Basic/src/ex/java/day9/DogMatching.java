@@ -24,6 +24,7 @@ public class DogMatching {
 			if(sc.indexOf(dayName[i]) == 0) {
 				System.out.println(EnglishName[i]);
 			}
+			
 		}
 		
 	}
