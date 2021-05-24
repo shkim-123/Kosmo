@@ -25,7 +25,7 @@ public class MoresCode {
 			} else if(scArray[i].charAt(0) >= 97 && scArray[i].charAt(0) <= 122){   // 소문자인 경우
 				System.out.print(mores[scArray[i].charAt(0) - 97]+ " ");
 			} else { 
-				System.out.print(" ");
+				System.out.print("");
 			}
 			
 		}
