@@ -8,7 +8,7 @@
 <br>
 
 ## Curriculum
-- Java
+- Java : https://github.com/qkboo/lecture_fullstack2021/blob/master/01-Java/README.md
 - Database & Mobile
 - Web Programming
 - Java Web Server Programming 
