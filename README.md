@@ -2,6 +2,7 @@
 
 #### github blog : https://shkim-123.github.io/
 #### email : asaash133@gmail.com
+#### LinkedIn : https://www.linkedin.com/in/sohee-kim-7674ab155/
 
 - Java
 - Database & Mobile
