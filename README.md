@@ -5,6 +5,8 @@
 #### email : asaash133@gmail.com
 #### LinkedIn : https://www.linkedin.com/in/sohee-kim-7674ab155/
 
+<br>
+
 ## Curriculum
 - Java
 - Database & Mobile
