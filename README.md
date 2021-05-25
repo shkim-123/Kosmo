@@ -16,6 +16,6 @@
 
 <br>
 
-## 참고
+## etc
 github link : https://github.com/qkboo/lecture_fullstack2021  <br>
 점프 투 자바 : https://wikidocs.net/book/31 <br>
