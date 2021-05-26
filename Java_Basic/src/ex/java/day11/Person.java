@@ -8,14 +8,17 @@ public class Person {
 	String blood;
 	
 	public Person() {
-		this("이름없음", 0);
+		//this("이름없음", 0);
+		this("이름없음", 0, "", "", "직업없음");
 	}
 	
 	public Person(String name, int age) {
-		this.name = name;
-		this.age = age;
+		this(name, age, "", "", "직업없음");
+		//this.name = name;
+		//this.age = age;
 	}
 	
+	// 가장 매개변수가 많은 생성자 생성 후 this()로 받는 경우가 많다.
 	public Person(String name, int age, String gender, String blood, String job) {
 		this.name = name;
 		this.age = age;
