@@ -10,6 +10,8 @@ public class ComputerMain {
 		
 		c2.display();
 		c2.typing();
+		
+		c2.print();
 
 	}
 
