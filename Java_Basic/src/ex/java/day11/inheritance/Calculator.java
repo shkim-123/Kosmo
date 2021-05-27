@@ -17,5 +17,9 @@ public class Calculator {
 	public int avg() {
 		return sum()/2;
 	}
+	
+	public double areaCircle(double r) {
+		return 3.14159*r*r;
+	}
 
 }

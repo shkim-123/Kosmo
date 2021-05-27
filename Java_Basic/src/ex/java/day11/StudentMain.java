@@ -6,6 +6,7 @@ public class StudentMain {
 		
 		Student student = new Student();
 		// student.studentName = "홍길동";
+		student.setStudentName("홍길동");
 
 	}
 

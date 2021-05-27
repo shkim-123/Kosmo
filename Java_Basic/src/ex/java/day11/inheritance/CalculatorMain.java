@@ -18,6 +18,15 @@ public class CalculatorMain {
 		System.out.println(subCal.sum());
 		System.out.println(subCal.avg());
 		System.out.println(subCal.sub());
+		
+		System.out.println("==오버라이딩==");
+		
+		int r = 10;
+		
+		Computer compu = new Computer();
+		
+		System.out.println("원면적: " + cal.areaCircle(r));
+		System.out.println("원면적: " + compu.areaCircle(r));
 	}
 
 }

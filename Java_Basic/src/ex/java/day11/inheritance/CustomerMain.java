@@ -21,8 +21,7 @@ public class CustomerMain {
 		c4.setCustomerName("김유신");
 		c4.bonusPoint = 10000;
 		System.out.println(c4.showCustomerInfo());
-		
-		
+		System.out.println(c4.calcPrice(1000));
 		
 	}
 

@@ -25,4 +25,9 @@ public class VIPCustomer extends Customer {
 		return super.showCustomerInfo() + " 담당 상담원은 " + agentID + "입니다.";
 	}
 	
+	@Override
+	public int calcPrice(int price) {
+		bonusPoint += price * bonusRatio; 			// 보너스 포인트 적립
+		return price - (int)(price * saleRatio);	// 할인된 가격을 계산하여 반환
+	}
 }
