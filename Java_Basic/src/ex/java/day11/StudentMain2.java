@@ -9,8 +9,8 @@ public class StudentMain2 {
 		
 		student1.num += 1;
 		
-		System.out.println(student1.num);
-		System.out.println(student2.num);
+		System.out.println(Student3.num);
+		System.out.println(Student3.num);
 		
 		student2.num += 1;
 		System.out.println(student1.num);
