@@ -10,11 +10,17 @@ public class ShQ3 {
 		
 		Scanner sc = new Scanner(System.in);
 		final int num = 6;
-		int[] weightArray = new int[num];
+		String[] weightArray = new String[num];
+		double sum = 0;
+		
+		System.out.println("입력해 주세요.");
+		weightArray = sc.nextLine().split(" ");
 		
 		for(int i = 0; i < num; i++) {
-			weightArray[i] = sc.nextInt();
+			sum += Double.parseDouble(weightArray[i]);
 		}
+		
+		System.out.printf("%.1f", sum/num);
 
 	}
 
