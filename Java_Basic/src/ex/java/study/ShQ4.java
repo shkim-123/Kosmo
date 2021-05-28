@@ -12,12 +12,24 @@ public class ShQ4 {
 		Scanner sc = new Scanner(System.in);
 		int[][] array = new int[4][3];
 		String[] num;
+		int sum;
 		
+		// 입력
 		for(int i = 0; i < array.length; i++) {
-			System.out.print((i+1) + "class?");
-			//num[i] = sc.nextLine().split(" ");
+			System.out.print((i+1) + "class? ");
+			num = sc.nextLine().split(" ");
+			for(int j = 0; j < array[i].length; j++) {
+				array[i][j] = Integer.parseInt(num[j]);
+			}
 		}
-
+		
+		// sum 계산, 출력
+		for(int i = 0; i < array.length; i++) {
+			sum = 0;
+			for(int j = 0; j < array[i].length; j++) {
+				sum += array[i][j];
+			}
+			System.out.println(i+"class : " + sum);
+		}
 	}
-
 }
