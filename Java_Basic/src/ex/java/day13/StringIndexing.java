@@ -18,6 +18,15 @@ public class StringIndexing {
 		System.out.println(str.startsWith("java"));
 		System.out.println(str.startsWith("Java"));
 		System.out.println(str.startsWith("va"));
+		
+		// trim : 앞/뒤 공백 자르기
+		String str1 = "           하 핳 핳";
+		String str2 = "호 호  홓      ";
+		String str3 = "      무     야    호 ~~~     ";
+		
+		System.out.println(str1.trim());
+		System.out.println(str2.trim());
+		System.out.println(str3.trim());
 	}
 
 }
