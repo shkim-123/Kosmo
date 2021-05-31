@@ -13,6 +13,8 @@ public class CalculatorMain {
 		System.out.println(calc.times(num1, num2));
 		System.out.println(calc.divide(num1, num2));
 		calc.showInfo();
+		// 디폴트 메서드 호출
+		calc.description();
 		
 		// 인터페이스를 직접 구현하여 사용, 코드 블록 끝에 ; 추가
 		Calc c = new Calc() {
