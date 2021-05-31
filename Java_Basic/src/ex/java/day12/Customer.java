@@ -1,6 +1,6 @@
 package ex.java.day12;
 
-public class Customer {
+public class Customer implements Buy, Sell {
 	
 	protected int customerID;			// 고객 아이디
 	protected String customerName;	// 고객 이름
@@ -35,6 +35,17 @@ public class Customer {
 	public String showCustomerInfo() {
 		return customerName + " 님의 등급은 " + customerGrade + "이며, 보너스 포인트는 " + bonusPoint + "입니다.";
 	}
+	
+	@Override
+	public void sell() {
+		System.out.println("구매하기");
+	}
+	
+	@Override
+	public void buy() {
+		System.out.println("판매하기");
+	}
+	
 
 	public int getCustomerID() {
 		return customerID;
@@ -58,6 +69,11 @@ public class Customer {
 
 	public void setCustomerGrade(String customerGrade) {
 		this.customerGrade = customerGrade;
+	}
+
+	@Override
+	public void order() {
+		System.out.println("고객 판매 주문");
 	}
 	
 	

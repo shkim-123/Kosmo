@@ -28,6 +28,18 @@ public class CustomerMain {
 		
 		System.out.println(customerKim.getCustomerName() + " 님이 " + kimPrice + "원 지불하셨습니다.");
 		System.out.println(customerKim.showCustomerInfo());
+		
+		
+		Buy buyer = customerLee;
+		buyer.buy();
+		buyer.order();
+		
+		Sell seller = customerLee;
+		seller.sell();
+		seller.order();
+		
+		customerLee.order();
+		
 	}
 
 }

@@ -14,6 +14,8 @@ public interface Calc {
 	// 디폴트 메서드
 	default void description() {
 		System.out.println("정수 계산기를 구현한다.");
+		// private 메서드 호출
+		myMethod();
 	}
 	
 	// 정적 메서드
@@ -24,6 +26,18 @@ public interface Calc {
 			total += i;
 		}
 		
+		// private static 메서드 호출
+		myStaticMethod();
 		return total;
+	}
+	
+	// private 메서드
+	private void myMethod() {
+		System.out.println("private 메서드이다.");
+	}
+	
+	// private static 메서드
+	private static void myStaticMethod() {
+		System.out.println("private static 메서드이다.");
 	}
 }
