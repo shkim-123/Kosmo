@@ -16,6 +16,10 @@ public class CalculatorMain {
 		// 디폴트 메서드 호출
 		calc.description();
 		
+		// 정적 메서드 호출
+		int[] arr = {1, 2, 3, 4, 5};
+		System.out.println(Calc.total(arr));
+		
 		// 인터페이스를 직접 구현하여 사용, 코드 블록 끝에 ; 추가
 		Calc c = new Calc() {
 
