@@ -1,12 +1,18 @@
 package ex.java.day14;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MemberArrayList {
 	private ArrayList<Member> arrayList;
 
 	public MemberArrayList() {
 		arrayList = new ArrayList<>();
+	}
+	
+	// p412
+	public void insertMember(Member m, int index) {
+		arrayList.add(index, m);
 	}
 
 	public void addMember(Member m) {
@@ -16,7 +22,7 @@ public class MemberArrayList {
 	public boolean removeMember(int id) {
 		for(int i = 0; i < arrayList.size(); i++) {
 			// get() 메서드로 회원을 순차적으로 가져옴
-			Member member = arrayList.get(id);
+			Member member = arrayList.get(i);
 			int tempId = member.getMemberId();
 			// 회원 아이디가 매개변수와 일치하면
 			if(tempId == id) {
@@ -25,6 +31,19 @@ public class MemberArrayList {
 				return true;
 			}
 		}
+		
+		// 2번째 방법
+//		Iterator<Member> ir = arrayList.iterator();
+//		while(ir.hasNext()) {
+//			Member member = ir.next();
+//			int tempId = member.getMemberId();
+			// 멤버 아이디가 매개변수
+//			if(tempId == id) {
+//				arrayList.remove(member);
+//				return true;
+//			}
+//		}
+		
 		System.out.println(id + "가 존재하지 않습니다.");
 		return false;
 	}
