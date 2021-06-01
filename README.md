@@ -19,4 +19,4 @@
 ## etc
 [github link](https://github.com/qkboo/lecture_fullstack2021)  <br>
 [점프 투 자바](https://wikidocs.net/book/31) <br>
-[ava doc](https://docs.oracle.com/javase/10/docs/api/java/lang/Object.html) <br>
+[Java doc](https://docs.oracle.com/javase/10/docs/api/java/lang/Object.html) <br>
