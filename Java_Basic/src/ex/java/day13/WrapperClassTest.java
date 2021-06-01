@@ -4,9 +4,29 @@ public class WrapperClassTest {
 
 	public static void main(String[] args) {
 		
+		// Integer 클래스의 메서드
+		
+		// int 값 가져오기
+		Integer iValue = new Integer(100);
+		int myValue = iValue.intValue();
+		
+		Integer number1 = Integer.valueOf("100");
+		Integer number2 = Integer.valueOf(100);
+		
+		int num = Integer.parseInt("100");
+		
+		System.out.println(iValue);
+		System.out.println(myValue);
+		System.out.println(number1);
+		System.out.println(number2);
+		System.out.println(num);
+		
+		// ==
+		System.out.println("=====");
+		
 		Integer ivalue = new Integer(100);
 		
-		// 박싱
+		// 오토박싱
 		ivalue = Integer.valueOf(100);
 		ivalue = Integer.valueOf("1000");
 		
