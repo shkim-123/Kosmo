@@ -8,15 +8,18 @@ public class StringConcatTest {
 		
 		String str1 = new String("Java");
 		String str2 = "Programing";
-		String result = "";
 		
 		// 동작
-		for(int i = 0; i <= 10000; i++) {
-			result += " ";
-			result += str2;
-		}
+		System.out.println(str1);
+		System.out.println(System.identityHashCode(str1));
 		
-		System.out.println(result);
+		str1 = str1.concat(str2);
+		
+		System.out.println(str1);
+		System.out.println(System.identityHashCode(str1));
+		
+		
+		
 		
 		// 끝 시점 시간
 		long end = System.currentTimeMillis();
