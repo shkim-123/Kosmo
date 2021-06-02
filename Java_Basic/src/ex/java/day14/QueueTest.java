@@ -5,10 +5,12 @@ import java.util.ArrayList;
 class MyQueue {
 	private ArrayList<Member> arrayQueue = new ArrayList<Member>();
 	
+	// 큐의 맨 뒤에 추가
 	public void enQueue(Member m) {
 		arrayQueue.add(m);
 	}
 	
+	// 큐의 맨 앞에서 꺼냄
 	public Member deQueue() {
 		int len = arrayQueue.size();
 		
@@ -16,6 +18,7 @@ class MyQueue {
 			System.out.println("큐가 비었습니다.");
 			return null;
 		}
+		// 맨 앞의 자료 반환하고 배열에서 제거
 		return(arrayQueue.remove(0));
 	}
 }

@@ -6,18 +6,21 @@ class MyStack {
 	
 	private ArrayList<Member> arrayStack = new ArrayList<Member>();
 	
+	// 스택의 맨 뒤에 요소를 추가
 	public void push(Member m) {
 		arrayStack.add(m);
 	}
 	
+	// 스택의 맨 뒤에서 요소 꺼냄
 	public Member pop() {
+		// ArrayList에 저장된 유효한 자료의 개수
 		int len = arrayStack.size();
 		
 		if(len == 0) {
 			System.out.println("스택이 비었습니다.");
 			return null;
 		}
-		
+		// 맨 뒤에 있는 자료 반환하고 배열에서 제거
 		return(arrayStack.remove(len-1));
 	}
 	

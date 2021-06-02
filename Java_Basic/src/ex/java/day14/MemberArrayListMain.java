@@ -1,6 +1,6 @@
 package ex.java.day14;
 
-public class MemeberArrayListMain {
+public class MemberArrayListMain {
 
 	public static void main(String[] args) {
 		MemberArrayList memberArrayList = new MemberArrayList();
