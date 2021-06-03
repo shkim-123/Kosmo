@@ -6,7 +6,10 @@ public class InnerClassExample1 {
 	public String outerClassName;
 	static boolean isOuter;
 
+	InnerClass innerClass;
+
 	public InnerClassExample1() {
+		innerClass = new InnerClass();
 		outerHashCode = System.identityHashCode(this);
 		outerClassName = this.getClass().getName();
 		isOuter = true;
@@ -35,16 +38,22 @@ public class InnerClassExample1 {
 			System.out.println("It is inner class: " + isInner);
 		}
 	} // 내부 클래스 끝
-	
+
+	public void info() {
+		innerClass.printInnerInfo();
+	}
+
 	public static void main(String[] args) {
 		// 외부 클래스 객체 생성
 		InnerClassExample1 example = new InnerClassExample1();
 		// 내쿠 클래스 객체 생성
 		InnerClassExample1.InnerClass inner = example.new InnerClass();
-		
+
+		example.info();
+		System.out.println("==================================");
 		inner.printInnerInfo();
 		System.out.println("==================================");
 		inner.printOuterInfo();
-		
+
 	}
 }

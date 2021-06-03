@@ -13,6 +13,9 @@ class Outer {
 			
 			@Override
 			public void run() {
+				// 상수로 바뀌므로 값 변경 불가
+				// num = 100;
+				// i = 12;
 				System.out.println("i = " + i);
 				System.out.println("num = " + num);
 				System.out.println("localNum = " + localNum);
