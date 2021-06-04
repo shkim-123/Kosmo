@@ -21,7 +21,6 @@ public class TestLambda {
 		PrintString reStr = returnString();
 		// 메서드 호출
 		reStr.showString("hello ");
-
 	}
 	
 	// 매개변수를 인터페이스형으로 받음
