@@ -21,7 +21,6 @@ public class ArrayListStreamTest {
 		// 스트림 새로 생성, forEach() 수행하면서 자료가 소모되었음
 		// 정렬하여, 요소를 하나씩 출력
 		sList.stream().sorted().forEach(s -> System.out.print(s + " "));
-
 	}
 
 }
