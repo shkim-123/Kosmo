@@ -1,0 +1,109 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>게시판</title>
+</head>
+
+<body>
+<center>
+	
+	<br><br> 
+	<table>
+		<tr>
+			<td width = "300vw"> </td>
+			<td width = "200vw"> [게시판] </td>
+			<td> [6개 검색] &nbsp; </td>
+			<td><a href="boardRegForm.html"> [새 글쓰기] </a></td>
+			<!-- a 태그 href 이동할 페이지 -->
+ 		</tr>
+	</table>
+	<br>
+
+	<!-- 목록 -->
+	<table border = 0 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
+		<tr bgcolor = "#E9E9E9">
+			<th> 번호 </th>
+			<th> 제목 </th>
+			<th> 성명 </th>
+			<th> 작성일 </th>
+			<th> 조회수 </th>
+		</tr>
+
+		<tr align = "center" style = "cursor:pointer" onClick = "location.replace('boardContentForm1.html');" >
+			<td> 6 </td>
+			<td align = "left"> 청년 실직 문제는 대기업 문제 </td>
+			<td> 설현 </td>
+			<td> 2011.12.06 </td>
+			<td> 0 </td>
+		<tr>
+
+		<tr align = "center" bgcolor = "#f7f7f7" style = "cursor:pointer" onClick = "location.replace('boardContentForm2.html');">
+			<td> 5 </td>
+			<td align = "left"> 경제 침체의 원인 </td>
+			<td> 사오정 </td>
+			<td> 2011.12.01 </td>
+			<td> 2 </td>
+		<tr>
+
+		<tr align = "center" style = "cursor:pointer" onClick = "location.replace('boardContentForm3.html');">
+			<td> 4 </td>
+			<td align = "left"> &nbsp;&nbsp;&nbsp; ㄴ안보문제</td>
+			<td> 하하 </td>
+			<td> 2011.12.03 </td>
+			<td> 1 </td>
+		<tr>
+
+		<tr align = "center" bgcolor = "#f7f7f7" style = "cursor:pointer" onClick = "location.replace('boardContentForm4.html');">
+			<td> 3 </td>
+			<td align = "left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ㄴ북한 핵 문제</td>
+			<td> 전지현 </td>
+			<td> 2011.12.05 </td>
+			<td> 0 </td>
+		<tr>
+
+		<tr align = "center" style = "cursor:pointer" onClick = "location.replace('boardContentForm5.html');">
+			<td> 2 </td>
+			<td align = "left"> &nbsp;&nbsp;&nbsp; ㄴ나라 빛 관리 부실</td>
+			<td> 저팔계 </td>
+			<td> 2011.12.02 </td>
+			<td> 1 </td>
+		<tr>
+
+		<tr align = "center" bgcolor = "#f7f7f7" style = "cursor:pointer" onClick = "location.replace('boardContentForm6.html');">
+			<td> 1 </td>
+			<td align = "left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ㄴ엔화 하락 문제</td>
+			<td> 김태희 </td>
+			<td> 2011.12.04 </td>
+			<td> 0 </td>
+		<tr>
+
+
+	</table>
+	<!-- /목록 -->
+
+	<br>
+
+	<!-- 페이징 -->
+	<table cellpadding = 7>
+		<tr>
+			<td> [처음] [이전]  </td>
+			<td> &nbsp; [1] 2 [3] [4] [5] [6] [7] [8] [9] [10] &nbsp; </td>
+			<td> [다음] [마지막] </td>
+		</tr>
+	</table>
+	<!-- /페이징 -->
+
+	<br>
+
+	<form action = "">
+		<!-- 검색 -->
+		<input type = "text" name = "keyword">
+		<input type = "submit" value = "검색">
+		<input type = "submit" value = "모두 검색">
+		<!-- /검색 -->
+	</form>
+
+</center>
+</body>
+
+</html>

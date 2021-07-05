@@ -1,0 +1,93 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>로그인</title>
+
+	<!-- script 태그 선언 -->
+	<script>
+		// 자바스크립트 세상
+
+		// 유저가 입력한 아이디와 암호의 유효성을 체크하는 checkForm 함수 선언
+		function checkForm() {
+			// alert("붕어싸만코 먹고싶다")
+			// 객체의 메모리위치 주소값 or 주소값이 저장된 변수.객체의 메소드 또는 속성변수
+			// 유저가 입력한 아이디를 가져와 변수 uid에 저장하기
+			var uid = document.loginForm.uid.value;
+			// 유저가 입력한 아이디를 가져와 변수 pwd에 저장하기
+			var pwd = document.loginForm.pwd.value;
+			
+			// 만약에 유저가 입력한 아이디가 비어있거나 공백으로 이루어져 있으면
+			if( uid.split(" ").join("") == "" ) {
+				// 경고 상자 띄우기
+				alert("아이디가 비어 있음. 입력 바람");
+				// 함수 중단
+				return; 
+			} 
+
+			// 만약에 암호가 비어있거나 공백으로 이루어져 있으면
+			if( pwd.split(" ").join("") == "" ) {
+				alert("암호가 비어 있음. 입력 바람");
+				return;
+			}
+
+			// form 태그의 설정한 서버쪽 URL 주소로 서버로 접근하기
+			document.loginForm.submit();
+		}
+		
+	</script>
+
+</head>
+
+<body>
+<center>
+
+	<!-- form 태그: 입력 양식을 단일화시켜 하나로 묶는 태그 -->
+	<form name = "loginForm" action = "boardList.html">
+
+	<br><br><br>
+	<br>
+
+	<table border = 0 cellpadding = 5> <!-- 책장 만드는 태그 -->
+		
+	<!-- 로그인 텍스트 -->
+	<tr><th>[로그인]</th></tr> <!-- th는 기본이 가운데 정렬 / board -->
+
+	<!-- 인풋  -->
+	<tr><td align = center>  
+		<!-- td는 기본이 왼쪽 정렬 / align = center로 가운데 정렬  -->
+		
+		<!-- block 형식 태그 -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 5 bordercolor = "lightgray"> 
+			<tr> <!-- 행 -->
+				<td align="right" bgcolor = "#E9E9E9">아이디</td>  <!-- 셀 -->
+				<td><input type = "text" name = "uid" size = 10></td>
+			</tr>
+			<tr>
+				<td align="right" bgcolor = "#E9E9E9">암 호</td>
+				<td><input type = "password" name = "pwd" size = 10></td>
+			</tr>
+		</table>
+
+	</td></tr>
+	
+	<!-- 로그인 버튼 -->
+	<tr><td align = center>
+		<!-- inline 형식 태그 -->
+		<!-- 버튼을 클릭하면 자바스크립트 영역의 checkForm() 함수 호출하기 -->
+		<input type = "button" value = "로그인" onClick = "checkForm();"> 
+		<!-- submit은 선택 시 form 태그의 action url로 던진다 -->
+		<!-- button은 사용자 정의 버튼 -->
+		<!-- value는 화면에 나가는 텍스트 -->
+		<input type = "reset" value = "초기화"> 
+		<!-- reset은 선택 시 form 태그의 인풋 값을 초기화 시킨다 -->
+	</td></tr>
+
+	</table>
+
+	</form>
+	<!-- /form -->
+
+</center>
+</body>
+
+</html>
