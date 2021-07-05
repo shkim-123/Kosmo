@@ -2,7 +2,7 @@
 :calendar: 211110  :runner: :runner: :runner: :runner: :runner: 210512 
 
 ## Java
-### 5.10 ~ 6.02
+### 5.12 ~ 6.02
 
 ## Android
 ### 6.03 ~ 6.09
