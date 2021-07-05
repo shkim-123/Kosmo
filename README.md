@@ -10,8 +10,8 @@
 ## Oracle
 ### 6.10 ~ 6.29
 
-## Frontend (HTML / CSS / JavaScript)
+## Frontend (HTML / CSS / JavaScript / JQuery)
 ### 6.30 ~ 7.23
 
-## Spring / JSP
+## JSP / Spring
 ### 8월 중
