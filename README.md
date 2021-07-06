@@ -1,5 +1,5 @@
 # Kosmo
-:calendar: 211110  :runner: :runner: :runner: :runner: :runner: 210512 
+:calendar: 21.05.12 ~ 21.11.10  
 
 ## 1. Java
 :calendar: 5.12 ~ 6.02
