@@ -6,4 +6,5 @@ function isEmpty(str) {
 		flag = true;
 	} 
 	return flag;
+	// flag 안의 데이터를 리턴한다
 }
