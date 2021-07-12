@@ -1,5 +1,6 @@
 // 매개변수로 들어온 데이터가 비어있거나 공백으로 구성되어 있으면 
 // true 리턴, 아니면 false 리턴하는 함수 선언
+// 매개변수: str (문자열이 저장되는 매개변수)
 function isEmpty(str) {
 	var flag = false;   // true/false 변수로 많이 사용한다.
 	if( str.split(" ").join("") == "" ) {
@@ -34,9 +35,23 @@ function isPwd(pwd) {
 	return regExp.test(pwd);
 }
 
-// 이메일 유효성 체크
-// 유효성 체크 통과 시 true, 아니면 false 리턴
+// 이메일 체크 함수 선언
+// 매개변수로 들어온 이메일 문자가 이메일 문자 패턴에 맞으면 true 리턴
+// 틀리면 false 리턴하기
+// 매개변수 : email (검사할 문자열, 즉 이메일 문자열이 저장되는 매개변수)
 function isValidEmail(email) {
 	var regExp = new RegExp(/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/);
 	return regExp.test(email);
+}
+
+// 문자열의 패턴 체크 함수 선언
+// 매개변수로 들어온 RegExp 객체와 검사 문자열을 이용하여
+// 검사 문자열의 RegExp 객체가 관리하는 문자 패턴에 맞으면 true 리턴
+// 틀리면 false 리턴하기
+// 매개변수: regExpObj (RegExp 객체의 메모리 위치 주소값이 저장되는 매개변수)
+// 			targetStr (패턴을 검사할 문자열이 저장되는 매개변수)
+function isValidPattern(regExpObj, targetStr) {
+	console.log("isValidPattern!!")
+	// RegExp 객체의 test() 메서드 호출하여 받은 리턴값
+	return regExpObj.test(targetStr);
 }
