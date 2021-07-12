@@ -36,7 +36,7 @@ function isPwd(pwd) {
 
 // 이메일 유효성 체크
 // 유효성 체크 통과 시 true, 아니면 false 리턴
-function isEmail(email) {
+function isValidEmail(email) {
 	var regExp = new RegExp(/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/);
 	return regExp.test(email);
 }

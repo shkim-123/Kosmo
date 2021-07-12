@@ -68,7 +68,7 @@
 			// 만약에 입력한 이메일이 이메일 문자 패턴이 아니면 (common_func.js 파일로 분리)
 			// if( !regExp.test(email) ) {
 			// isEmail() 함수 호출
-			if( !isEmail(email) ) {
+			if( !isValidEmail(email) ) {
 				alert("이메일을 형식에 맞게 입력해 주세요.");
 				// 함수 중단
 				return;
@@ -126,7 +126,7 @@
 	<table border = 1 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
 		<tr>
 			<th bgcolor = "#E9E9E9" width = "100vw"> 이름 </th>
-			<td><input type = "text" name = "writer" size = "20" maxlength = "7"></td>
+			<td><input type = "text" name = "writer" size = "20" maxlength = "10"></td>
 			<!-- name값은 DB와 동일하게 필수~~ -->
 			<!-- 입력 가능한 최대 길이 -->
 		<tr>
