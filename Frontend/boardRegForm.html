@@ -2,6 +2,32 @@
 <head>
 	<meta charset="UTF-8">
 	<title>새 글쓰기</title>
+
+	<script>
+		// 게시판 새글쓰기 화면에 입력한 데이터의 유효성 체크를 해주는
+		// checkRegForm 함수 선언
+		function checkRegForm() {
+			
+			// 유저가 입력한 이름 가져와서 변수 writer에 저장하기
+			var writer = document.boardRegForm.writer.value;
+			
+			// 유저가 입력한 제목 가져와서 변수 subject에 저장하기
+			var subject = document.boardRegForm.subject.value;
+			
+			// 유저가 입력한 이메일 가져와서 변수 email 저장하기
+			var email = document.boardRegForm.email.value;
+			
+			// 유저가 입력한 내용 가져와서 변수 content 저장하기
+			var content = document.boardRegForm.content.value;
+			
+			// 유저가 입력한 비밀번호 가져와서 변수 pwd 저장하기
+			var pwd = document.boardRegForm.pwd.value;
+			
+			alert(writer + ", " + subject + ", " + email + ", " + content + ", " + pwd);
+
+		}
+	</script>
+
 </head>
 
 <body>
@@ -11,7 +37,7 @@
 	<div style = "padding:10px;">[새 글쓰기]</div>
 	
 	<!-- 폼 태그 -->
-	<form action = "boardList.html">
+	<form name = "boardRegForm">
 
 	<!-- 내용 -->
 	<table border = 1 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
@@ -28,7 +54,7 @@
 		<tr>
 
 		<tr>
-			<th bgcolor = "#E9E9E9"> Email </th>
+			<th bgcolor = "#E9E9E9"> 이메일 </th>
 			<td><input type = "text" name = "email" size = "70" maxlength = "30"></td>
 		<tr>
 
@@ -49,7 +75,7 @@
 	<table><tr><td height = "3"></td></tr></table>
 
 	<!-- 버튼 -->
-	<input type = "submit" value = "저장"> &nbsp;
+	<input type = "submit" value = "저장" onClick="checkRegForm();"> &nbsp;
 	<input type = "reset" value = "초기화"> &nbsp;
 	<input type = "button" value = "전체 글 보기" onClick = "location.replace('boardList.html');"> &nbsp;
 	<input type = "button" value = "로그아웃" onClick = "location.replace('loginForm.html');">

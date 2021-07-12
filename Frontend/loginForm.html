@@ -13,15 +13,21 @@
 		// 자바스크립트 세상
 
 		// 유저가 입력한 아이디와 암호의 유효성을 체크하는 checkForm 함수 선언
+		// 함수 안의 코딩은 잠재적 코딩으로 함수의 이름을 불러야지만 실행된다
 		function checkForm() {
-			// alert("붕어싸만코 먹고싶다")
+			// alert("붕어싸만코 먹고싶다");
 			
+			// =============== 관점 1 =======================
 			// 객체의 메모리위치 주소값 or 주소값이 저장된 변수.객체의 메소드 또는 속성변수
 			// 유저가 입력한 아이디를 가져와 변수 uid에 저장하기
 			// value는 Text 객체의 속성변수이다.
 			// Text 객체는 <input type = "text" name = "uid" size = 10> 이 태그를 관리하는 객체이다 
+			// =============== 관점2 ========================
+			// <form name="loginForm" ~> 태그 안에
+			// <input type-"text" name="uid" ~> 에 입력한 아이디를 구해서 자스 변수 uid에 저장하기
+			// 지역변수 = 변수 안의 데이터
 			var uid = document.loginForm.uid.value;
-
+				
 			// 유저가 입력한 아이디를 가져와 변수 pwd에 저장하기
 			// Password 객체는 <input type = "password" name = "pwd" size = 10> 이 태그를 관리하는 객체이다
 			var pwd = document.loginForm.pwd.value;
@@ -68,9 +74,16 @@
 
 			// DB 연동 대신 uid, pwd 체크
 			// 만약에 아이디가 abc고 암호가 123 이면
-			if( uid == "abc" && pwd == "123" ){
-				// form 태그의 설정한 서버쪽 URL 주소로 서버로 접근하기
-				document.loginForm.submit();
+			if( uid == "abc" && pwd == "123" ) {
+				
+				// confirm() 확인 버튼 누를 경우 true 리턴, 취소 버튼은 false 리턴
+				// confirm() 내장 함수가 경고상자를 띄울 때는 프로그램이 잠시 중단되고, 선택하면 실행된다
+				if( confirm("로그인 할까요?") ) {
+					// form 태그의 설정한 서버쪽 URL 주소로 서버로 접근하기
+					// 즉, 새로운 페이지 열기
+					document.loginForm.submit();
+				}
+
 			} else {
 				alert("아이디 또는 암호가 맞지 않습니다. 다시 입력해 주십시오.");
 				// 아이디 입력란 비우기
