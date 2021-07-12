@@ -15,8 +15,6 @@
 		// 유저가 입력한 아이디와 암호의 유효성을 체크하는 checkForm 함수 선언
 		// 함수 안의 코딩은 잠재적 코딩으로 함수의 이름을 불러야지만 실행된다
 		function checkForm() {
-			// alert("붕어싸만코 먹고싶다");
-			
 			// =============== 관점 1 =======================
 			// 객체의 메모리위치 주소값 or 주소값이 저장된 변수.객체의 메소드 또는 속성변수
 			// 유저가 입력한 아이디를 가져와 변수 uid에 저장하기
@@ -24,19 +22,19 @@
 			// Text 객체는 <input type = "text" name = "uid" size = 10> 이 태그를 관리하는 객체이다 
 			// =============== 관점2 ========================
 			// <form name="loginForm" ~> 태그 안에
-			// <input type-"text" name="uid" ~> 에 입력한 아이디를 구해서 자스 변수 uid에 저장하기
+			// <input type="text" name="uid" ~> 에 입력한 아이디를 구해서 자스 변수 uid에 저장하기
 			// 지역변수 = 변수 안의 데이터
 			var uid = document.loginForm.uid.value;
 				
 			// 유저가 입력한 아이디를 가져와 변수 pwd에 저장하기
 			// Password 객체는 <input type = "password" name = "pwd" size = 10> 이 태그를 관리하는 객체이다
 			var pwd = document.loginForm.pwd.value;
-
 			
 			/*
 
 			// 만약에 유저가 입력한 아이디가 비어있거나 공백으로 이루어져 있으면
-			// uid.split() 는 String 객체의 split() 메소드 호출, Array 객체를 리턴한다. 즉, Array 객체의 메모리 위치 주소값이 들어있다.
+			// uid.split() 는 String 객체의 split() 메소드 호출, Array 객체를 리턴한다. 
+			// 즉, Array 객체의 메모리 위치 주소값이 들어있다.
 			// uid.split().join() 는 Array 객체의 join() 메소드 호출, 문자열 리턴
 			if( uid.split(" ").join("") == "" ) {
 				// 경고 상자 띄우기
