@@ -26,12 +26,12 @@
 			// <5> 유저가 입력한 비밀번호 가져와서 변수 pwd 저장하기
 			// <6> 유저가 선택한 파일 가져와서 변수 pic 저장하기
 			//--------------------------------------------------
-			var writer = document.boardRegForm.writer.value;    // <1>
-			var subject = document.boardRegForm.subject.value;  // <2>
-			var email = document.boardRegForm.email.value;		// <3>
-			var content = document.boardRegForm.content.value;  // <4> 
-			var pwd = document.boardRegForm.pwd.value;			// <5>
-			var pic = document.boardRegForm.pic.value;		   	// <6>
+			var writer = formObj.writer.value;    // <1>
+			var subject = formObj.subject.value;  // <2>
+			var email = formObj.email.value;		// <3>
+			var content = formObj.content.value;  // <4> 
+			var pwd = formObj.pwd.value;			// <5>
+			var pic = formObj.pic.value;		   	// <6>
 
 			//------------------------------------------------
 			// 유저가 입력한 [이름]의 유효성 체크하기
@@ -49,11 +49,11 @@
 			if( !isValidPattern(/^[가-힣]{2,10}$/, writer) ) {
 				alert("이름은 한글 2~10자 사이만 입력해 주세요.");
 				// 이름 입력란 비우기
-				document.boardRegForm.writer.value = "";
+				formObj.writer.value = "";
 				// 포커스 이동, Text 객체가 가지고 있는 메서드
 				// <form name=boardRegForm ~> 태그 안의 
 				// <input type=text name=writer ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				document.boardRegForm.writer.focus();
+				formObj.writer.focus();
 				// 함수 중단
 				return;
 			}
@@ -66,11 +66,11 @@
 			if ( isEmpty(subject) ) {
 				alert("제목을 입력해 주세요.");
 				// 제목 입력란 비우기
-				document.boardRegForm.subject.value = "";
+				formObj.subject.value = "";
 				// 포커스 이동
 				// <form name=boardRegForm ~> 태그 안의 
 				// <input type=text name=subject ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				document.boardRegForm.subject.focus();
+				formObj.subject.focus();
 				// 함수 중단
 				return;
 			}
@@ -81,7 +81,7 @@
 				// 포커스 이동
 				// <form name=boardRegForm ~> 태그 안의 
 				// <input type=text name=subject ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				document.boardRegForm.subject.focus();
+				formObj.subject.focus();
 				// 함수 중단
 				return;
 			}
@@ -99,11 +99,11 @@
 			if( !isValidEmail(email) ) {
 				alert("이메일을 형식에 맞게 입력해 주세요.");
 				// 이메일 입력란 비우기
-				document.boardRegForm.email.value = "";
+				formObj.email.value = "";
 				// 포커스 이동
 				// <form name=boardRegForm ~> 태그 안의 
 				// <input type=text name=email ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				document.boardRegForm.email.focus();
+				formObj.email.focus();
 				// 함수 중단
 				return;
 			}
@@ -116,9 +116,9 @@
 			if( isEmpty(content) ) {
 				alert("내용을 입력해 주세요.");
 				// 내용 입력란 비우기
-				document.boardRegForm.content.value = "";
+				formObj.content.value = "";
 				// 포커스 이동
-				document.boardRegForm.content.focus();
+				formObj.content.focus();
 				// 함수 중단
 				return;
 			}
@@ -128,7 +128,7 @@
 			if( content.length > 900 ) {
 				alert("내용은 900자 이하로 입력해 주세요.");
 				// 포커스 이동
-				document.boardRegForm.content.focus();
+				formObj.content.focus();
 				// 함수 중단
 				return;
 			}
@@ -145,9 +145,9 @@
 			if( !isValidPattern(/^[0-9]{4}$/, pwd) ) {
 				alert("암호는 숫자4자를 입력해 주세요.");
 				// 비우기
-				document.boardRegForm.pwd.value = "";
+				formObj.pwd.value = "";
 				// 포커스 이동
-				document.boardRegForm.pwd.focus();
+				formObj.pwd.focus();
 				// 함수 중단
 				return;
 			}
@@ -165,7 +165,7 @@
 				if( !isValidPattern(/\.(jpg|png)$/, pic.toLowerCase()) ){
 					alert("파일은 jpg 또는 png만 선택해 주세요.");
 					// 파일 비우기
-					document.boardRegForm.pic.value = "";
+					formObj.pic.value = "";
 					// 함수 중단
 					return;
 				}
@@ -179,7 +179,7 @@
 				// <form name=boardRegForm action="boardRegProc.html"> 태그의 
 				// action 값에 설정된 서버쪽 페이지 호출하여 열기
 				//------------------------------------------------
-				document.boardRegForm.submit();	
+				formObj.submit();	
 			}
 
 			// alert(writer + ", " + subject + ", " + email + ", " + content + ", " + pwd);
@@ -216,53 +216,53 @@
 	<!-- enctype 속성값이 생략되면 파일의 이름만 전송된다. 실제 파일은 전송되지 않음 -->
 	<form name = "boardRegForm" enctype = "multipart/form-data" action = "boardRegProc.html">
 
-	<!-- 내용 -->
-	<table border = 1 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
-		<tr>
-			<th bgcolor = "#E9E9E9" width = "100vw"> 이름 </th>
-			<td><input type = "text" name = "writer" size = "20" maxlength = "10"></td>
-			<!-- name값은 DB와 동일하게 필수~~ -->
-			<!-- 입력 가능한 최대 길이 -->
-		<tr>
+		<!-- 내용 -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
+			<tr>
+				<th bgcolor = "#E9E9E9" width = "100vw"> 이름 </th>
+				<td><input type = "text" name = "writer" size = "20" maxlength = "10"></td>
+				<!-- name값은 DB와 동일하게 필수~~ -->
+				<!-- 입력 가능한 최대 길이 -->
+			<tr>
 
-		<tr>
-			<th bgcolor = "#E9E9E9"> 제목 </th>
-			<td><input type = "text" name = "subject" size = "70" maxlength = "30"></td>
-		<tr>
+			<tr>
+				<th bgcolor = "#E9E9E9"> 제목 </th>
+				<td><input type = "text" name = "subject" size = "70" maxlength = "30"></td>
+			<tr>
 
-		<tr>
-			<th bgcolor = "#E9E9E9"> 이메일 </th>
-			<td><input type = "text" name = "email" size = "70" maxlength = "30"></td>
-		<tr>
+			<tr>
+				<th bgcolor = "#E9E9E9"> 이메일 </th>
+				<td><input type = "text" name = "email" size = "70" maxlength = "30"></td>
+			<tr>
 
-		<tr>
-			<th bgcolor = "#E9E9E9"> 내용 </th>
-			<td><textarea cols = "72" rows = "10" name = "content"></textarea></td>
-			<!-- textarea 여러줄 입력, cols 한 행에 입력, rows는 몇 줄 입력인지 -->
-		<tr>
+			<tr>
+				<th bgcolor = "#E9E9E9"> 내용 </th>
+				<td><textarea cols = "72" rows = "10" name = "content"></textarea></td>
+				<!-- textarea 여러줄 입력, cols 한 행에 입력, rows는 몇 줄 입력인지 -->
+			<tr>
 
-		<tr>
-			<th bgcolor = "#E9E9E9"> 사진 </th>
-			<td><input type = "file" name = "pic"></td>
-			<!-- 화면에 보이는 타입이 브라우저마다 다르다 -->
-		<tr>
+			<tr>
+				<th bgcolor = "#E9E9E9"> 사진 </th>
+				<td><input type = "file" name = "pic"></td>
+				<!-- 화면에 보이는 타입이 브라우저마다 다르다 -->
+			<tr>
 
-		<tr>
-			<th bgcolor = "#E9E9E9"> 비밀번호 </th>
-			<td><input type = "password" name = "pwd"  maxlength = "4"></td>
-		<tr>
+			<tr>
+				<th bgcolor = "#E9E9E9"> 비밀번호 </th>
+				<td><input type = "password" name = "pwd"  maxlength = "4"></td>
+			<tr>
 
-	</table>
-	<!-- /내용 -->
+		</table>
+		<!-- /내용 -->
 
-	<table><tr><td height = "3"></td></tr></table>
+		<table><tr><td height = "3"></td></tr></table>
 
-	<!-- 버튼 -->
-	<input type = "button" value = "저장" onClick="checkRegForm();"> &nbsp;
-	<input type = "reset" value = "초기화"> &nbsp;
-	<input type = "button" value = "전체 글 보기" onClick = "location.replace('boardList.html');"> &nbsp;
-	<input type = "button" value = "로그아웃" onClick = "location.replace('loginForm.html');">
-	<!-- /버튼 -->
+		<!-- 버튼 -->
+		<input type = "button" value = "저장" onClick="checkRegForm();"> &nbsp;
+		<input type = "reset" value = "초기화"> &nbsp;
+		<input type = "button" value = "전체 글 보기" onClick = "location.replace('boardList.html');"> &nbsp;
+		<input type = "button" value = "로그아웃" onClick = "location.replace('loginForm.html');">
+		<!-- /버튼 -->
 
 	</form>
 	<!-- /폼 태그 -->

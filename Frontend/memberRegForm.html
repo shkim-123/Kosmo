@@ -8,14 +8,26 @@
 
 	<!-- script -->
 	<script>
+		//--------------------------------------------------
+		// 회원가입 화면에 입력한 데이터의 유효성 체크를 해주는
+		// checkMemRegForm 함수 선언
+		//--------------------------------------------------
 		function checkMemRegForm() {
 			// alert("췤췤");	
 			
-			// 회원명, 아이디, 암호 가져오기
-			var mem_name = document.memberRegForm.mem_name.value;
-			var uid = document.memberRegForm.uid.value;
-			var pwd = document.memberRegForm.pwd.value;
+			//--------------------------------------------------
+			// 변수 formObj 선언하고 <form name = "memberRegForm"> 태그를 관리하는
+			// Form 객체의 메위주 저장하기
+			//--------------------------------------------------
+			var formObj = document.memberRegForm;
 			
+			// 회원명, 아이디, 암호 가져오기
+			var mem_name = formObj.mem_name.value;
+			var uid = formObj.uid.value;
+			var pwd = formObj.pwd.value;
+			
+			/*
+			//--------------------------------------------------
 			// 정규 표현식 (common_func.js로 분리)
 			// var regExp = new RegExp(/^[가-힣]{2,20}$/);
 			
@@ -25,40 +37,151 @@
 				// 경고 상자
 				alert("회원명에는 한글 2자에서 20자까지 입력해 주세요.");
 				// 회원명 입력값 비움
-				document.memberRegForm.mem_name.value = "";
+				formObj.mem_name.value = "";
 				// 함수 중단하기
 				return;
 			}
+			//--------------------------------------------------
+			*/
 
+			//------------------------------------------------
+			// 유저가 입력한 [이름]의 유효성 체크하기
+			//------------------------------------------------
+			// isValidPattern() 함수 호출, RegExp 객체는 new RegExp() 가 생략 가능하다
+			// 즉, isValidPattern() 함수 호출하여 리턴값이 false 면
+			// 생성된 RegExp 객체의 메모리 위치 주소값과 입력한 이름의 데이터를 매개변수로 넘겨준다
+			if( !isValidPattern(/^[가-힣]{2,20}$/, mem_name) ) {
+				alert("이름은 한글 2~20자 사이만 입력해 주세요.");
+				// 이름 입력란 비우기
+				formObj.mem_name.value = "";
+				// 포커스 이동, Text 객체가 가지고 있는 메서드
+				// <form name=memberRegForm ~> 태그 안의 
+				// <input type=text name=mem_name ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
+				formObj.mem_name.focus();
+				// 함수 중단
+				return;
+			}
+
+			//------------------------------------------------
+			// 유저가 입력한 [아이디]의 유효성 체크하기
+			//------------------------------------------------
 			// 정규 표현식 (common_func.js로 분리)
 			// var regExp = new RegExp(/^[a-z][a-z0-9_]{4,9}$/);
 
 			// if(!regExp.test(uid)) {
-			if( !isUid(uid) ) {
+			// if( !isUid(uid) ) {
+			if( !isValidPattern(/^[a-z][a-z0-9_]{4,9}$/, uid) ) {
 				// 경고 상자
 				alert("아이디는 영소문자로 시작하고, 영소문자 또는 숫자 또는 _ 로 5자~10자로 입력해 주세요.");
 				// 회원명 입력값 비움
-				document.memberRegForm.uid.value = "";
+				formObj.uid.value = "";
+				formObj.uid.focus();
 				// 함수 중단하기
 				return;
 			}
 
+			//------------------------------------------------
+			// 유저가 입력한 [암호]의 유효성 체크하기
+			//------------------------------------------------
 			// 정규 표현식 (common_func.js로 분리)
 			// var regExp = new RegExp(/^[a-z0-9_]{5,8}$/);
 
 			// if(!regExp.test(pwd)) {
-			if( !isPwd(pwd) ) {
+			// if( !isPwd(pwd) ) {
+			if( !isValidPattern(/^[a-z0-9_]{5,8}$/, pwd) ) {
 				// 경고 상자
 				alert("암호는 영소문자 또는 숫자로 5~8자로 입력해 주세요.");
 				// 회원명 입력값 비움
-				document.memberRegForm.pwd.value = "";
+				formObj.pwd.value = "";
+				formObj.pwd.focus();
 				// 함수 중단하기
 				return;
 			}
+
+			//------------------------------------------------
+			// 유저가 선택한 [성별]의 유효성 체크하기
+			//------------------------------------------------
+			/* 1) 배열 요소를 각각 가져올 경우
+			var isMen = formObj.gender[0].checked;
+			var isWomen = formObj.gender[1].checked;
+			if( !isMen && !isWomen ) {
+				alert("남여 중 하나는 선택해 주세요.");
+				return;
+			}
+			*/
+
+			/* 2) 반복문으로 처리
+			// 성별의 개수 얻어서 변수 genderCnt에 저장하기
+			var genderCnt = formObj.gender.length;
+			// 성별의 체크 개수 저장하는 변수 checkedCnt 선언하고 0 저장
+			var checkedCnt = 0;
+
+			// 반복문을 사용하여 성별의 체크 여부 확인하고 
+			// 체크되어 있으면 checkedCnt 변수에 1 업데이트하기
+			for(var i = 0; i < genderCnt; i++){
+				if(formObj.gender[i].checked) { checkedCnt++; }
+			}
+
+			// 만약 checkedCnt 변수에 0이 저장되어 있으면,
+			// 즉 체크가 하나라도 안되어 있다면 경고하고 함수 중단하기
+			if(checkedCnt == 0) {
+				alert("성별을 선택해 주세요.");
+			}
+			*/
 			
+			/* 3) common_func.js 분리 */
+			// isChecked() 함수 호출
+			if( !isChecked(formObj.gender) ){
+				alert("성별을 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 유저가 선택한 [취미]의 유효성 체크하기
+			//------------------------------------------------
+			/* 1) 반복문으로 처리
+			// 취미의 개수 얻어서 변수 hobbyCnt에 저장하기
+			var hobbyCnt = formObj.hobby.length;
+			// 취미의 체크 개수 저장하는 변수 checkedCnt 선언하고 0 저장
+			var checkedCnt = 0;
+
+			// 반복문을 사용하여 취미의 체크 여부 확인하고 
+			// 체크되어 있으면 checkedCnt 변수에 1 업데이트하기
+			for(var i = 0; i < hobbyCnt; i++){
+				if(formObj.hobby[i].checked) { checkedCnt++; }
+			}
+
+			// 만약 checkedCnt 변수에 0이 저장되어 있으면,
+			// 즉 체크가 하나라도 안되어 있다면 경고하고 함수 중단하기
+			if(checkedCnt == 0) {
+				alert("취미를 선택해 주세요.");
+				return;
+			}
+			*/
+
+			/* 2) common_func.js 분리 */
+			// isChecked() 함수 호출
+			if( !isChecked(formObj.hobby) ){
+				alert("취미를 선택해 주세요.");
+				return;
+			}
+
+			//-------------------------------------------------------
 			// 위의 정규 표현식이 모두 패스한 경우, 로그인 화면으로 던짐
-			alert("회원가입 성공");
-			location.replace("loginForm.html");		
+			//-------------------------------------------------------
+			if(confirm("정말 가입하시겠습니까?")) {
+				alert("회원가입 성공");
+				location.replace("loginForm.html");		
+			}
+		}
+
+		// body 태그를 다 읽고 난 후 실행할 함수 선언
+		function setting() {
+			// 개발 과정에 도움되라고 입력 양식에 데이터 삽입하기
+			// 회원명, 아이디, 암호 가져오기
+			document.memberRegForm.mem_name.value = "하하하하";
+			document.memberRegForm.uid.value = "hihihihi3";
+			document.memberRegForm.pwd.value = "qwer123";
 		}
 
 	</script>
@@ -66,7 +189,7 @@
 
 </head>
 
-<body>
+<body onLoad = "setting();">
 <center>
 	
 	<br><br>
@@ -90,6 +213,24 @@
 				<th bgcolor = "#E9E9E9">암호</th>
 				<td><input type="password" name="pwd"></td>
 			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9"> 성별 </th>
+				<td>
+					<input type = "radio" name = "gender"  value = "남">남
+					<input type = "radio" name = "gender"  value = "남">여
+				</td>
+			<tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9"> 취미 </th>
+				<td>
+					<input type = "checkbox" name = "hobby"  value = "운동">운동
+					<input type = "checkbox" name = "hobby"  value = "여행">여행
+					<input type = "checkbox" name = "hobby"  value = "독서">독서
+					<input type = "checkbox" name = "hobby"  value = "기타">기타
+				</td>
+			<tr>
 
 		</table>
 		<!-- /table -->

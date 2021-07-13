@@ -55,3 +55,22 @@ function isValidPattern(regExpObj, targetStr) {
 	// RegExp 객체의 test() 메서드 호출하여 받은 리턴값
 	return regExpObj.test(targetStr);
 }
+
+// 라디오/체크박스 선택 여부 체크
+// 선택되어 있다면 true, 아니면 false 리턴
+function isChecked(arrayObj){
+	var flag = false;
+	var checkedCnt = 0;
+
+	for(var i = 0; i < arrayObj.length; i++){
+		if(arrayObj[i].checked) { checkedCnt++; }
+	}
+
+	if(checkedCnt != 0) {
+		flag = true;
+	}
+	
+	return flag;
+}
+
+// 체크박스 선택 여부 체크
