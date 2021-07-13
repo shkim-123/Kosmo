@@ -51,26 +51,56 @@ function isValidEmail(email) {
 // 매개변수: regExpObj (RegExp 객체의 메모리 위치 주소값이 저장되는 매개변수)
 // 			targetStr (패턴을 검사할 문자열이 저장되는 매개변수)
 function isValidPattern(regExpObj, targetStr) {
-	console.log("isValidPattern!!")
 	// RegExp 객체의 test() 메서드 호출하여 받은 리턴값
 	return regExpObj.test(targetStr);
 }
 
-// 라디오/체크박스 선택 여부 체크
-// 선택되어 있다면 true, 아니면 false 리턴
-function isChecked(arrayObj){
-	var flag = false;
+//------------------------------------------------------------------------------
+// checkbox 또는 radio 의 체크 개수 구해서 리턴하는 함수 선언
+// arrObj (Array 객체의 메위주가 저장되는 매개변수 선언 
+// Array 객체 안의 배열변수 안에는 Radio 객체 또는 checkbox 객체의 메위주가 들어 있다)
+//------------------------------------------------------------------------------
+function getCheckedCnt( arrObj ) {
+	//--------------------------------------------------------------------------
+	// len 변수 선언하고 매개변수로 들어온 Array 객체의 배열변수 개수를 구해 저장하기
+	// Radio 또는 checkbox 의 체크 개수가 저장되는 변수 checkedCnt 선언하고 0 저장
+	//--------------------------------------------------------------------------
+	var len = arrObj.length;
 	var checkedCnt = 0;
 
-	for(var i = 0; i < arrayObj.length; i++){
-		if(arrayObj[i].checked) { checkedCnt++; }
+	//------------------------------------------------------------
+	// len 변수 안의 데이터가 undefined 면, 
+	// 즉 매개변수로 Array 객체가 안들어오고 다른 객체 
+	// 즉 Checkbox 객체 또는 Radio 객체가 들어오면 
+	// 존재하지 않는 length 라는 속성변수에는 undefined 가 들어 있다
+	// Radio 객체 또는 Checkbox 객체의 메위주 상상도를 살펴봐야 한다
+	//------------------------------------------------------------
+	if(len == undefined) {
+		if(!arrObj.checked){
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
-	if(checkedCnt != 0) {
-		flag = true;
+	//--------------------------------------------------------------------
+	// 반복문 선언, 반복문은 0 ~ len 변수 안의 배열변수 개수 미만 만큼 돈다
+	// 반복문을 돌려서 Array 객체의 배열변수 안에 저장된 
+	// Radio 객체 또는 checkbox 객체에 접근하기 위하여
+	//--------------------------------------------------------------------
+	for(var i = 0; i < len; i++) {
+		//-----------------------------------------------------------------------------
+		// 만약 i 번째 배열변수 안의 Radio 객체 또는 checkbox 객체의 속성변수
+		// checked 에 true가 저장되어 있으면 checkedCnt 변수 안의 숫자를 1 업데이트하기
+		// 즉, i 번째 Radio 또는 checkbox 입력양식에 체크가 되어 있으면 
+		// checkedCnt 변수 안의 숫자를 1 업데이트하기
+		//-----------------------------------------------------------------------------
+		if(arrObj[i].checked) { checkedCnt++; }
 	}
-	
-	return flag;
+	//-----------------------------------------------------
+	// checkedCnt 변수 안의 데이터 리턴하기
+	// 즉, Radio 또는 checkbox 입력양식에 체크 개수 리턴하기
+	//-----------------------------------------------------
+	return checkedCnt;
+
 }
-
-// 체크박스 선택 여부 체크

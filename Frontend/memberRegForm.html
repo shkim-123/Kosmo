@@ -130,8 +130,8 @@
 			*/
 			
 			/* 3) common_func.js 분리 */
-			// isChecked() 함수 호출
-			if( !isChecked(formObj.gender) ){
+			// getCheckedCnt 함수 호출하여 성별의 체크 개수를 얻어 0개 이면 경고하고 함수 중단
+			if( getCheckedCnt(formObj.gender) == 0 ){
 				alert("성별을 선택해 주세요.");
 				return;
 			}
@@ -151,18 +151,27 @@
 				if(formObj.hobby[i].checked) { checkedCnt++; }
 			}
 
-			// 만약 checkedCnt 변수에 0이 저장되어 있으면,
-			// 즉 체크가 하나라도 안되어 있다면 경고하고 함수 중단하기
-			if(checkedCnt == 0) {
-				alert("취미를 선택해 주세요.");
+			// 만약 checkedCnt 변수에 1 미만이 저장되어 있으면,
+			// 즉, 체크가 1개 미만이면 경고하고 함수 중단하기
+			if(checkedCnt < 1) {
+				alert("취미는 1개 이상 선택해 주세요.");
 				return;
 			}
 			*/
 
 			/* 2) common_func.js 분리 */
-			// isChecked() 함수 호출
-			if( !isChecked(formObj.hobby) ){
-				alert("취미를 선택해 주세요.");
+			// // getCheckedCnt 함수 호출하여 취미의 체크 개수를 얻어 1개 미만이면 경고하고 함수 중단
+			if( getCheckedCnt(formObj.hobby) < 1 ) {
+				alert("취미는 1개 이상 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 동의가 체크 안되어 있으면 경고하고 함수 중단
+			//------------------------------------------------
+			// if(!formObj.confirm.checked){
+			if(!getCheckedCnt(formObj.confirm)) {
+				alert("동의는 필수 체크입니다.");
 				return;
 			}
 
@@ -174,6 +183,7 @@
 				location.replace("loginForm.html");		
 			}
 		}
+		// checkMemRegForm() 끗 =====================================
 
 		// body 태그를 다 읽고 난 후 실행할 함수 선언
 		function setting() {
@@ -236,6 +246,11 @@
 		<!-- /table -->
 
 		<br>
+
+		<input type="checkbox" name="confirm" value="동의">
+		동의(가입하신 개인정보는 보관됩니다)
+
+		<br><br>
 		
 		<!-- 저장 버튼 클릭 시 회원명, 아이디, 암호 유효성 체크 -->
 		<input type="button" value="저장" onClick="checkMemRegForm();">
