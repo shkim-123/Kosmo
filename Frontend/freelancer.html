@@ -1,0 +1,629 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>프리랜서 이력</title>
+	
+	<!-- common_func.js 파일을 수입해 온다. -->
+	<script src = "common_func.js"></script>
+
+	<!-- script -->
+	<script>
+		function checkFreelancerForm() {
+
+			//--------------------------------------------------
+			// 변수 formObj 선언하고 <form name = "freelancerForm"> 태그를 관리하는
+			// Form 객체의 메위주 저장하기
+			var formObj = document.freelancerForm;
+			//--------------------------------------------------
+
+			//--------------------------------------------------
+			// <1> 유저가 입력한 이력서 등록일 [년] 가져와서 변수 resume_reg_year 에 저장하기
+			// <2> 유저가 입력한 이력서 등록일 [월] 가져와서 변수 resume_reg_month 에 저장하기
+			// <3> 유저가 입력한 이력서 등록일 [일] 가져와서 변수 resume_reg_day 에 저장하기
+			// <4> 유저가 입력한 [이름] 가져와서 변수 freelancer_name 에 저장하기
+			// <5> 유저가 입력한 [성별] 가져와서 변수 gender 에 저장하기
+			// <6> 유저가 입력한 [출생년도] 가져와서 변수 birth_year 에 저장하기
+			// <7> 유저가 입력한 [핸드폰] 가져와서 변수 phone 에 저장하기
+			// <8> 유저가 입력한 [이메일] 가져와서 변수 email 에 저장하기
+			// <9> 유저가 입력한 거주지 [시] 가져와서 변수 addr_city 에 저장하기
+			// <10> 유저가 입력한 거주지 [구] 가져와서 변수 addr_county 에 저장하기
+			// <11> 유저가 입력한 [최종학력] 가져와서 변수 education_end 에 저장하기
+			// <12> 유저가 입력한 개발 경력 [년] 가져와서 변수 dev_career_year 에 저장하기
+			// <13> 유저가 입력한 개발 경력 [개월] 가져와서 변수 dev_career_month 에 저장하기
+			// <14> 유저가 입력한 개발 경력 [최소] 가져와서 변수 want_pay_min 에 저장하기
+			// <15> 유저가 입력한 개발 경력 [최대] 가져와서 변수 want_pay_max 에 저장하기
+			// <16> 유저가 입력한 개발 경력 [면접후결정] 가져와서 변수 chk_want_pay_interview 에 저장하기
+			// <17> 유저가 입력한 [자격증] 가져와서 변수 license 에 저장하기
+			// <18> 유저가 입력한 프로젝트 종료일 [년] 가져와서 변수 project_end_year 에 저장하기
+			// <19> 유저가 입력한 프로젝트 종료일 [월] 가져와서 변수 project_end_month 에 저장하기
+			// <20> 유저가 입력한 프로젝트 종료일 [일] 가져와서 변수 project_end_day 에 저장하기
+			// <21> 유저가 입력한 프로젝트 종료일 [종료일확정] 가져와서 변수 chk_project_end 에 저장하기
+			// <22> 유저가 입력한 [소유스킬] 가져와서 변수 job_skill 에 저장하기
+			// <23> 유저가 입력한 [경험분야] 가져와서 변수 exp_category 에 저장하기
+			// <24> 유저가 입력한 [참고사항] 가져와서 변수 note 에 저장하기
+			// <25> 유저가 입력한 [이직여부] 가져와서 변수 chk_turnover 에 저장하기
+			//--------------------------------------------------
+			var resume_reg_year = formObj.resume_reg_year.value;		// <1>
+			var resume_reg_month = formObj.resume_reg_month.value;		// <2>
+			var resume_reg_day = formObj.resume_reg_day.value;			// <3>
+			var freelancer_name = formObj.freelancer_name.value;		// <4>
+			var gender = formObj.gender.value;							// <5>
+			var birth_year = formObj.birth_year.value;					// <6>
+			var phone = formObj.phone.value;							// <7>
+			var email = formObj.email.value;							// <8>
+			var addr_city = formObj.addr_city.value;					// <9>
+			var addr_county = formObj.addr_county.value;				// <10>
+			var education_end = formObj.education_end.value;			// <11>
+			var dev_career_year = formObj.dev_career_year.value;		// <12>
+			var dev_career_month = formObj.dev_career_month.value;		// <13>
+			var want_pay_min = formObj.want_pay_min.value;				// <14>
+			var want_pay_max = formObj.want_pay_max.value;				// <15>
+			var chk_want_pay_interview = formObj.chk_want_pay_interview.value;	// <16>
+			var license = formObj.license.value;						// <17>
+			var project_end_year = formObj.project_end_year.value;		// <18>
+			var project_end_month = formObj.project_end_month.value;	// <19>
+			var project_end_day = formObj.project_end_day.value;		// <20>
+			var chk_project_end = formObj.chk_project_end.value;		// <21>
+			var job_skill = formObj.job_skill.value;					// <22>
+			var exp_category = formObj.exp_category.value;				// <23>
+			var note = formObj.note.value;								// <24>
+			var chk_turnover = formObj.chk_turnover.value;				// <25>
+
+			
+			//--------------------------------------------------
+			// [이력서 등록일] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(resume_reg_year) ) {
+				alert("이력서 등록일 중 [년]을 선택해 주세요.");
+				formObj.resume_reg_year.focus();
+				return;
+			}
+
+			if( isEmpty(resume_reg_month) ) {
+				alert("이력서 등록일 중 [월]을 선택해 주세요.");
+				formObj.resume_reg_month.focus();
+				return;
+			}
+
+			if( isEmpty(resume_reg_day) ) {
+				alert("이력서 등록일 중 [일]을 선택해 주세요.");
+				formObj.resume_reg_day.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [이름] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(freelancer_name) ) {
+				alert("이름을 입력해 주세요.");
+				formObj.freelancer_name.value = "";
+				formObj.freelancer_name.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [성별] 유효성 체크하기
+			//--------------------------------------------------
+			if( getCheckedCnt(formObj.gender) == 0 ) {
+				alert("성별을 선택해 주세요.");
+				return;
+			}
+
+			//--------------------------------------------------
+			// [출생년도] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(birth_year) ) {
+				alert("출생년도를 선택해 주세요.");
+				formObj.birth_year.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [핸드폰] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(phone) ) {
+				alert("핸드폰을 입력해 주세요.");
+				formObj.phone.focus();
+				return;
+			}
+
+			if( !isValidPattern(/^01([0|1|6|7|8|9])-?[0-9]{3,4}-?[0-9]{4}$/, phone) ) {
+				alert("핸드폰을 형식에 맞게 입력해 주세요.");
+				formObj.phone.value = "";
+				formObj.phone.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [이메일] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(email) ) {
+				alert("이메일을 입력해 주세요.");
+				formObj.email.focus();
+				return;
+			}
+
+			if( !isValidEmail(email) ) {
+				alert("이메일을 형식에 맞게 입력해 주세요.");
+				formObj.email.value = "";
+				formObj.email.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [거주지] 유효성 체크하기
+			//--------------------------------------------------
+			if( isEmpty(addr_city) ) {
+				alert("거주지 중 [시]를 입력해 주세요.");
+				formObj.addr_city.focus();
+				return;
+			}
+
+			if( isEmpty(addr_county) ) {
+				alert("거주지 중 [구]를 입력해 주세요.");
+				formObj.addr_county.focus();
+				return;
+			}
+
+			//--------------------------------------------------
+			// [최종학력] 유효성 체크하기
+			//--------------------------------------------------
+			if( getCheckedCnt(formObj.education_end) == 0 ) {
+				alert("최종학력을 선택해 주세요.");
+				return;
+			}
+
+			//--------------------------------------------------
+			// [희망연봉] 유효성 체크하기
+			//--------------------------------------------------
+			if( (isEmpty(want_pay_min) || isEmpty(want_pay_max)) && !getCheckedCnt(formObj.chk_want_pay_interview) ) {
+				alert("희망연봉을 선택해 주세요.");
+				return;
+			}
+
+			if( !(isEmpty(want_pay_min) || isEmpty(want_pay_max))  ) {
+				if(want_pay_min > want_pay_max) {
+					alert("최저 희망 연봉이 최고 희망 연봉보다 높습니다. 다시 선택해 주세요.");
+					formObj.want_pay_min.value = "";
+					formObj.want_pay_max.value = "";
+					return;
+				}
+			}
+
+			//--------------------------------------------------
+			// [소유스킬] 유효성 체크하기
+			//--------------------------------------------------
+			if( getCheckedCnt(formObj.job_skill) < 1) {
+				alert("소유스킬을 하나 이상 선택해 주세요.");
+				return;
+			}
+
+			if( confirm("정말 저장하시겠습니까?") ) {
+				//------------------------------------------------
+				// <form name=freelancerForm action="freelancerProc.html"> 태그의 
+				// action 값에 설정된 서버쪽 페이지 호출하여 열기
+				//------------------------------------------------
+				document.freelancerForm.submit();	
+			}
+		}
+
+		function checkWantPay() {
+
+			var formObj = document.freelancerForm;
+
+			if(getCheckedCnt(formObj.chk_want_pay_interview)) {
+				formObj.want_pay_min.disabled = true;
+				formObj.want_pay_max.disabled = true;
+			} else {
+				formObj.want_pay_min.disabled = false;
+				formObj.want_pay_max.disabled = false;
+			}
+		}
+
+		// body 태그를 다 읽고 난 후 실행할 함수 선언
+		function setting() {
+
+			var formObj = document.freelancerForm;
+
+			formObj.resume_reg_year.value = "2021";		
+			formObj.resume_reg_month.value = "7";		
+			formObj.resume_reg_day.value = "14";		
+			formObj.freelancer_name.value = "김소희";		
+			formObj.gender.value = "여";						
+			formObj.birth_year.value = "1994";	
+			formObj.phone.value = "010-1234-1234";				
+			formObj.email.value = "a@naver.com";				
+			formObj.addr_city.value = "서울특별";				
+			formObj.addr_county.value = "마포";				
+			formObj.education_end.value = "일반대졸";				
+		}
+	</script>
+	<!-- /script -->
+
+</head>
+
+<body onLoad = "setting();">
+<center>
+	
+	<br><br>
+
+	<!-- form -->
+	<form name= "freelancerForm" action="freelancerProc.html">
+		<!-- table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 5 bordercolor = "lightgray" width = "800vw">
+			<caption style="padding-bottom: 15px;"><b>프리랜서 이력</b></caption>
+			<tr>
+				<th bgcolor = "#a9a9a9">이력서 등록일</th>
+				<td colspan="5">
+					<select name="resume_reg_year">
+						<option value="">선택요망</option>
+						<option value="2011">2011</option>
+						<option value="2012">2012</option>
+						<option value="2013">2013</option>
+						<option value="2014">2014</option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="resume_reg_month">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+					<select name="resume_reg_day">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+						<option value="25">25</option>
+						<option value="26">26</option>
+						<option value="27">27</option>
+						<option value="28">28</option>
+						<option value="29">29</option>
+						<option value="30">30</option>
+						<option value="31">31</option>
+					</select>
+					일 
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">이름</th>
+				<td><input type="text" name="freelancer_name"></td>
+				<th bgcolor = "#a9a9a9">성별</th>
+				<td>
+					<input type = "radio" name = "gender"  value = "남">남
+					<input type = "radio" name = "gender"  value = "여">여
+				</td>
+				<th bgcolor = "#a9a9a9">출생년도</th>
+				<td>
+					<select name="birth_year">
+						<option value="">선택요망</option>
+						<option value="1980">1980</option>
+						<option value="1981">1981</option>
+						<option value="1982">1982</option>
+						<option value="1983">1983</option>
+						<option value="1984">1984</option>
+						<option value="1985">1985</option>
+						<option value="1986">1986</option>
+						<option value="1987">1987</option>
+						<option value="1988">1988</option>
+						<option value="1989">1989</option>
+						<option value="1990">1990</option>
+						<option value="1991">1991</option>
+						<option value="1992">1992</option>
+						<option value="1993">1993</option>
+						<option value="1994">1994</option>
+						<option value="1995">1995</option>
+						<option value="1996">1996</option>
+						<option value="1997">1997</option>
+						<option value="1998">1998</option>
+						<option value="1999">1999</option>
+						<option value="2000">2000</option>
+						<option value="2001">2001</option>
+						<option value="2002">2002</option>
+						<option value="2003">2003</option>
+						<option value="2004">2004</option>
+						<option value="2005">2005</option>
+						<option value="2006">2006</option>
+						<option value="2007">2007</option>
+						<option value="2008">2008</option>
+					</select>
+					년생
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">핸드폰</th>
+				<td><input type="text" name="phone"></td>
+				<th bgcolor = "#a9a9a9">이메일</th>
+				<td colspan="3"><input type="text" name="email"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">거주지</th>
+				<td colspan="5">
+					<input type="text" name="addr_city">시 &nbsp;
+					<input type="text" name="addr_county">구
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">최종학력</th>
+				<td colspan="5">
+					<input type = "radio" name = "education_end" value = "고졸">고졸 &nbsp;
+					<input type = "radio" name = "education_end" value = "전문대졸">전문대졸 &nbsp;
+					<input type = "radio" name = "education_end" value = "일반대졸">일반대졸 &nbsp;
+					<input type = "radio" name = "education_end" value = "석사졸">석사졸
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">개발 경력</th>
+				<td colspan="5">
+					<select name="dev_career_year">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+						<option value="25">25</option>
+						<option value="26">26</option>
+						<option value="27">27</option>
+						<option value="28">28</option>
+						<option value="29">29</option>
+						<option value="30">30</option>
+						<option value="31">31</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_career_month">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+					</select> 
+					개월&nbsp;&nbsp;&nbsp;&nbsp; (이력서 등록일 기준)
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">희망 연봉</th>
+				<td colspan="5">
+					<select name="want_pay_min">
+						<option value="">선택요망</option>
+						<option value="2000">2000</option>
+						<option value="2500">2500</option>
+						<option value="3000">3000</option>
+						<option value="3500">3500</option>
+						<option value="4000">4000</option>
+						<option value="4500">4500</option>
+						<option value="5000">5000</option>
+						<option value="5500">5500</option>
+						<option value="6000">6000</option>
+						<option value="6500">6500</option>
+						<option value="7000">7000</option>
+						<option value="7500">7500</option>
+						<option value="8000">8000</option>
+						<option value="8500">8500</option>
+						<option value="9000">9000</option>
+						<option value="9500">9500</option>
+						<option value="10000">10000</option>
+					</select>
+					만원 &nbsp; ~ &nbsp;
+					<select name="want_pay_max">
+						<option value="">선택요망</option>
+						<option value="2000">2000</option>
+						<option value="2500">2500</option>
+						<option value="3000">3000</option>
+						<option value="3500">3500</option>
+						<option value="4000">4000</option>
+						<option value="4500">4500</option>
+						<option value="5000">5000</option>
+						<option value="5500">5500</option>
+						<option value="6000">6000</option>
+						<option value="6500">6500</option>
+						<option value="7000">7000</option>
+						<option value="7500">7500</option>
+						<option value="8000">8000</option>
+						<option value="8500">8500</option>
+						<option value="9000">9000</option>
+						<option value="9500">9500</option>
+						<option value="10000">10000</option>
+					</select>
+					만원 &nbsp;&nbsp;&nbsp;&nbsp;
+					<input type = "checkbox" name = "chk_want_pay_interview"  value = "면접후결정" onclick="checkWantPay();">면접후결정
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">자격증</th>
+				<td colspan="5">
+					<input type = "checkbox" name = "license"  value = "정보처리기사">정보처리기사 &nbsp;
+					<input type = "checkbox" name = "license"  value = "OCP">OCP &nbsp;
+					<input type = "checkbox" name = "license"  value = "SCJP">SCJP
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">프로젝트 종료일</th>
+				<td colspan="5">
+					<select name="project_end_year">
+						<option value="">선택요망</option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="project_end_month">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+					<select name="project_end_day">
+						<option value="">선택요망</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+						<option value="25">25</option>
+						<option value="26">26</option>
+						<option value="27">27</option>
+						<option value="28">28</option>
+						<option value="29">29</option>
+						<option value="30">30</option>
+						<option value="31">31</option>
+					</select>
+					일 &nbsp;&nbsp;&nbsp;
+					<input type = "checkbox" name = "chk_project_end"  value = "종료일확정">종료일 확정
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">소유 스킬 <br> 및 <br> 경험 분야</th>
+				<td colspan="5">
+					&nbsp;[소유스킬] : 
+					<input type = "checkbox" name = "job_skill"  value = "Java">Java&nbsp;
+					<input type = "checkbox" name = "job_skill"  value = "JSP">JSP&nbsp;
+					<input type = "checkbox" name = "job_skill"  value = "ASP">ASP
+
+					<br>
+
+					&nbsp;[경험분야] : 
+					<input type = "checkbox" name = "exp_category"  value = "은행">은행&nbsp;
+					<input type = "checkbox" name = "exp_category"  value = "증권">증권&nbsp;
+					<input type = "checkbox" name = "exp_category"  value = "보험">보험
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">참고사항</th>
+				<td colspan="5">
+					<input type="text" name="note" size="90vw" maxlength = "70">
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#a9a9a9">이직여부</th>
+				<td colspan="5">
+					<input type = "checkbox" name = "chk_turnover"  value = "개발자안함">개발자 안함
+				</td>
+			</tr>
+
+		</table>
+		<!-- /table -->
+		<br>
+		
+		<!-- 저장 버튼 클릭 시 유효성 체크 -->
+		<input type="button" value="저장" onClick="checkFreelancerForm();">
+		<input type="reset" value="초기화">
+
+		<br><br>
+
+	</form>
+	<!-- /form -->
+
+</center>
+
+</body>
+
+</html>

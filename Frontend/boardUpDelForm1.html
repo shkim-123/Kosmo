@@ -7,12 +7,12 @@
 	<script src = "common_func.js"></script>
 
 	<script>
-		function checkUpDelForm() {
+		function checkUpForm() {
 
 			//--------------------------------------------------
-			// 변수 formObj 선언하고 <form name = "boardUpDelForm"> 태그를 관리하는
+			// 변수 formObj 선언하고 <form name = "boardUpForm"> 태그를 관리하는
 			// Form 객체의 메위주 저장하기
-			var formObj = document.boardUpDelForm;
+			var formObj = document.boardUpForm;
 			//--------------------------------------------------
 
 			//---------------------------------------------------
@@ -47,15 +47,17 @@
 			// 즉, isValidPattern() 함수 호출하여 리턴값이 false 면
 			// 생성된 RegExp 객체의 메모리 위치 주소값과 입력한 이름의 데이터를 매개변수로 넘겨준다
 			if( !isValidPattern(/^[가-힣]{2,10}$/, writer) ) {
-				alert("이름은 한글 2~10자 사이만 입력해 주세요.");
-				// 이름 입력란 비우기
-				formObj.writer.value = "";
-				// 포커스 이동, Text 객체가 가지고 있는 메서드
-				// <form name=boardUpDelForm ~> 태그 안의 
+				//------------------------------------------------
+				// <1> 이름 입력란 비우기
+				// <2> 포커스 이동, Text 객체가 가지고 있는 메서드
+				// <form name=boardUpForm ~> 태그 안의 
 				// <input type=text name=writer ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				formObj.writer.focus();
-				// 함수 중단
-				return;
+				// <3> 함수 중단
+				//------------------------------------------------	
+				alert("이름은 한글 2~10자 사이만 입력해 주세요.");
+				formObj.writer.value = "";		// <1>
+				formObj.writer.focus();			// <2>
+				return;							// <3>
 			}
 
 			//------------------------------------------------
@@ -63,26 +65,30 @@
 			//------------------------------------------------
 			// 만약에 제목이 공백만 있거나, 비어있으면
 			if ( isEmpty(subject) ) {
-				alert("제목을 입력해 주세요.");
-				// 제목 입력란 비우기
-				formObj.subject.value = "";
-				// 포커스 이동
-				// <form name=boardUpDelForm ~> 태그 안의 
+				//------------------------------------------------
+				// <1> 제목 입력란 비우기
+				// <2> 포커스 이동
+				// <form name=boardUpForm ~> 태그 안의 
 				// <input type=text name=subject ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				formObj.subject.focus();
-				// 함수 중단
-				return;
+				// <3> 함수 중단
+				//------------------------------------------------	
+				alert("제목을 입력해 주세요.");
+				formObj.subject.value = "";		// <1>
+				formObj.subject.focus();		// <2>
+				return;							// <3>
 			}
 
 			// 만약에 제목의 길이가 2자~30자가 사이가 아니면
 			if( !(subject.length >= 2 && subject.length <= 30) ) {
-				alert("제목은 2자~30자 이하로 입력해 주세요.");
-				// 포커스 이동
-				// <form name=boardUpDelForm ~> 태그 안의 
+				//------------------------------------------------
+				// <1> 포커스 이동
+				// <form name=boardUpForm ~> 태그 안의 
 				// <input type=text name=subject ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				formObj.subject.focus();
-				// 함수 중단
-				return;
+				// <2> 함수 중단
+				//------------------------------------------------	
+				alert("제목은 2자~30자 이하로 입력해 주세요.");
+				formObj.subject.focus();		// <1>
+				return;							// <2>
 			}
 
 			//------------------------------------------------
@@ -91,15 +97,17 @@
 			// isValidEmail() 함수를 호출하여 이메일 문자열이 합당한 이메일이면
 			// 즉, isValidEmail(email) 호출하여 리턴값이 false 면 
 			if( !isValidEmail(email) ) {
-				alert("이메일을 형식에 맞게 입력해 주세요.");
-				// 이메일 입력란 비우기
-				formObj.email.value = "";
-				// 포커스 이동
-				// <form name=boardUpDelForm ~> 태그 안의 
+				//------------------------------------------------
+				// <1> 이메일 입력란 비우기
+				// <2> 포커스 이동
+				// <form name=boardUpForm ~> 태그 안의 
 				// <input type=text name=email ~> 태그가 실행되어 출력되는 입력양식에 포커스 넣기
-				formObj.email.focus();
-				// 함수 중단
-				return;
+				// <3> 함수 중단
+				//------------------------------------------------					
+				alert("이메일을 형식에 맞게 입력해 주세요.");
+				formObj.email.value = "";		// <1>
+				formObj.email.focus();			// <2>
+				return;							// <3>
 			}
 
 			//------------------------------------------------
@@ -108,23 +116,27 @@
 			// isEmpty 함수를 호출하여 내용이 비어있으면
 			// isEmpty(content) 호출하여 리턴값이 true 면
 			if( isEmpty(content) ) {
-				alert("내용을 입력해 주세요.");
-				// 내용 입력란 비우기
-				formObj.content.value = "";
-				// 포커스 이동
-				formObj.content.focus();
-				// 함수 중단
-				return;
+				//------------------------------------------------
+				// <1> 내용 입력란 비우기
+				// <2> 포커스 이동
+				// <3> 함수 중단
+				//------------------------------------------------	
+				alert("내용을 입력해 주세요.");		
+				formObj.content.value = "";			// <1>
+				formObj.content.focus();			// <2>
+				return;								// <3>
 			}
 
 			// 만약에 내용의 길이가 900자 보다 크면
 			// 오라클에 데이터를 저장하기 위해서 글자에 제한을 검
 			if( content.length > 900 ) {
+				//------------------------------------------------
+				// <1> 포커스 이동
+				// <2> 함수 중단
+				//------------------------------------------------	
 				alert("내용은 900자 이하로 입력해 주세요.");
-				// 포커스 이동
-				formObj.content.focus();
-				// 함수 중단
-				return;
+				formObj.content.focus();		// <1>
+				return;							// <2>
 			}
 
 			//------------------------------------------------
@@ -134,15 +146,19 @@
 			// 파일의 확장자 확인 (jpg, png만 허용, 이 외는 경고상자)
 			// 만약 이미지가 선택되었으면
 			if( !isEmpty(pic) ) {
+				//------------------------------------------------
 				// 선택된 이미지 파일의 확장자가 jpg 도 아니고 png도 아니면
 				// isValidPattern() 함수 호출 (common_func.js) 
 				// String 객체의 toLowerCase() 함수 호출(소문자로 변경)
-				if( !isValidPattern(/\.(jpg|png)$/, pic.toLowerCase()) ){
+				//------------------------------------------------
+				if( !isValidPattern(/\.(jpg|png)$/, pic.toLowerCase()) ) {
+					//------------------------------------------------
+					// <1> 파일 비우기
+					// <2> 함수 중단
+					//------------------------------------------------	
 					alert("파일은 jpg 또는 png만 선택해 주세요.");
-					// 파일 비우기
-					formObj.pic.value = "";
-					// 함수 중단
-					return;
+					formObj.pic.value = "";		// <1>
+					return;						// <2>
 				}
 			}
 
@@ -151,11 +167,44 @@
 			//------------------------------------------------ 
 			if( confirm("정말 수정하시겠습니까?") ) {
 				//------------------------------------------------
-				// <form name=boardUpDelForm action="boardRegProc.html"> 태그의 
+				// <form name=boardUpForm action="boardUpProc.html"> 태그의 
 				// action 값에 설정된 서버쪽 페이지 호출하여 열기
 				//------------------------------------------------
 				formObj.submit();	
 			}
+		}
+
+		function checkDelForm() {
+
+			//--------------------------------------------------
+			// <1> 변수 formObj 선언하고 <form name = "boardUpForm"> 태그를 관리하는
+			// Form 객체의 메위주 저장하기
+			// <2> 유저가 입력한 비밀번호 가져와서 변수 pwd 저장하기
+			//--------------------------------------------------
+			var formObj = document.boardUpForm;	// <1>
+			var pwd = formObj.pwd.value;			// <2>
+
+			//---------------------------------------------------
+			// 입력된 암호가 틀리면 경고하고 함수 중단하기
+			//---------------------------------------------------
+			if( pwd != "1234" ) {
+				alert("비밀번호가 다릅니다. 다시 입력해 주세요.");
+				formObj.pwd.value = "";
+				formObj.pwd.focus();
+				return;
+			}	
+
+			//------------------------------------------------
+			// confirm 함수 호출로 confirm 상자를 열고 확인 버튼을 누르면
+			//------------------------------------------------ 
+			if( confirm("정말 삭제하시겠습니까?") ) {
+				//------------------------------------------------
+				// <form name=boardDelForm action="boardDelProc.html"> 태그의 
+				// action 값에 설정된 서버쪽 페이지 호출하여 열기
+				//------------------------------------------------
+				document.boardDelForm.submit();	
+			}
+
 		}
 	</script>
 </head>
@@ -167,7 +216,7 @@
 	<div style = "padding:10px;">[글 수정/삭제]</div>
 	
 	<!-- 폼 태그 -->
-	<form name = "boardUpDelForm" enctype = "multipart/form-data" action = "boardRegProc.html">
+	<form name = "boardUpForm" enctype = "multipart/form-data" action = "boardUpProc.html">
 
 	<!-- 내용 -->
 	<table border = 1 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
@@ -214,8 +263,8 @@
 	<table><tr><td height = "3"></td></tr></table>
 
 	<!-- 버튼 -->
-	<input type = "button" value = "수정" onClick = "checkUpDelForm();"> &nbsp;
-	<input type = "button" value = "삭제"> &nbsp;
+	<input type = "button" value = "수정" onClick = "checkUpForm();"> &nbsp;
+	<input type = "button" value = "삭제" onClick = "checkDelForm();"> &nbsp;
 	<input type = "reset" value = "초기화"> &nbsp;
 	<input type = "button" value = "전체 글 보기" onClick = "location.replace('boardList.html');"> &nbsp;
 	<input type = "button" value = "로그아웃" onClick = "location.replace('loginForm.html');">
@@ -223,6 +272,12 @@
 
 	</form>
 	<!-- /폼 태그 -->
+	
+	<!-- 삭제 폼 태그 -->
+	<form name = "boardDelForm" action = "boardDelProc.html">
+	</form>
+	<!-- /삭제 폼 태그 -->
+
 
 </center>	
 
