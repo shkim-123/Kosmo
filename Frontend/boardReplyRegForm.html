@@ -10,7 +10,7 @@
 
 		// 게시판 댓글쓰기 화면에 입력한 데이터의 유효성 체크를 해주는
 		// checkRegForm 함수 선언
-		function checkRegForm() {
+		function checkReplyRegForm() {
 			
 			//--------------------------------------------------
 			// 변수 formObj 선언하고 <form name = "boardReplyRegForm"> 태그를 관리하는
@@ -246,7 +246,7 @@
 		<table><tr><td height = "3"></td></tr></table>
 
 		<!-- 버튼 -->
-		<input type = "button" value = "저장" onClick="checkRegForm();"> &nbsp;
+		<input type = "button" value = "저장" onClick="checkReplyRegForm();"> &nbsp;
 		<input type = "reset" value = "초기화"> &nbsp;
 		<input type = "button" value = "전체 글 보기" onClick = "location.replace('boardList.html');"> &nbsp;
 		<input type = "button" value = "로그아웃" onClick = "location.replace('loginForm.html');">
