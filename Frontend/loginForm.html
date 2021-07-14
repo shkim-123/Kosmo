@@ -91,12 +91,20 @@
 			}
 			
 		}
+
+		// body 태그를 다 읽고 난 후 실행할 함수 선언
+		function setting() {
+			// 개발 과정에 도움되라고 입력 양식에 데이터 삽입하기
+			// 회원명, 아이디, 암호 가져오기
+			document.loginForm.uid.value = "abc";
+			document.loginForm.pwd.value = "123";
+		}
 		
 	</script>
 
 </head>
 
-<body>
+<body onLoad = "setting();">
 <center>
 
 	<!-- form 태그: 입력 양식을 단일화시켜 하나로 묶는 태그 -->

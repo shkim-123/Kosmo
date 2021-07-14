@@ -12,7 +12,6 @@
 		<tr>
 			<td width = "300vw"> </td>
 			<td width = "200vw"> [게시판] </td>
-			<td> [6개 검색] &nbsp; </td>
 			<td>
 				<!-- 텍스트에 Link를 거는 방법1 -->
 				<!-- a 태그 href 이동할 페이지 -->
@@ -22,12 +21,16 @@
 				<!-- 텍스트에 Link를 거는 방법2 -->
 				<!-- span 태그로 [새 글쓰기]를 끌어안아서 클릭하면 boardRegForm.html 문서 열기  -->
 				<!-- <태그명 on이벤트명="자스코딩"> -->
-				<span style="cursor: pointer;" onClick="location.replace('boardRegForm.html')">[새 글쓰기]</span>
+				<span style="cursor: pointer;" onClick="location.replace('boardRegForm.html')">[새글쓰기]</span>
 				<!-- span 태그는 div태그와 비슷하지만 block 형식은 아니다 -->
+			</td>
+			<td>
+				<span style="cursor: pointer;" onClick="location.replace('loginForm.html')">[로그아웃]</span>
 			</td>
  		</tr>
 	</table>
-	<br>
+
+	<table><tr><td></td></tr></table>
 
 	<!-- 목록 -->
 	<table border = 0 style ="border-collapse:collapse" cellpadding = 7 bordercolor = "lightgray" width = "700vw">
@@ -91,7 +94,7 @@
 	</table>
 	<!-- /목록 -->
 
-	<br>
+	<table><tr><td></td></tr></table>
 
 	<!-- 페이징 -->
 	<table cellpadding = 7>
