@@ -1,0 +1,1256 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>정규직 입력</title>
+	
+	<!-- common_func.js 파일을 수입해 온다. -->
+	<script src = "common_func.js"></script>
+		
+	<!-- script -->
+	<script>
+		function checkDevRegForm() {
+			alert("배!!고!!파!!");
+		}
+	</script>
+	<!-- /script -->
+
+</head>
+
+<body>
+<center>
+	
+	<br><br>
+
+	<h2>[정규직 입력]</h2>
+
+	<!-- form -->
+	<form name= "devRegForm">
+		<!-- 1. 개인정보 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>1. 개인정보</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">아이디</th>
+				<td><input type="text" name="dev_id"></td>
+				<th bgcolor = "#E9E9E9">암호</th>
+				<td><input type="text" name="dev_pwd"></td>
+				<th bgcolor = "#E9E9E9">암호확인</th>
+				<td><input type="text" name="dev_pwd_check"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">이름</th>
+				<td><input type="text" name="dev_name"></td>
+				<th bgcolor = "#E9E9E9">주민번호</th>
+				<td><input type="text" name="dev_jumin_no"></td>
+				<th bgcolor = "#E9E9E9">핸드폰</th>
+				<td><input type="text" name="dev_phone"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">이메일</th>
+				<td><input type="text" name="dev_email"></td>
+				<th bgcolor = "#E9E9E9">종교</th>
+				<td>
+					<select name="dev_religion">
+						<option value="">--선택요망--</option>
+						<option value="불교">불교</option>
+						<option value="기독교">기독교</option>
+						<option value="천주교">천주교</option>
+						<option value="기타">기타</option>
+					</select>
+				</td>
+				<th bgcolor = "#E9E9E9">병역</th>
+				<td>
+					<select name="dev_military">
+						<option value="">--선택요망--</option>
+						<option value="군필">군필</option>
+						<option value="미필">미필</option>
+						<option value="면제">면제</option>
+						<option value="해당없음">해당없음</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">주소</th>
+				<td colspan="5">
+					[우편번호]: <input type="text" name="dev_postal_code" size="10">
+					&nbsp;
+					[주소]: <input type="text" name="dev_addr" size="60">
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">긴급연락처</th>
+				<td colspan="5">
+					[연락 받을 사람 이름]: 
+					<input type="text" name="dev_emergency_name">
+					&nbsp;
+					[관계]: 
+					<select name="dev_emergency_relations">
+						<option value="">--선택요망--</option>
+						<option value="부모">부모</option>
+						<option value="형제">형제</option>
+						<option value="친척">친척</option>
+						<option value="지인">지인</option>
+					</select>
+					(부모, 형제, 친척, 지인)
+					&nbsp; <br>
+					[전화번호]: 
+					<input type="text" name="dev_emergency_phone">
+				</td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">월급통장번호</th>
+				<td colspan="5">
+					<select name="dev_bank_select">
+						<option value="">--은행선택--</option>
+						<option value="한국은행">한국은행</option>
+						<option value="산업은행">산업은행</option>
+						<option value="기업은행">기업은행</option>
+						<option value="국민은행">국민은행</option>
+						<option value="수협은행">수협은행</option>
+						<option value="농협은행">농협은행</option>
+						<option value="지역농축협">지역농축협</option>
+						<option value="우리은행">우리은행</option>
+						<option value="SC은행">SC은행</option>
+						<option value="한국씨티은행">한국씨티은행</option>
+						<option value="대구은행">대구은행</option>
+						<option value="부산은행">부산은행</option>
+						<option value="광주은행">광주은행</option>
+						<option value="제주은행">제주은행</option>
+						<option value="전북은행">전북은행</option>
+						<option value="경남은행">경남은행</option>
+						<option value="새마을금고">새마을금고</option>
+						<option value="신협">신협</option>
+						<option value="상호저축">상호저축</option>
+						<option value="홍콩은행">홍콩은행</option>
+						<option value="우체국">우체국</option>
+						<option value="KEB하나은행">KEB하나은행</option>
+						<option value="신한은행">신한은행</option>
+					</select>
+					<input type="text" name="dev_bank_account_no">
+					(-없이 입력)
+				</td>
+			</tr>
+		</table>
+		<!-- /1. 개인정보 table -->
+		<br>
+
+		<!-- 2. 학력 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>2. 학력</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">학교명</th>
+				<th bgcolor = "#E9E9E9">학부</th>
+				<th bgcolor = "#E9E9E9">전공과목</th>
+				<th bgcolor = "#E9E9E9">부전공과목</th>
+				<th bgcolor = "#E9E9E9">졸업일</th>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_edu_high_name" size="15">
+					고등학교 졸
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<select name="dev_edu_high_graduated_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_edu_high_graduated_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_edu_associate_name" size="15">
+					전문대 졸 (대학 졸)
+				</td>
+				<td>
+					<select name="dev_edu_associate_dep">
+						<option value="">--선택요망--</option>
+						<option value="인문대학">인문대학</option>
+						<option value="사회과학대학">사회과학대학</option>
+						<option value="자연과학대학">자연과학대학</option>
+						<option value="공과대학">공과대학</option>
+						<option value="미술대학">미술대학</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" name="dev_edu_associate_major" size="15">
+				</td>
+				<td>
+					<input type="text" name="dev_edu_associate_minor" size="15">
+				</td>
+				<td>
+					<select name="dev_edu_associate_graduated_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_edu_associate_graduated_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_edu_bachelor_name" size="15">
+					대학교 학사 졸
+				</td>
+				<td>
+					<select name="dev_edu_bachelor_dep">
+						<option value="">--선택요망--</option>
+						<option value="인문대학">인문대학</option>
+						<option value="사회과학대학">사회과학대학</option>
+						<option value="자연과학대학">자연과학대학</option>
+						<option value="공과대학">공과대학</option>
+						<option value="미술대학">미술대학</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" name="dev_edu_bachelor_major" size="15">
+				</td>
+				<td>
+					<input type="text" name="dev_edu_bachelor_minor" size="15">
+				</td>
+				<td>
+					<select name="dev_edu_bachelor_graduated_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_edu_bachelor_graduated_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_edu_master_name" size="15">
+					대학교 석사 졸
+				</td>
+				<td>
+					<select name="dev_edu_master_dep">
+						<option value="">--선택요망--</option>
+						<option value="인문대학">인문대학</option>
+						<option value="사회과학대학">사회과학대학</option>
+						<option value="자연과학대학">자연과학대학</option>
+						<option value="공과대학">공과대학</option>
+						<option value="미술대학">미술대학</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" name="dev_edu_master_major" size="15">
+				</td>
+				<td>
+					<input type="text" name="dev_edu_master_minor" size="15">
+				</td>
+				<td>
+					<select name="dev_edu_master_graduated_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_edu_master_graduated_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_edu_doctor_name" size="15">
+					대학교 박사 졸
+				</td>
+				<td>
+					<select name="dev_edu_doctor_dep" disabled>
+						<option value="">--선택요망--</option>
+						<option value="인문대학">인문대학</option>
+						<option value="사회과학대학">사회과학대학</option>
+						<option value="자연과학대학">자연과학대학</option>
+						<option value="공과대학">공과대학</option>
+						<option value="미술대학">미술대학</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" name="dev_edu_doctor_major" size="15">
+				</td>
+				<td>
+					<input type="text" name="dev_edu_doctor_minor" size="15">
+				</td>
+				<td>
+					<select name="dev_edu_doctor_graduated_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_edu_doctor_graduated_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+				</td>
+			</tr>
+
+			
+		</table>
+		<!-- /2. 학력 table -->
+		* 검정고시 출신은 고등학교명에 [검정고시] 라고 입력하십시오...
+		
+		<br><br>
+
+		<!-- 3. 가족 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>3. 가족</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9" width="200">관계</th>
+				<th bgcolor = "#E9E9E9" width="200">이름</th>
+				<th bgcolor = "#E9E9E9" width="200">직업</th>
+				<th bgcolor = "#E9E9E9" width="200">출생년도</th>
+				<th bgcolor = "#E9E9E9" width="200">동거여부</th>
+			</tr>
+
+			<tr style="text-align:center">
+				<td>
+					<select name="dev_family_relations">
+						<option value="">--선택요망--</option>
+						<option value="부">부</option>
+						<option value="모">모</option>
+						<option value="배우자">배우자</option>
+						<option value="자녀">자녀</option>
+					</select>
+				</td>
+
+				<td>
+					<input type="text" name="dev_family_name" size="15">
+				</td>
+
+				<td>
+					<input type="text" name="dev_family_job" size="15">
+				</td>
+
+				<td>
+					<select name="dev_family_birth">
+						<option value="">--선택요망--</option>
+						<option value="1980">1980</option>
+						<option value="1981">1981</option>
+						<option value="1982">1982</option>
+						<option value="1983">1983</option>
+						<option value="1984">1984</option>
+						<option value="1985">1985</option>
+						<option value="1986">1986</option>
+						<option value="1987">1987</option>
+						<option value="1988">1988</option>
+						<option value="1989">1989</option>
+						<option value="1990">1990</option>
+						<option value="1991">1991</option>
+						<option value="1992">1992</option>
+						<option value="1993">1993</option>
+						<option value="1994">1994</option>
+						<option value="1995">1995</option>
+						<option value="1996">1996</option>
+						<option value="1997">1997</option>
+						<option value="1998">1998</option>
+						<option value="1999">1999</option>
+						<option value="2000">2000</option>
+						<option value="2001">2001</option>
+						<option value="2002">2002</option>
+						<option value="2003">2003</option>
+						<option value="2004">2004</option>
+						<option value="2005">2005</option>
+						<option value="2006">2006</option>
+						<option value="2007">2007</option>
+						<option value="2008">2008</option>
+					</select>
+				</td>
+
+				<td>
+					<input type = "checkbox" name = "dev_family_cohabitation"  value = "동거">동거
+				</td>
+			</tr>
+		</table>
+		<!-- /3. 가족 table -->
+
+		<span>[행삭제]</span>
+		<span>[행추가]</span>
+
+		<br><br>
+
+		<!-- 4. 회사 경력 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>4. 회사 경력</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">회사명/업무</th>
+				<th bgcolor = "#E9E9E9">분야</th>
+				<th bgcolor = "#E9E9E9">부서</th>
+				<th bgcolor = "#E9E9E9">직위</th>
+				<th bgcolor = "#E9E9E9">고용형태</th>
+				<th bgcolor = "#E9E9E9">연봉</th>
+				<th bgcolor = "#E9E9E9">입사일/퇴사일</th>
+			</tr>
+
+			<tr style="text-align:center">
+				<td>
+					회사명:
+					<input type="text" name="dev_emp_career_company" size="15"> <br>
+					&nbsp;&nbsp;&nbsp;업무:
+					<input type="text" name="dev_emp_career_task" size="15">
+				</td>
+
+				<!-- 분야 -->
+				<td>
+					<select name="dev_emp_career_field">
+						<option value=""></option>
+						<option value="개발">은행</option>
+						<option value="증권">증권</option>
+						<option value="보험">보험</option>
+					</select>
+				</td>
+
+				<!-- 부서 -->
+				<td>
+					<select name="dev_emp_career_dept">
+						<option value=""></option>
+						<option value="개발팀">개발팀</option>
+						<option value="기획팀">기획팀</option>
+						<option value="디자인팀">디자인팀</option>
+						<option value="퍼블리싱팀">퍼블리싱팀</option>
+					</select>
+				</td>
+
+				<!-- 직위 -->
+				<td>
+					<select name="dev_emp_career_job_title">
+						<option value=""></option>
+						<option value="사장">사장</option>
+						<option value="부장">부장</option>
+						<option value="과장">과장</option>
+						<option value="대리">대리</option>
+						<option value="주임">주임</option>
+						<option value="사원">사원</option>
+					</select>
+				</td>
+
+				<!-- 고용형태 -->
+				<td>
+					<select name="dev_emp_career_emp_type">
+						<option value=""></option>
+						<option value="정규직">정규직</option>
+						<option value="프리랜서">프리랜서</option>
+					</select>
+				</td>
+
+				<!-- 연봉 -->
+				<td>
+					<select name="dev_emp_career_salary">
+						<option value=""></option>
+						<option value="2000">2000</option>
+						<option value="2500">2500</option>
+						<option value="3000">3000</option>
+						<option value="3500">3500</option>
+						<option value="4000">4000</option>
+						<option value="4500">4500</option>
+						<option value="5000">5000</option>
+						<option value="5500">5500</option>
+						<option value="6000">6000</option>
+						<option value="6500">6500</option>
+						<option value="7000">7000</option>
+						<option value="7500">7500</option>
+						<option value="8000">8000</option>
+						<option value="8500">8500</option>
+						<option value="9000">9000</option>
+						<option value="9500">9500</option>
+						<option value="10000">10000</option>
+					</select>
+					만원
+				</td>
+
+				<!-- 입사일/퇴사일 -->
+				<td>
+					입사일:
+					<select name="dev_emp_career_join_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년
+					<select name="dev_emp_career_join_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 
+					<br>
+					퇴사일:
+					<select name="dev_emp_career_quit_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년
+					<select name="dev_emp_career_quit_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월
+				</td>
+			</tr>
+
+		</table>
+		<!-- /4. 회사 경력 table -->
+
+		<span>[행삭제]</span>
+		<span>[행추가]</span>
+
+		<br><br>
+
+		<!-- 5. 자격증 table -->
+		<table border = 0 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>5. 자격증</b></caption>
+
+			<tr>
+				<td>
+					<input type = "checkbox" name = "dev_license"  value = "정보처리기사">정보처리기사&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "정보처리산업기사">정보처리산업기사&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "OCP">OCP&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "SCJP">SCJP&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "CCNA">CCNA&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "MCSE">MCSE&nbsp;
+					<input type = "checkbox" name = "dev_license"  value = "MCDBA">MCDBA&nbsp;
+				</td>
+			</tr>
+
+		</table>
+		<!-- /5. 자격증 table -->
+
+		<br><br>
+
+		<!-- 6. 외국어 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>6. 외국어 (중급이상만 입력)</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">독해 가능 외국어</th>
+				<td>
+					<input type = "checkbox" name = "dev_language_reading"  value = "영어">영어&nbsp;	
+					<input type = "checkbox" name = "dev_language_reading"  value = "일어">일어&nbsp;	
+					<input type = "checkbox" name = "dev_language_reading"  value = "중국어">중국어&nbsp;	
+					<input type = "checkbox" name = "dev_language_reading"  value = "불어">불어&nbsp;	
+					<input type = "checkbox" name = "dev_language_reading"  value = "독일어">독일어&nbsp;	
+				</td>
+			</tr>
+			<tr>
+				<th bgcolor = "#E9E9E9">회화 가능 외국어</th>
+				<td>
+					<input type = "checkbox" name = "dev_language_speaking"  value = "영어">영어&nbsp;	
+					<input type = "checkbox" name = "dev_language_speaking"  value = "일어">일어&nbsp;	
+					<input type = "checkbox" name = "dev_language_speaking"  value = "중국어">중국어&nbsp;	
+					<input type = "checkbox" name = "dev_language_speaking"  value = "불어">불어&nbsp;	
+					<input type = "checkbox" name = "dev_language_speaking"  value = "독일어">독일어&nbsp;
+				</td>
+			</tr>
+			
+
+		</table>
+		<!-- /6. 외국어 table -->
+
+		<br><br>
+
+		<!-- 7. IT교육센터 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>7. IT교육센터</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">교육센터명</th>
+				<th bgcolor = "#E9E9E9">교육기간</th>
+				<th bgcolor = "#E9E9E9">교육수료일</th>
+				<th bgcolor = "#E9E9E9">수료과목</th>
+			</tr>
+
+			<tr style="text-align:center">
+				<td>
+					<input type="text" name="dev_it_edu_center_name" size="15">
+				</td>
+				
+				<td>
+					<select name="dev_it_edu_center_term">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					개월
+				</td>
+
+				<td>
+					<select name="dev_it_edu_center_end_year">
+						<option value=""></option>
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+					년 &nbsp;
+					<select name="dev_it_edu_center_end_month">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					월 &nbsp;
+					<select name="dev_it_edu_center_end_day">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+						<option value="25">25</option>
+						<option value="26">26</option>
+						<option value="27">27</option>
+						<option value="28">28</option>
+						<option value="29">29</option>
+						<option value="30">30</option>
+						<option value="31">31</option>
+					</select>
+					일
+				</td>
+
+				<td style="text-align:left">
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "HTML">HTML&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "Javascript">Javascript&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "JQuery">JQuery&nbsp; <br>	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "Java">Java&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "JSP">JSP&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "Spring">Spring&nbsp; <br>	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "Oracle">Oracle&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "MSSQL">MSSQL&nbsp;	
+					<input type = "checkbox" name = "dev_it_edu_center_subject"  value = "MYSQL">MYSQL&nbsp;	
+				</td>
+			</tr>
+
+
+		</table>
+		<!-- /7. IT교육센터 table -->
+
+		<br><br>
+
+		<!-- 8. 기호 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>8. 기호</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9" width="200">하루흡연량</th>
+				<th bgcolor = "#E9E9E9" width="200">소주주량</th>
+				<th bgcolor = "#E9E9E9" width="200">맥주주량 (500CC기준)</th>
+				<th bgcolor = "#E9E9E9" width="300">관심분야</th>
+			</tr>
+
+			<tr style="text-align:center">
+				<td>
+					<select name="dev_indulgence_amt_smoking">
+						<option value="">--선택요망--</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					갑
+				</td>
+
+				<td>
+					<select name="">
+						<option value="dev_indulgence_amt_soju_alcohol">--선택요망--</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					병
+				</td>
+
+				<td>
+					<select name="">
+						<option value="dev_indulgence_amt_beer_alcohol">--선택요망--</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					잔
+				</td>
+
+				<td>
+					<input type = "checkbox" name = "dev_indulgence_Interests"  value = "정치">정치&nbsp;	
+					<input type = "checkbox" name = "dev_indulgence_Interests"  value = "경제">경제&nbsp;	
+					<input type = "checkbox" name = "dev_indulgence_Interests"  value = "사회">사회&nbsp;	
+					<input type = "checkbox" name = "dev_indulgence_Interests"  value = "문화">문화&nbsp;	
+				</td>
+
+			</tr>
+
+		</table>
+		<!-- /8. 기호 table -->
+
+		<br><br>
+
+		<!-- 9. 취미 table -->
+		<table border = 0 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>9. 취미</b></caption>
+
+			<tr>
+				<td>
+					<input type="text" name="dev_hobby_1" size="35">
+				</td>
+
+				<td>
+					<input type="text" name="dev_hobby_2" size="35">
+				</td>
+
+				<td>
+					<input type="text" name="dev_hobby_3" size="35">
+				</td>
+				
+			</tr>
+
+		</table>
+		<!-- /9. 취미 table -->
+
+		<br><br>
+
+		<!-- 10. 개발 경력 table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 6 bordercolor = "lightgray" width = "900vw">
+			<caption style="text-align:left"><b>10. 개발 경력</b></caption>
+
+			<tr>
+				<th bgcolor = "#E9E9E9" rowspan="2" width="100">프로젝트명 / 기간</th>
+				<th bgcolor = "#E9E9E9" rowspan="2" width="80">고객사 / 근무일 / 역할</th>
+				<th bgcolor = "#E9E9E9" width="170">개 발 환 경</th>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">기종/OS/언어/DBMS/TOOL/기타</th>
+			</tr>
+
+			<tr>
+				<td>
+					<!-- 프로젝트명/기간 -->
+					<center>
+						<table>
+							<tr>
+								<th bgcolor = "#E9E9E9" width="90">프로젝트명</th>
+								<td><input type="text" name="dev_career_pj_name" size = "13"></td>
+							</tr>
+							<tr>
+								<th bgcolor = "#E9E9E9">시작일</th>
+								<td>
+									<select name="dev_career_pj_start_year">
+										<option value=""></option>
+										<option value="2015">2015</option>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+										<option value="2020">2020</option>
+										<option value="2021">2021</option>
+									</select>
+									년
+									<select name="dev_career_pj_start_month">
+										<option value=""></option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select>
+									월
+								</td>
+							</tr>
+							<tr>
+								<th bgcolor = "#E9E9E9">종료일</th>
+								<td>
+									<select name="dev_career_pj_end_year">
+										<option value=""></option>
+										<option value="2015">2015</option>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+										<option value="2020">2020</option>
+										<option value="2021">2021</option>
+									</select>
+									년 
+									<select name="dev_career_pj_end_month">
+										<option value=""></option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select>
+									월
+								</td>
+							</tr>
+						</table>
+					</center>
+					<!-- /프로젝트명/기간 -->
+				</td>
+
+				<td>
+					<!-- 고객사 / 근무일 / 역할 -->
+					<center>
+						<table>
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">고객사</th>
+								<td><input type="text" name="dev_career_client_name" size="13"></td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9">근무사</th>
+								<td><input type="text" name="dev_career_employee_name" size="13"></td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9">역할</th>
+							</tr>
+
+							<tr>
+								<td colspan="2">
+									<input type = "checkbox" name = "dev_career_role"  value = "개발">개발&nbsp;
+									<input type = "checkbox" name = "dev_career_role"  value = "운영">운영&nbsp;
+									<input type = "checkbox" name = "dev_career_role"  value = "유지보수">유지보수&nbsp; <br>
+									<input type = "checkbox" name = "dev_career_role"  value = "분석설계">분석설계&nbsp; <br>
+									<input type = "checkbox" name = "dev_career_role"  value = "PM">PM&nbsp;
+									<input type = "checkbox" name = "dev_career_role"  value = "웹디">웹디&nbsp;
+								</td>
+							</tr>
+						</table>
+					</center>
+					<!-- /고객사 / 근무일 / 역할 -->
+				</td>
+				
+				<td>
+					<!-- 개 발 환 경 -->
+					<center>
+						<table>
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">서버기종(H/W)</th>
+								<td>
+									<select name="dev_career_server_type">
+										<option value=""></option>
+										<option value="1">서버1</option>
+										<option value="2">서버2</option>
+										<option value="3">서버3</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">OS</th>
+								<td>
+									<select name="dev_career_os">
+										<option value=""></option>
+										<option value="Windows">Windows</option>
+										<option value="Linux">Linux</option>
+										<option value="Unix">Unix</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">언어</th>
+								<td>
+									<select name="dev_career_language_1">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+									
+									<select name="dev_career_language_2">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+
+									<select name="dev_career_language_3">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+
+									<br>
+
+									<select name="dev_career_language_4">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+
+									<select name="dev_career_language_5">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+
+									<select name="dev_career_language_6">
+										<option value=""></option>
+										<option value="C">C</option>
+										<option value="JAVA">JAVA</option>
+										<option value="Python">Python</option>
+										<option value="Perl">Perl</option>
+										<option value="PHP">PHP</option>
+										<option value="C++">C++</option>
+										<option value="Ruby">Ruby</option>
+										<option value="Cotlin">Cotlin</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">프레임워크</th>
+								<td>
+									<select name="dev_career_framework_1">
+										<option value=""></option>
+										<option value="Spring">Spring</option>
+										<option value="Django">Django</option>
+										<option value="AngularJS">AngularJS</option>
+									</select>
+									
+									<select name="dev_career_framework_2">
+										<option value=""></option>
+										<option value="Spring">Spring</option>
+										<option value="Django">Django</option>
+										<option value="AngularJS">AngularJS</option>
+									</select>
+
+									<select name="dev_career_framework_3">
+										<option value=""></option>
+										<option value="Spring">Spring</option>
+										<option value="Django">Django</option>
+										<option value="AngularJS">AngularJS</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">DBMS</th>
+								<td>
+									<select name="dev_career_dbms_1">
+										<option value=""></option>
+										<option value="Oracle">Oracle</option>
+										<option value="MS-SQL">MS-SQL</option>
+										<option value="MySQL">MySQL</option>
+										<option value="DB2">DB2</option>
+									</select>
+									
+									<select name="dev_career_dbms_2">
+										<option value=""></option>
+										<option value="Oracle">Oracle</option>
+										<option value="MS-SQL">MS-SQL</option>
+										<option value="MySQL">MySQL</option>
+										<option value="DB2">DB2</option>
+									</select>
+
+									<select name="dev_career_dbms_3">
+										<option value=""></option>
+										<option value="Oracle">Oracle</option>
+										<option value="MS-SQL">MS-SQL</option>
+										<option value="MySQL">MySQL</option>
+										<option value="DB2">DB2</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">개발 툴</th>
+								<td>
+									<select name="dev_career_dev_tools">
+										<option value=""></option>
+										<option value="Eclipse">Eclipse</option>
+										<option value="Visual Studio">Visual Studio</option>
+										<option value="CodegearDeveloperStudio">Codegear Developer Studio</option>
+										<option value="Delphi">Delphi</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<th bgcolor = "#E9E9E9" width="100">기타</th>
+								<td>
+									<select name="dev_career_etc_1">
+										<option value=""></option>
+										<option value="1">몰라</option>
+										<option value="2">배고파</option>
+										<option value="3">집갈래</option>
+									</select>
+									
+									<select name="dev_career_etc_2">
+										<option value=""></option>
+										<option value="1">몰라</option>
+										<option value="2">배고파</option>
+										<option value="3">집갈래</option>
+									</select>
+
+									<select name="dev_career_etc_3">
+										<option value=""></option>
+										<option value="1">몰라</option>
+										<option value="2">배고파</option>
+										<option value="3">집갈래</option>
+									</select>
+								</td>
+							</tr>
+
+						</table>
+					</center>
+					<!-- /개 발 환 경 -->
+				</td>
+
+			</tr>
+
+		</table>
+		<!-- /10. 개발 경력 table -->
+
+		<span>[행삭제]</span>
+		<span>[행추가]</span>
+
+		<br><br>
+
+		<!-- 저장 버튼 클릭 시 유효성 체크 -->
+		<input type="button" value="저장" style="padding:5 70" onClick = "checkDevRegForm();">
+
+		<br><br>
+
+	</form>
+	<!-- /form -->
+
+</center>
+
+</body>
+
+</html>
