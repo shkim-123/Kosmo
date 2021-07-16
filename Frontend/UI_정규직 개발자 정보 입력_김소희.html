@@ -8,15 +8,519 @@
 		
 	<!-- script -->
 	<script>
+		//--------------------------------------------------
+		// 정규직 입력 화면에 입력한 데이터의 유효성 체크를 해주는
+		// checkDevRegForm 함수 선언
+		//--------------------------------------------------
 		function checkDevRegForm() {
-			alert("배!!고!!파!!");
+
+			//--------------------------------------------------
+			// 변수 formObj 선언하고 <form name = "memberRegForm"> 태그를 관리하는
+			// Form 객체의 메위주 저장하기
+			//--------------------------------------------------
+			var formObj = document.devRegForm;
+
+			//--------------------------------------------------
+			// 1. 개인정보 테이블
+			// <1> 입력한 [아이디] 가져와서 변수 dev_id 에 저장하기
+			// <2> 입력한 [암호] 가져와서 변수 dev_pwd 에 저장하기
+			// <3> 입력한 [암호확인] 가져와서 변수 dev_pwd_check 에 저장하기
+			// <4> 입력한 [이름] 가져와서 변수 dev_name 에 저장하기
+			// <5> 입력한 [주민번호] 가져와서 변수 dev_jumin_no 에 저장하기
+			// <6> 입력한 [핸드폰] 가져와서 변수 dev_phone 에 저장하기
+			// <7> 입력한 [이메일] 가져와서 변수 dev_email 에 저장하기
+			// <8> 입력한 [종교] 가져와서 변수 dev_religion 에 저장하기
+			// <9> 입력한 [병역] 가져와서 변수 dev_military 에 저장하기
+			// <10> 입력한 주소의 [우편번호] 가져와서 변수 dev_postal_code 에 저장하기
+			// <11> 입력한 주소의 [주소] 가져와서 변수 dev_addr 에 저장하기
+			// <12> 입력한 긴급연락처의 [연락 받을 사람 이름] 가져와서 변수 dev_emergency_name 에 저장하기
+			// <13> 입력한 긴급연락처의 [관계] 가져와서 변수 dev_emergency_relations 에 저장하기
+			// <14> 입력한 긴급연락처의 [전화번호] 가져와서 변수 dev_emergency_phone 에 저장하기
+			// <15> 입력한 월급통장번호의 [은행선택] 가져와서 변수 dev_bank_select 에 저장하기
+			// <16> 입력한 월급통장번호의 [입력란] 가져와서 변수 dev_bank_account_no 에 저장하기
+			// 2. 학력 테이블
+			// <17> 입력한 고등학교의 [학교명] 가져와서 변수 dev_edu_high_name 에 저장하기
+			// <18> 입력한 고등학교의 [졸업일 년] 가져와서 변수 dev_edu_high_graduated_year 에 저장하기
+			// <19> 입력한 고등학교의 [졸업일 월] 가져와서 변수 dev_edu_high_graduated_month 에 저장하기
+			// <20> 입력한 전문대의 [학교명] 가져와서 변수 dev_edu_associate_name 에 저장하기
+			// <21> 입력한 전문대의 [학부] 가져와서 변수 dev_edu_associate_dep 에 저장하기
+			// <22> 입력한 전문대의 [전공과목] 가져와서 변수 dev_edu_associate_major 에 저장하기
+			// <23> 입력한 전문대의 [부전공과목] 가져와서 변수 dev_edu_associate_minor 에 저장하기
+			// <24> 입력한 전문대의 [졸업일 년] 가져와서 변수 dev_edu_associate_graduated_year 에 저장하기
+			// <25> 입력한 전문대의 [졸업일 년] 가져와서 변수 dev_edu_associate_graduated_year 에 저장하기
+			// <26> 입력한 대학교 학사의 [학교명] 가져와서 변수 dev_edu_bachelor_name 에 저장하기
+			// <27> 입력한 대학교 학사의 [학부] 가져와서 변수 dev_edu_bachelor_dep 에 저장하기
+			// <28> 입력한 대학교 학사의 [전공과목] 가져와서 변수 dev_edu_bachelor_major 에 저장하기
+			// <29> 입력한 대학교 학사의 [부전공과목] 가져와서 변수 dev_edu_bachelor_minor 에 저장하기
+			// <30> 입력한 대학교 학사의 [졸업일 년] 가져와서 변수 dev_edu_bachelor_graduated_year 에 저장하기
+			// <31> 입력한 대학교 학사의 [졸업일 월] 가져와서 변수 dev_edu_bachelor_graduated_month 에 저장하기
+			// <32> 입력한 대학교 석사의 [학교명] 가져와서 변수 dev_edu_master_name 에 저장하기
+			// <33> 입력한 대학교 석사의 [학부] 가져와서 변수 dev_edu_master_dep 에 저장하기
+			// <34> 입력한 대학교 석사의 [전공과목] 가져와서 변수 dev_edu_master_major 에 저장하기
+			// <35> 입력한 대학교 석사의 [부전공과목] 가져와서 변수 dev_edu_master_minor 에 저장하기
+			// <36> 입력한 대학교 석사의 [졸업일 년] 가져와서 변수 dev_edu_master_graduated_year 에 저장하기
+			// <37> 입력한 대학교 석사의 [졸업일 월] 가져와서 변수 dev_edu_master_graduated_month 에 저장하기
+			// <38> 입력한 대학교 박사의 [학교명] 가져와서 변수 dev_edu_doctor_name 에 저장하기
+			// <39> 입력한 대학교 박사의 [학부] 가져와서 변수 dev_edu_doctor_dep 에 저장하기
+			// <40> 입력한 대학교 박사의 [전공과목] 가져와서 변수 dev_edu_doctor_major 에 저장하기
+			// <41> 입력한 대학교 박사의 [부전공과목] 가져와서 변수 dev_edu_doctor_minor 에 저장하기
+			// <42> 입력한 대학교 박사의 [졸업일 년] 가져와서 변수 dev_edu_doctor_graduated_year 에 저장하기
+			// <43> 입력한 대학교 박사의 [졸업일 월] 가져와서 변수 dev_edu_doctor_graduated_month 에 저장하기
+			// 3. 가족 테이블	
+			//--------------------------------------------------
+			var dev_id = formObj.dev_id.value;										// <1>
+			var dev_pwd = formObj.dev_pwd.value;									// <2>
+			var dev_pwd_check = formObj.dev_pwd_check.value;						// <3>
+			var dev_name = formObj.dev_name.value;									// <4>
+			var dev_jumin_no = formObj.dev_jumin_no.value;							// <5>
+			var dev_phone = formObj.dev_phone.value;								// <6>
+			var dev_email = formObj.dev_email.value;								// <7>
+			var dev_religion = formObj.dev_religion.value;							// <8>
+			var dev_military = formObj.dev_military.value;							// <9>
+			var dev_postal_code = formObj.dev_postal_code.value;					// <10>
+			var dev_addr = formObj.dev_addr.value;									// <11>
+			var dev_emergency_name = formObj.dev_emergency_name.value;				// <12>
+			var dev_emergency_relations = formObj.dev_emergency_relations.value;	// <13>
+			var dev_emergency_phone = formObj.dev_emergency_phone.value;			// <14>
+			var dev_bank_select = formObj.dev_bank_select.value;					// <15>
+			var dev_bank_account_no = formObj.dev_bank_account_no.value;			// <16>
+			
+			var dev_edu_high_name = formObj.dev_edu_high_name.value;				// <17>
+			var dev_edu_high_graduated_year = formObj.dev_edu_high_graduated_year.value;	// <18>
+			var dev_edu_high_graduated_month = formObj.dev_edu_high_graduated_month.value;	// <19>
+			var dev_edu_associate_name = formObj.dev_edu_associate_name.value;		// <20>
+			var dev_edu_associate_dep = formObj.dev_edu_associate_dep.value;		// <21>
+			var dev_edu_associate_major = formObj.dev_edu_associate_major.value;	// <22>
+			var dev_edu_associate_minor = formObj.dev_edu_associate_minor.value;	// <23>
+			var dev_edu_associate_graduated_year = formObj.dev_edu_associate_graduated_year.value;	// <24>
+			var dev_edu_associate_graduated_month = formObj.dev_edu_associate_graduated_month.value;// <25>
+			var dev_edu_bachelor_name = formObj.dev_edu_bachelor_name.value;		// <26>
+			var dev_edu_bachelor_dep = formObj.dev_edu_bachelor_dep.value;			// <27>
+			var dev_edu_bachelor_major = formObj.dev_edu_bachelor_major.value;		// <28>
+			var dev_edu_bachelor_minor = formObj.dev_edu_bachelor_minor.value;		// <29>
+			var dev_edu_bachelor_graduated_year = formObj.dev_edu_bachelor_graduated_year.value;	// <30>
+			var dev_edu_bachelor_graduated_month = formObj.dev_edu_bachelor_graduated_month.value;	// <31>
+			var dev_edu_master_name = formObj.dev_edu_master_name.value;			// <32>
+			var dev_edu_master_dep = formObj.dev_edu_master_dep.value;				// <33>
+			var dev_edu_master_major = formObj.dev_edu_master_major.value;			// <34>
+			var dev_edu_master_minor = formObj.dev_edu_master_minor.value;			// <35>
+			var dev_edu_master_graduated_year = formObj.dev_edu_master_graduated_year.value;	// <36>
+			var dev_edu_master_graduated_month = formObj.dev_edu_master_graduated_month.value;	// <37>
+			var dev_edu_doctor_name = formObj.dev_edu_doctor_name.value;			// <38>
+			var dev_edu_doctor_dep = formObj.dev_edu_doctor_dep.value;				// <39>
+			var dev_edu_doctor_major = formObj.dev_edu_doctor_major.value;			// <40>
+			var dev_edu_doctor_minor = formObj.dev_edu_doctor_minor.value;			// <41>
+			var dev_edu_doctor_graduated_year = formObj.dev_edu_doctor_graduated_year.value;	// <42>
+			var dev_edu_doctor_graduated_month = formObj.dev_edu_doctor_graduated_month.value;	// <43>
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [아이디]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[a-z][a-z0-9_]{4,9}$/, dev_id) ) {
+				// 경고 상자
+				alert("아이디는 영소문자로 시작하고, 영소문자 또는 숫자 또는 _ 로 5자~10자로 입력해 주세요.");
+				// 아이디 입력값 비움
+				formObj.dev_id.value = "";
+				formObj.dev_id.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [암호]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[a-z0-9_]{5,8}$/, dev_pwd) ) {
+				// 경고 상자
+				alert("암호는 영소문자 또는 숫자로 5~8자로 입력해 주세요.");
+				// 암호 입력값 비움
+				formObj.dev_pwd.value = "";
+				formObj.dev_pwd.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [암호확인]의 유효성 체크하기
+			//------------------------------------------------
+			// 입력한 암호와 암호확인이 일치하지 않는 경우
+			if( dev_pwd != dev_pwd_check ) {
+				alert("암호와 암호확인이 일치하지 않습니다. 다시 입력해 주세요.");
+				// 암호확인 입력값 비움
+				formObj.dev_pwd_check.value = "";
+				formObj.dev_pwd_check.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [이름]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[a-z가-힣]{2,20}$/, dev_name) ) {
+				alert("이름은 한글, 영어 2~20자 사이만 입력해 주세요.");
+				// 이름 입력란 비우기
+				formObj.dev_name.value = "";
+				// 포커스 이동, Text 객체가 가지고 있는 메서드
+				formObj.dev_name.focus();
+				// 함수 중단
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [주민번호]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[0-9]{6}[1|2|3|4]{1}[0-9]{6}$/, dev_jumin_no) ) {
+				// 경고 상자
+				alert("'-' 없이 주민번호 형식에 맞게 입력해 주세요.");
+				// 주민번호 입력값 비움
+				formObj.dev_jumin_no.value = "";
+				formObj.dev_jumin_no.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [핸드폰]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^01([0|1|6|7|8|9])-?[0-9]{3,4}-?[0-9]{4}$/, dev_phone) ) {
+				// 경고 상자
+				alert("핸드폰번호를 형식에 맞게 입력해 주세요.");
+				// 핸드폰 입력값 비움
+				formObj.dev_phone.value = "";
+				formObj.dev_phone.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [이메일]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/, dev_email) ) {
+				// 경고 상자
+				alert("이메일의 형식에 맞게 입력해 주세요.");
+				// 이메일 입력값 비움
+				formObj.dev_email.value = "";
+				formObj.dev_email.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [종교]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_religion) ){
+				alert("종교를 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 [병역]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_military) ){
+				alert("병역을 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 주소의 [우편번호]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[0-9-]{3,10}$/, dev_postal_code) ) {
+				// 경고 상자
+				alert("우편번호를 형식에 맞게 입력해 주세요.");
+				// 우편번호 입력값 비움
+				formObj.dev_postal_code.value = "";
+				formObj.dev_postal_code.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 주소의 [주소]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_addr) ) {
+				// 경고 상자
+				alert("주소를 입력해 주세요.");
+				// 주소 입력값 비움
+				formObj.dev_addr.value = "";
+				formObj.dev_addr.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 긴급연락처의 [연락 받을 사람 이름]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[a-z가-힣]{2,20}$/, dev_emergency_name) ) {
+				alert("연락 받을 사람 이름은 한글, 영어 2~20자 사이만 입력해 주세요.");
+				// 연락 받을 사람 이름입력란 비우기
+				formObj.dev_emergency_name.value = "";
+				// 포커스 이동, Text 객체가 가지고 있는 메서드
+				formObj.dev_emergency_name.focus();
+				// 함수 중단
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 긴급연락처의 [관계]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_emergency_relations) ){
+				alert("긴급연락처의 관계를 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 긴급연락처의 [전화번호]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^01([0|1|6|7|8|9])-?[0-9]{3,4}-?[0-9]{4}$/, dev_emergency_phone) ) {
+				// 경고 상자
+				alert("긴급연락처의 전화번호를 형식에 맞게 입력해 주세요.");
+				// 전화번호 입력값 비움
+				formObj.dev_emergency_phone.value = "";
+				formObj.dev_emergency_phone.focus();
+				// 함수 중단하기
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 월급통장번호의 [은행선택]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_bank_select) ){
+				alert("월급통장번호의 은행을 선택해 주세요.");
+				return;
+			}
+
+			//------------------------------------------------
+			// 1. 개인정보 테이블의 입력한 월급통장번호의 [입력란]의 유효성 체크하기
+			//------------------------------------------------
+			if( !isValidPattern(/^[0-9]{2,20}$/, dev_bank_account_no) ) {
+				alert("월급통장번호의 숫자를 형식에 맞게 입력해 주세요.");
+				// 입력란 비우기
+				formObj.dev_bank_account_no.value = "";
+				// 포커스 이동, Text 객체가 가지고 있는 메서드
+				formObj.dev_bank_account_no.focus();
+				// 함수 중단
+				return;
+			}	
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 고등학교의 [학교명]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_edu_high_name) ){
+				alert("고등학교명을 입력해 주세요.");
+				formObj.dev_bank_account_no.focus();
+				return;
+			}
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 고등학교의 [졸업일 년월]의 유효성 체크하기
+			//------------------------------------------------
+			if( isEmpty(dev_edu_high_graduated_year) ){
+				alert("고등학교 졸업년도를 선택해 주세요.");
+				formObj.dev_bank_account_no.focus();
+				return;
+			}
+
+			if( isEmpty(dev_edu_high_graduated_month) ){
+				alert("고등학교 졸업월을 선택해 주세요.");
+				formObj.dev_bank_account_no.focus();
+				return;
+			}
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 전문대의 필드중 1개라도 입력되어 있다면
+			// 다른 필드 입력 여부 유효성 체크하기
+			//------------------------------------------------
+			if( !isEmpty(dev_edu_associate_name) || !isEmpty(dev_edu_associate_dep) 
+				|| !isEmpty(dev_edu_associate_major) || !isEmpty(dev_edu_associate_minor) 
+				|| !isEmpty(dev_edu_associate_graduated_year) 
+				|| !isEmpty(dev_edu_associate_graduated_month) ){
+
+				if( isEmpty(dev_edu_associate_name) ) {
+					alert("전문대 학교명을 입력해 주세요.");
+					formObj.dev_edu_associate_name.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_associate_dep) ) {
+					alert("전문대 학부를 선택해 주세요.");
+					formObj.dev_edu_associate_dep.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_associate_major) ) {
+					alert("전문대 전공과목을 입력해 주세요.");
+					formObj.dev_edu_associate_major.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_associate_graduated_year) ) {
+					alert("전문대 졸업년도를 선택해 주세요.");
+					formObj.dev_edu_associate_graduated_year.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_associate_graduated_month) ) {
+					alert("전문대 졸업월을 선택해 주세요.");
+					formObj.dev_edu_associate_graduated_month.focus();
+					return;
+				}
+			}
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 대학교 학사의 필드중 1개라도 입력되어 있다면
+			// 다른 필드 입력 여부 유효성 체크하기
+			//------------------------------------------------
+			if( !isEmpty(dev_edu_bachelor_name) || !isEmpty(dev_edu_bachelor_dep) 
+				|| !isEmpty(dev_edu_bachelor_major) || !isEmpty(dev_edu_bachelor_minor) 
+				|| !isEmpty(dev_edu_bachelor_graduated_year) 
+				|| !isEmpty(dev_edu_bachelor_graduated_month) ){
+
+				if( isEmpty(dev_edu_bachelor_name) ) {
+					alert("대학교 학사 학교명을 입력해 주세요.");
+					formObj.dev_edu_bachelor_name.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_bachelor_dep) ) {
+					alert("대학교 학사 학부를 선택해 주세요.");
+					formObj.dev_edu_bachelor_dep.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_bachelor_major) ) {
+					alert("대학교 학사 전공과목을 입력해 주세요.");
+					formObj.dev_edu_bachelor_major.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_bachelor_graduated_year) ) {
+					alert("대학교 학사 졸업년도를 선택해 주세요.");
+					formObj.dev_edu_bachelor_graduated_year.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_bachelor_graduated_month) ) {
+					alert("대학교 학사 졸업월을 선택해 주세요.");
+					formObj.dev_edu_bachelor_graduated_month.focus();
+					return;
+				}
+			}
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 대학교 석사의 필드중 1개라도 입력되어 있다면
+			// 다른 필드 입력 여부 유효성 체크하기
+			//------------------------------------------------
+			if( !isEmpty(dev_edu_master_name) || !isEmpty(dev_edu_master_dep) 
+				|| !isEmpty(dev_edu_master_major) || !isEmpty(dev_edu_master_minor) 
+				|| !isEmpty(dev_edu_master_graduated_year) 
+				|| !isEmpty(dev_edu_master_graduated_month) ){
+
+				if( isEmpty(dev_edu_master_name) ) {
+					alert("대학교 석사 학교명을 입력해 주세요.");
+					formObj.dev_edu_master_name.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_master_dep) ) {
+					alert("대학교 석사 학부를 선택해 주세요.");
+					formObj.dev_edu_master_dep.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_master_major) ) {
+					alert("대학교 석사 전공과목을 입력해 주세요.");
+					formObj.dev_edu_master_major.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_master_graduated_year) ) {
+					alert("대학교 석사 졸업년도를 선택해 주세요.");
+					formObj.dev_edu_master_graduated_year.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_master_graduated_month) ) {
+					alert("대학교 석사 졸업월을 선택해 주세요.");
+					formObj.dev_edu_master_graduated_month.focus();
+					return;
+				}
+			}
+
+			//------------------------------------------------
+			// 2. 학력 테이블의 입력한 대학교 박사의 필드중 1개라도 입력되어 있다면
+			// 다른 필드 입력 여부 유효성 체크하기
+			//------------------------------------------------
+			if( !isEmpty(dev_edu_doctor_name) || !isEmpty(dev_edu_doctor_dep) 
+				|| !isEmpty(dev_edu_doctor_major) || !isEmpty(dev_edu_doctor_minor) 
+				|| !isEmpty(dev_edu_doctor_graduated_year) 
+				|| !isEmpty(dev_edu_doctor_graduated_month) ){
+
+				if( isEmpty(dev_edu_doctor_name) ) {
+					alert("대학교 박사 학교명을 입력해 주세요.");
+					formObj.dev_edu_doctor_name.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_doctor_major) ) {
+					alert("대학교 박사 전공과목을 입력해 주세요.");
+					formObj.dev_edu_doctor_major.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_doctor_graduated_year) ) {
+					alert("대학교 박사 졸업년도를 선택해 주세요.");
+					formObj.dev_edu_doctor_graduated_year.focus();
+					return;
+				}
+
+				if( isEmpty(dev_edu_doctor_graduated_month) ) {
+					alert("대학교 박사 졸업월을 선택해 주세요.");
+					formObj.dev_edu_doctor_graduated_month.focus();
+					return;
+				}
+			}
+
+
+			confirm("정말 등록하시겠습니까?");
+
 		}
+
+
+		//------------------------------------------------
+		// 유효성 체크 끝난 필드 값 넣어주기
+		//------------------------------------------------
+		function setting() {
+			var formObj = document.devRegForm;
+
+			// 1. 개인정보 테이블
+			formObj.dev_id.value = "abc123";
+			formObj.dev_pwd.value = "abc123";
+			formObj.dev_pwd_check.value = "abc123";
+			formObj.dev_name.value = "홍길동";
+			formObj.dev_jumin_no.value = "1234561123456";
+			formObj.dev_phone.value = "01012345678";
+			formObj.dev_email.value = "abc@dsj.com";
+			formObj.dev_religion.value = "기타";
+			formObj.dev_military.value = "해당없음";
+			formObj.dev_postal_code.value = "123-123";
+			formObj.dev_addr.value = "서울시 어디어디";
+			formObj.dev_emergency_name.value = "고길동";
+			formObj.dev_emergency_relations.value = "부모";
+			formObj.dev_emergency_phone.value = "01012345678";
+			formObj.dev_bank_select.value = "국민은행";
+			formObj.dev_bank_account_no.value = "1234567734636";
+			
+			// 2. 학력 테이블
+			formObj.dev_edu_high_name.value = "서울여자";
+			formObj.dev_edu_high_graduated_year.value = "2013";
+			formObj.dev_edu_high_graduated_month.value = "2";
+		}
+
 	</script>
 	<!-- /script -->
 
 </head>
 
-<body>
+<body onLoad="setting();">
 <center>
 	
 	<br><br>
@@ -33,16 +537,16 @@
 				<th bgcolor = "#E9E9E9">아이디</th>
 				<td><input type="text" name="dev_id"></td>
 				<th bgcolor = "#E9E9E9">암호</th>
-				<td><input type="text" name="dev_pwd"></td>
+				<td><input type="password" name="dev_pwd"></td>
 				<th bgcolor = "#E9E9E9">암호확인</th>
-				<td><input type="text" name="dev_pwd_check"></td>
+				<td><input type="password" name="dev_pwd_check"></td>
 			</tr>
 
 			<tr>
 				<th bgcolor = "#E9E9E9">이름</th>
 				<td><input type="text" name="dev_name"></td>
 				<th bgcolor = "#E9E9E9">주민번호</th>
-				<td><input type="text" name="dev_jumin_no"></td>
+				<td><input type="password" name="dev_jumin_no"></td>
 				<th bgcolor = "#E9E9E9">핸드폰</th>
 				<td><input type="text" name="dev_phone"></td>
 			</tr>
@@ -162,6 +666,8 @@
 				<td>
 					<select name="dev_edu_high_graduated_year">
 						<option value=""></option>
+						<option value="2013">2013</option>
+						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
@@ -214,6 +720,8 @@
 				<td>
 					<select name="dev_edu_associate_graduated_year">
 						<option value=""></option>
+						<option value="2013">2013</option>
+						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
@@ -266,6 +774,8 @@
 				<td>
 					<select name="dev_edu_bachelor_graduated_year">
 						<option value=""></option>
+						<option value="2013">2013</option>
+						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
@@ -318,6 +828,8 @@
 				<td>
 					<select name="dev_edu_master_graduated_year">
 						<option value=""></option>
+						ㅍ<option value="2013">2013</option>
+						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
@@ -370,6 +882,8 @@
 				<td>
 					<select name="dev_edu_doctor_graduated_year">
 						<option value=""></option>
+						<option value="2013">2013</option>
+						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
