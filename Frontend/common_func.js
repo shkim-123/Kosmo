@@ -230,8 +230,192 @@ function getTodayWeek() {
 // 현재 시작의 년-월-일(요일)을 문자로 리턴하는 함수 선언
 //-----------------------------------------------------
 function getTodayYMDW() {
+	// 변수에 담아서 사용하는게 좋다
 	var today = new Date();
-	
-	return today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate()
-			+ "(" + getTodayWeek().replace("요일", "") + ")";
+	var year = today.getFullYear();
+	var month = today.getMonth()+1;
+	var date = today.getDate();
+	var week = getTodayWeek().replace("요일", "");
+
+	var today_month = "0";
+	var today_date = "0";
+
+	if(month < 10){
+		month = "0" + month;
+	} 
+
+	if(date < 10) {
+		date = "0" + date;
+	} 
+
+	return year + "-" + month + "-" + date + "(" + week + ")";
+}
+
+//-----------------------------------------------------
+// 매개변수로 들어온 날짜문자가 오늘날짜와 동일하면 true 리턴하는 함수, 아니면 false
+//-----------------------------------------------------
+function isToday(dateStr) {
+	try {
+		//-----------------------------------------------------
+		// <1> 변수 today 선언. 오늘 날짜를 관리하는 Date 객체 생성하고 메위주를 today에 저장하기
+		//-----------------------------------------------------
+		var today = new Date();
+		var flag = false;
+		
+		/*
+		//-----------------------------------------------------
+		// <1> 변수 arr 선언, dateStr 매개변수 안의 날짜 문자를 - 기준으로 토막내어 Array 객체 안에 담기
+		// <2> Array 객체 안의 배열변수 안의 데이터 꺼내어 year, month, date 변수에 저장하기
+		// <3> String 객체의 trim 메소드 호출로 앞뒤 공백 제거하기
+		//-----------------------------------------------------
+		var arr = dateStr.split("-");		// <1>
+		var year = arr[0];					// <2>
+		var month = arr[1];
+		var date = arr[2];
+		year = year.trim();					// <3>
+		month = month.trim();
+		date = date.trim();
+		
+		//-----------------------------------------------------
+		// parseInt 라는 내장 함수를 호출하여
+		// year, month, date 변수 안의 숫자문자를 정수 숫자로 바꾸기
+		// 07, 7 로 입력할 수 있으므로
+		//-----------------------------------------------------
+		year = parseInt(year, 10);
+		month = parseInt(month, 10);	
+		date = parseInt(date, 10);
+		
+		//-----------------------------------------------------
+		// <1> Date 객체의 getFullYear 메소드 호출로 년도 얻어 변수 today_year에 저장하기
+		// <2> Date 객체의 getMonth 메소드 호출로 월 얻어 변수 today_month에 저장하기
+		// <3> Date 객체의 getDate 메소드 호출로 일 얻어 변수 today_date에 저장하기
+		//-----------------------------------------------------
+		var today_year = today.getFullYear();
+		var today_month = today.getMonth()+1;
+		var today_date = today.getDate();
+		
+		//-----------------------------------------------------
+		// 매개 변수로 들어온 년월일이 오늘 날짜의 년월일과 동일하면 true 리턴하기
+		// 아니면 false 리턴하기
+		//-----------------------------------------------------
+		return year == today_year && month == today_month && date == today_date;
+		*/
+		
+		//-----------------------------------------------------
+		// arr의 문자를 꺼내오면서 숫자문자를 숫자로 치환하여 변수에 대입한다.
+		//-----------------------------------------------------
+		var arr = dateStr.split("-");
+		
+		//-----------------------------------------------------
+		// trim() 메서드 호출하여 공백 제거하기
+		//-----------------------------------------------------
+		/*
+		var year = parseInt(arr[0].trim(), 10);
+		var month = parseInt(arr[1].trim(), 10);
+		var date = parseInt(arr[2].trim(), 10);
+		*/
+		
+		//-----------------------------------------------------
+		// deleteBlank(str) 메서드 호출하여 공백 제거하기
+		//-----------------------------------------------------
+		var year = parseInt(deleteBlank(arr[0]), 10);
+		var month = parseInt(deleteBlank(arr[1]), 10);
+		var date = parseInt(deleteBlank(arr[2]), 10);
+		
+		// 년, 월, 일이 지금 이 순간과 같다면
+		if(year == today.getFullYear() && month == today.getMonth()+1 && date == today.getDate()){
+			flag = true;
+		}
+		
+	} catch(e) {
+		alert("isToday 에서 에러발생!");
+		flag = false;
+	}
+
+	return flag;
+}
+
+//-----------------------------------------------------
+// 매개변수로 들어온 문자에서 모든 공백을 제거하고 난 후의 문자 리턴하기
+//-----------------------------------------------------
+function deleteBlank( str ){
+
+	try {
+		
+		// 방법1
+		//-----------------------------------------------------
+		// 공백 제거한 문자 저장할 변수 result 선언
+		//-----------------------------------------------------
+		var result ="";
+		
+		//-----------------------------------------------------
+		// 반복문 돌리면서 매개변수로 들어온 문자열 중 한 개씩 접근해서
+		// 공백이 아닌 문자만 result 변수에 누적시키기
+		// <1> 만약 i 번째 문자가 공백이 아니면 i번째 문자를 result 변수에 누적시키기
+		//-----------------------------------------------------
+		for(var i = 0; i < str.length; i++){
+			if(str.charAt(i) != " "){		// <1>
+				result = result + str.charAt(i);
+			}
+		}
+		
+		//-----------------------------------------------------
+		// 변수 result 안의 데이터 리턴하기
+		//-----------------------------------------------------
+		return result;
+		
+
+		// 방법2
+		//-----------------------------------------------------
+		// split() 함수 호출하여 공백 기분으로 자르고 Array 객체 붙이기
+		//-----------------------------------------------------
+		// return str.split(" ").join("");
+
+
+		// 방법3
+		/*
+		var result = "";
+
+		for(var i = 0; i < str.length; i++) {
+			result = str.replace(" ", "");
+		}
+
+		return result;
+		*/
+
+	} catch(e) {
+		alert("deleteBlank 함수에서 에러 발생!")
+		return str;
+	}
+}
+
+//-----------------------------------------------------
+// 매개변수로 받은 date 까지 몇일 남았는지 구해서 리턴하는 함수 선언
+//-----------------------------------------------------
+function get_dDay(dateStr) {
+
+	try {
+		//-----------------------------------------------------
+		// <1> 지금 이 순간 today 변수 저장
+		// <2> xday_arr 변수에 매개변수로 받은 date "-" 기준으로 잘러서 저장
+		// <3> 년, 월, 일 변수에 배열에 있는 데이터 꺼내여 저장
+		// <4> dday 변수 선언하여 매개변수로 받은 년, 월, 일 Date 객체 생성
+		// <5> interval 변수에 받은 날짜 - 오늘 날짜 차이 구해서 저장
+		//-----------------------------------------------------
+		var today = new Date();						// <1>
+		var xday_arr = dateStr.split("-");				// <2>
+				
+		var xday_year = parseInt(xday_arr[0], 10);		// <3>
+		var xday_month = parseInt(xday_arr[1], 10);		// <4>
+		var xday_date = parseInt(xday_arr[2], 10);		// <5>
+				
+		var xday = new Date(xday_year, xday_month - 1, xday_date);	// <6>
+
+		var interval = Math.ceil((xday.getTime() - today.getTime())/(60*60*24*1000)); // <7>
+
+		return interval;
+	} catch(e) {
+		alert("get_dDay 함수에서 에러 발생!");
+		return -1;
+	}
 }
