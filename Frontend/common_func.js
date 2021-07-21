@@ -1,6 +1,8 @@
+//------------------------------------------------
 // 매개변수로 들어온 데이터가 비어있거나 공백으로 구성되어 있으면 
 // true 리턴, 아니면 false 리턴하는 함수 선언
 // 매개변수: str (문자열이 저장되는 매개변수)
+//------------------------------------------------
 function isEmpty(str) {
 
 	/*
@@ -109,12 +111,14 @@ function isValidEmail(email) {
 	return flag;
 }
 
+//------------------------------------------------
 // 문자열의 패턴 체크 함수 선언
 // 매개변수로 들어온 RegExp 객체와 검사 문자열을 이용하여
 // 검사 문자열의 RegExp 객체가 관리하는 문자 패턴에 맞으면 true 리턴
 // 틀리면 false 리턴하기
 // 매개변수: regExpObj (RegExp 객체의 메모리 위치 주소값이 저장되는 매개변수)
 // 			targetStr (패턴을 검사할 문자열이 저장되는 매개변수)
+//------------------------------------------------
 function isValidPattern(regExpObj, targetStr) {
 	var flag = false;
 	
@@ -328,7 +332,7 @@ function isToday(dateStr) {
 		}
 		
 	} catch(e) {
-		alert("isToday 에서 에러발생!");
+		alert("isToday 에서 에러발생!" + e.message);
 		flag = false;
 	}
 
@@ -384,38 +388,39 @@ function deleteBlank( str ){
 		*/
 
 	} catch(e) {
-		alert("deleteBlank 함수에서 에러 발생!")
+		alert("deleteBlank 함수에서 에러 발생!" + e.message)
 		return str;
 	}
 }
 
 //-----------------------------------------------------
-// 매개변수로 받은 date 까지 몇일 남았는지 구해서 리턴하는 함수 선언
+// 매개변수로 받은 dateStr 까지 몇일 남았는지 구해서 리턴하는 함수 선언
 //-----------------------------------------------------
 function get_dDay(dateStr) {
 
 	try {
 		//-----------------------------------------------------
 		// <1> 지금 이 순간 today 변수 저장
-		// <2> xday_arr 변수에 매개변수로 받은 date "-" 기준으로 잘러서 저장
-		// <3> 년, 월, 일 변수에 배열에 있는 데이터 꺼내여 저장
+		// <2> xday_arr 변수에 매개변수로 받은 date "-" 기준으로 토막내어 Array 객체 안에 담기
+		// <3> 년, 월, 일 변수에 배열에 있는 데이터 꺼내어 저장
 		// <4> dday 변수 선언하여 매개변수로 받은 년, 월, 일 Date 객체 생성
 		// <5> interval 변수에 받은 날짜 - 오늘 날짜 차이 구해서 저장
+		// <6> interval 변수 안의 데이터 리턴하기
 		//-----------------------------------------------------
-		var today = new Date();						// <1>
+		var today = new Date();							// <1>
 		var xday_arr = dateStr.split("-");				// <2>
 				
 		var xday_year = parseInt(xday_arr[0], 10);		// <3>
-		var xday_month = parseInt(xday_arr[1], 10);		// <4>
-		var xday_date = parseInt(xday_arr[2], 10);		// <5>
+		var xday_month = parseInt(xday_arr[1], 10);		
+		var xday_date = parseInt(xday_arr[2], 10);		
 				
-		var xday = new Date(xday_year, xday_month - 1, xday_date);	// <6>
+		var xday = new Date(xday_year, xday_month - 1, xday_date);	// <4>
 
-		var interval = Math.ceil((xday.getTime() - today.getTime())/(60*60*24*1000)); // <7>
+		var interval = Math.ceil((xday.getTime() - today.getTime())/(60*60*24*1000)); // <5>
 
-		return interval;
+		return interval;				// <6>
 	} catch(e) {
-		alert("get_dDay 함수에서 에러 발생!");
+		alert("get_dDay 함수에서 에러 발생!" + e.message);
 		return -1;
 	}
 }
