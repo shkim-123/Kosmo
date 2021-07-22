@@ -1,0 +1,240 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>회원가입</title>
+	
+	<!-------------------------------------------------------->
+	<!-- jquery-1.11.0.min.js 파일안의 자스코딩을 수입해서 script 태그 안에 삽입하기-->
+	<!-- common_func.js 파일안의 자스코딩을 수입해서 script 태그 안에 삽입하기-->
+	<!-------------------------------------------------------->
+	<script src="jquery-1.11.0.min.js"></script>
+	<script src="common_func.js"></script>
+
+	<!-- script -->
+	<script>
+
+		//--------------------------
+		// body 태그 안의 모든 태그를 읽어들인 이후 실행할 코드를 설정하기
+		//--------------------------
+		$(document).ready( function() {
+				//--------------------------------------------------
+				// [저장] 버튼을 클릭하면 유효성 체크를 하는 checkMemRegForm() 함수 호출하도록 설정하기
+				// <1> class=save_btn 를 가진 태그를 관리하는 JQuery 객체를 생성해서
+				// JQuery 객체의 click(~) 메소드를 호출하여
+				// JQuery 객체가 관리하는 태그를 클릭하면 매개변수로 던져준 익명함수 호출하기
+				//--------------------------------------------------
+				$(".save_btn").click( function(){
+						checkMemRegForm();			
+				});
+
+				//--------------------------------------------------
+				// [로그인 화면으로] 버튼을 클릭하면 로그인 화면(=loginForm.html) 열기
+				// class=to_loginForm_btn 를 가진 태그를 관리하는 JQuery 객체를 생성해서
+				// JQuery 객체의 click(~) 메소드를 호출하여
+				// JQuery 객체가 관리하는 태그를 클릭하면 매개변수로 던져준 익명함수 호출하기
+				//--------------------------------------------------
+				$(".to_loginForm_btn").click( function(){
+						location.replace("loginForm.html");				
+				});
+		});
+
+		//--------------------------------------------------
+		// 회원가입 화면에 입력한 데이터의 유효성 체크를 해주는
+		// checkMemRegForm 함수 선언
+		//--------------------------------------------------
+		function checkMemRegForm() {
+			// <1> 회원이 입력한 [회원명] 가져와서 변수 mem_name 에 저장하기
+			// <2> 회원이 입력한 [아이디] 기져와서 변수 mem_id 에 저장하기
+			// <3> 회원이 입력한 [암호] 기져와서 변수 pwd 에 저장하기
+			// <4> 회원이 입력한 [주소] 기져와서 변수 addr 에 저장하기
+			var mem_name = $(".mem_name").val();		// <1>
+			var mem_id = $(".mem_id").val();			// <2>
+			var pwd = $(".pwd").val();					// <3>
+			var addr = $(".addr").val();				// <4>
+
+			//------------------------------------------------
+			// 유저가 입력한 [회원명]의 유효성 체크하기
+			// <1> isHangeulName() 함수를 호출하여 회원명이 합당한 한글이름이 아니면
+			// <2> 이름 입력란 비우기
+			// <3> class=mem_name 를 가진 태그를 관리하는 JQuery 객체 생성하고
+			//	focus() 메소드 호출로 웹브라우저 상에 회원명 입력란에 커서 들여 놓기
+			// <4> 함수 중단
+			//------------------------------------------------
+			if( !isHangeulName(mem_name) ) {			// <1>
+				alert("회원명은 한글 2~20자 사이만 입력해 주세요.");
+				$(".mem_name").val("");					// <2>
+				$(".mem_name").focus();					// <3>
+				return;									// <4>
+			}
+
+			//------------------------------------------------
+			// 유저가 입력한 [아이디]의 유효성 체크하기
+			// <1> isMemberId() 함수를 호출하여 아이디가 합당하지 않으면
+			// <2> 회원명 입력값 비움
+			// <3> class=mem_id 를 가진 태그를 관리하는 JQuery 객체 생성하고
+			//	focus() 메소드 호출로 웹브라우저 상에 아이디 입력란에 커서 들여 놓기
+			// <4> 함수 중단하기
+			//------------------------------------------------
+			if( !isMem_id(mem_id) ) {					// <1>
+				alert("회원 아이디는 영소문자로 시작하고, 영소문자 또는 숫자 또는 _ 로 5자~10자로 입력해 주세요.");
+				$(".mem_id").val("");					// <2>
+				$(".mem_id").focus();					// <3>
+				return;									// <4>
+			}
+
+			//------------------------------------------------
+			// 유저가 입력한 [암호]의 유효성 체크하기
+			// <1> isPwd() 함수를 호출하여 암호가 합당지 않으면
+			// <2> 암호 입력값 비움
+			// <3> class=pwd 를 가진 태그를 관리하는 JQuery 객체 생성하고
+			//	focus() 메소드 호출로 웹브라우저 상에 암호 입력란에 커서 들여 놓기
+			// <4> 함수 중단하기
+			//------------------------------------------------
+			if( !isPwd(pwd) ) {							// <1>
+				alert("암호는 영소문자 또는 숫자로 5~8자로 입력해 주세요.");
+				$(".pwd").val("");						// <2>
+				$(".pwd").focus();						// <3>
+				return;									// <4>
+			}
+
+			//------------------------------------------------
+			// 유저가 선택한 [주소]의 유효성 체크하기
+			// <1> class=addr 를 가진 태그를 관리하는 JQuery 객체 생성하고
+			//	focus() 메소드 호출로 웹브라우저 상에 암호 입력란에 커서 들여 놓기
+			// <2> 함수 중단하기
+			//------------------------------------------------
+			if( isEmpty(addr) ) {	
+				alert("주소를 선택해 주세요");
+				$(".addr").focus();						// <1>
+				return;									// <2>
+			}
+
+			//------------------------------------------------
+			// 유저가 선택한 [성별]의 유효성 체크하기
+			//------------------------------------------------
+			/*
+			// <1> checkedGenderCnt 변수 선언
+			// 	class=gender 를 가진 태그 중에 체크된 놈을 관리하는 JQuery 객체 생성하고
+			// 	관리하는 태그의 개수를 얻어 변수 checkedGenderCnt 에 저장하기
+			// <2> checkedGenderCnt 변수 안의 데이터가 1 이면, 즉, 체크된 놈이 없으면 
+			// <3> 경고창 띄우기
+			// <4> 함수 중단하기
+			//------------------------------------------------
+			var checkedGenderCnt = $(".gender:checked").length;	// <1>
+			if( checkedGenderCnt == 0 ){						// <2>
+				alert("성별을 선택해 주세요.");					 // <3>
+				return;											// <4>
+			}
+			*/
+			
+			//------------------------------------------------
+			// 더 유연한 방법
+			var checkedGenderCnt = $(".gender").filter(":checked").length;	// <1>
+			if( checkedGenderCnt == 0 ){						// <2>
+				alert("성별을 선택해 주세요.");					 // <3>
+				return;											// <4>
+			}
+			
+		}
+		// checkMemRegForm() 끗 =====================================
+
+		// body 태그를 다 읽고 난 후 실행할 함수 선언
+		function setting() {
+			// 개발 과정에 도움되라고 입력 양식에 데이터 삽입하기
+			$(".mem_name").val("홍길동");
+			$(".mem_id").val("abc123");
+			$(".pwd").val("123qwe");
+			$(".addr").val("서울");
+			$(".gender").val("여");
+		}
+
+	</script>
+	<!-- /script -->
+
+</head>
+
+<body onLoad = "setting();">
+<center>
+	
+	<br><br>
+
+	<!-- form -->
+	<form name= "memberRegForm">
+		<!-- table -->
+		<table border = 1 style ="border-collapse:collapse" cellpadding = 5 bordercolor = "lightgray">
+			<caption>회원가입</caption>
+			<tr>
+				<th bgcolor = "#E9E9E9">회원명</th>
+				<td><input type="text" name="mem_name" class="mem_name"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">아이디</th>
+				<td><input type="text" name="mem_id" class="mem_id"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9">암호</th>
+				<td><input type="password" name="pwd" class="pwd"></td>
+			</tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9"> 주소 </th>
+				<td>
+					<select name="addr" class="addr">
+						<option value="">--선택요망--</option>
+						<option value="서울">서울</option>
+						<option value="경기">경기</option>
+						<option value="인천">인천</option>
+						<option value="기타">기타</option>
+						<!-- value 값이 DB에 들어가는 값이다 -->
+						<!-- option 태그 안에 있는 값은 단순히 화면에 출력되는 값이다 -->
+					</select>
+				</td>
+			<tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9"> 성별 </th>
+				<td>
+					<input type = "radio" name = "gender" class = "gender" value = "남">남
+					<input type = "radio" name = "gender" class = "gender" value = "여">여
+				</td>
+			<tr>
+
+			<tr>
+				<th bgcolor = "#E9E9E9"> 취미 </th>
+				<td>
+					<input type = "checkbox" name = "hobby" class = "hobby" value = "운동">운동
+					<input type = "checkbox" name = "hobby" class = "hobby" value = "여행">여행
+					<input type = "checkbox" name = "hobby" class = "hobby" value = "독서">독서
+					<input type = "checkbox" name = "hobby" class = "hobby" value = "기타">기타
+				</td>
+			<tr>
+
+		</table>
+		<!-- /table -->
+
+		<br>
+
+		<input type="checkbox" name="confirm" class="confirm" value="동의">
+		동의(가입하신 개인정보는 보관됩니다)
+
+		<br><br>
+		
+		<!-- 저장 버튼 클릭 시 회원명, 아이디, 암호 유효성 체크 -->
+		<input type="button" value="저장" class="save_btn">
+		<input type="reset" value="초기화">
+
+		<br><br>
+
+		<!-- 로그인 화면 글씨를 클릭하면 loginForm.html 페이지 열어주기 -->
+		<div style="cursor:pointer" class="to_loginForm_btn">[로그인 화면]</div>
+
+	</form>
+	<!-- /form -->
+
+</center>
+
+</body>
+
+</html>
