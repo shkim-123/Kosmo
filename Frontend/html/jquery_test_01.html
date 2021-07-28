@@ -18,6 +18,9 @@ jquery_02.html
 			background-color: #CFCFE7; 
 			color: #000000;  
 		}
+		.hoverEff {
+			background-color: #fffde7; 
+		}
 	</style>
 <head>
 	<!-- Jquery 라이브러리 수입. -->
@@ -94,6 +97,8 @@ jquery_02.html
 			*/
 
 
+			
+
 			//-------------------------------------------
 			// id="staff" 가 있는 태그의 후손의 <tbody> 후손의 tr 중
 			// hover() 이벤트 호출하기
@@ -101,14 +106,17 @@ jquery_02.html
 			//-------------------------------------------
 			tableObj.find("tbody tr").hover(
 				function(){ 
-					$(this).attr("bgcolor", "#fffde7"); 
+					//$(this).attr("bgcolor", "#fffde7"); 
+					$(this).toggleClass("hoverEff");
 				}
 				, function(){ 
+					$(this).toggleClass("hoverEff");
 					//$(this).attr("bgcolor", "#FFFFFF"); 
-					tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF"); 
-					tableObj.find("tbody tr:odd").attr("bgcolor", "lightgray"); 
+					//tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF"); 
+					//tableObj.find("tbody tr:odd").attr("bgcolor", "lightgray"); 
 				}
 			);
+			
 
 		});
 	</script>
