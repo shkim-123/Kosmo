@@ -104,7 +104,9 @@ jquery_02.html
 					$(this).attr("bgcolor", "#fffde7"); 
 				}
 				, function(){ 
-					$(this).attr("bgcolor", "#FFFFFF"); 
+					//$(this).attr("bgcolor", "#FFFFFF"); 
+					tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF"); 
+					tableObj.find("tbody tr:odd").attr("bgcolor", "lightgray"); 
 				}
 			);
 
