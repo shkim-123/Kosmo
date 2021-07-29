@@ -42,8 +42,13 @@
 			//-------------------------------------------
 			$(".reverse").click(function() {
 
-				hobby_obj.each(function(i) {
-					$(this).prop("checked", !$(this).prop("checked"));
+				//-------------------------------------------
+				// <1> name='hobby' 인 태그들에 차례대로 접근하여 실행구문 반복 수행
+				// <2> 현재 태그의 checked 속성에 현재 태그의 checked 속성값과 반대의 값을 지정한다.
+				// true 인 경우, false를 false인 경우 true 지정
+				//-------------------------------------------
+				hobby_obj.each(function(i) {		// <1>
+					$(this).prop("checked", !$(this).prop("checked"));	// <2>
 				});
 
 			});
@@ -53,12 +58,23 @@
 			// 반복문 사용해서 풀어보기
 			//-------------------------------------------
 			$(".reverse").click(function() {
-
+				
+				//-------------------------------------------
+				// name='hobby' 태그를 관리하는 JQuery 객체의 길이만큼 반복 수행
+				//-------------------------------------------
 				for(var i = 0; i < hobby_obj.length; i++){
-					// var thisObj = hobby_obj.filter("input:eq("+i+")");
-					// 피드백: eq 선택자 말고 eq 메소드를 쓰는게 더 좋다
-					var thisObj = hobby_obj.eq(i);
-					thisObj.prop("checked", !thisObj.prop("checked"));
+					//-------------------------------------------
+					// <1> thisObj 변수 선언, name='hobby'를 관리하는 JQuery 객체 중 
+					//	input 태그의 인덱스번호가 i번째인 태그를 관리하는 JQuery 객체 리턴받아 저장 
+					// 	-> 피드백: eq 선택자 말고 eq 메소드를 쓰는게 더 좋다
+					// <2> thisObj 변수 선언, name='hobby'를 관리하는 JQuery 객체 중
+					//	인덱스 번호가 i 번째인 태그의 JQuery 객체 리턴받아 저장
+					// <3> thisObj에 저장된 태그의 DOM 객체에 접근하여 "checked" 속성의 속성값을
+					//	현재 checked 속성값과 반대의 값을 지정한다.
+					//-------------------------------------------
+					// var thisObj = hobby_obj.filter("input:eq("+i+")");	// <1>
+					var thisObj = hobby_obj.eq(i);							// <2>
+					thisObj.prop("checked", !thisObj.prop("checked"));		// <3>
 				}
 
 			});
