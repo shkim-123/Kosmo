@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<script src="jquery-1.11.0.min.js"></script>
 	<script>
+
 		$(document).ready(function() {
 
 			//-------------------------------------------
@@ -11,8 +12,10 @@
 			//-------------------------------------------
 			var hobby_obj = $("[name='hobby']");
 
+			/*
 			//-------------------------------------------
 			// class=reverse 를 가진 JQuery 객체에 click 이벤트 발생한 경우
+			// each(), 반복문 없이 풀어보기
 			//-------------------------------------------
 			$(".reverse").click(function() {
 				
@@ -29,10 +32,40 @@
 				//-------------------------------------------	
 				isChecked.prop("checked", false);		// <1>
 				isNotChecked.prop("checked", true);		// <2>
-					
+
 			});
-			
+			*/
+
+			//-------------------------------------------
+			// each() 사용해서 풀어보기
+			//-------------------------------------------
+			/*
+			$(".reverse").click(function() {
+
+				hobby_obj.each(function(i) {
+					$(this).prop("checked", !$(this).prop("checked"));
+				});
+				
+			});
+			*/
+
+			//-------------------------------------------
+			// 반복문 사용해서 풀어보기
+			//-------------------------------------------
+			$(".reverse").click(function() {
+
+				for(var i = 0; i < hobby_obj.length; i++){
+					// var thisObj = hobby_obj.filter("input:eq("+i+")");
+					// 피드백: eq 선택자 말고 eq 메소드를 쓰는게 더 좋다
+					var thisObj = hobby_obj.eq(i);
+					thisObj.prop("checked", !thisObj.prop("checked"));
+				}
+
+			});
+
+
 		});
+
 	</script>
 	
 </head>

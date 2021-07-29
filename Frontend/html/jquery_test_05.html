@@ -7,10 +7,14 @@
 		$(document).ready(function() {
 
 			//-------------------------------------------
-			// 테이블에 번호 추가하기
+			// 변수 tableObj 선언, class='dogList' 인 JQuery 객체 메위주 저장
 			//-------------------------------------------
 			var tableObj = $(".dogList");
-
+			
+			/*
+			//-------------------------------------------
+			// 테이블에 번호 추가하기 (정순) each() 로 풀어보기
+			//-------------------------------------------
 			tableObj.find("tr").each(function(i) {
 				var index = $(this).index();
 
@@ -20,6 +24,22 @@
 					$(this).prepend("<td>"+index+"</td>");
 				}
 			});
+			*/
+
+			//-------------------------------------------
+			// 테이블에 번호 추가하기 (역순) 반복문으로 풀어보기
+			//-------------------------------------------
+			var num = tableObj.find("tr").length;
+			for(var i = 0; i < tableObj.find("tr").length; i++) {
+				
+				if(i == 0) {
+					tableObj.find("tr").eq(i).prepend("<th bgcolor='gray'>번호</th>");
+				} else {
+					tableObj.find("tr").eq(i).prepend("<td>"+num+"</td>");
+				}
+
+				num--;
+			}
 
 		});
 	</script>
