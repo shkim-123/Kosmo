@@ -18,43 +18,75 @@
 			var hobby_chk = $("[name='hobby']");			// <2>
 
 			//-------------------------------------------
-			// hobby_all_chk에 change() 이벤트가 발생했을 경우	
+			// name='hobby_all'인 태그에 change() 이벤트가 발생했을 경우	
 			// 전체 체크박스 눌렀을 때 전체 체크박스 처리
 			//-------------------------------------------
 			hobby_all_chk.change(function() {
-				var isChecked = $(this).prop("checked");
+				//-------------------------------------------
+				// <1> 변수 isChecked 선언, name='hobby_all'인 태그의 checked 속성의 속성값을 저장
+				// <2> isChecked 데이터의 값이 true라면 name='hobby' 인 태그의 checked 속성의 속성값을 true로 지정
+				// <3> isChecked 데이터의 값이 false라면 name='hobby' 인 태그의 checked 속성의 속성값을 false로 지정
+				//-------------------------------------------
+				var isChecked = $(this).prop("checked");	// <1>
 
 				if(isChecked) {
-					hobby_chk.prop("checked", true);
+					hobby_chk.prop("checked", true);		// <2>
 				} else {
-					hobby_chk.prop("checked", false);
+					hobby_chk.prop("checked", false);		// <3>
 				}
 
 				//-------------------------------------------
 				// 위 코드는 아래와 같이 코딩할 수 있다.
 				//-------------------------------------------
+				// name='hobby'인 태그의 checked 속성을 name='hobby_all'인 태그의 "checked" 속성이 
+				// true 라면 true로 지정, false 라면 false로 지정한다.
+				//-------------------------------------------
 				// hobby_chk.prop("checked", $(this).prop("checked"));
 			});
 
 			//-------------------------------------------
-			// hobby_chk에 change() 이벤트가 발생했을 경우
+			// name='hobby'인 태그에 change() 이벤트가 발생했을 경우
 			// 전체 체크된 경우 전체 체크박스 표시됨
 			//-------------------------------------------
 			hobby_chk.change(function() {
+				//-------------------------------------------
+				// <1> 변수 cnt 선언하여 0으로 초기화, 체크된 체크박스의 갯수를 임시로 저장한다
+				//-------------------------------------------
 				var cnt = 0;
-
+				
+				//-------------------------------------------
+				// name='hobby'인 태그들에 차례로 접근해서 실행구문을 반복 실행한다.
+				//-------------------------------------------
+				// each( function(index){실행구문;} ) : 현재 JQuery 객체가 관리하는 태그들에 차례대로 
+				//	접근해서 실행구문을 반복 실행한다. 
+				//-------------------------------------------
 				hobby_chk.each(function(i){
-					if($(this).prop("checked")) {
-						cnt++;
-						hobby_all_chk.prop("checked", false);
+					//-------------------------------------------
+					// <1> 현재 접근한 name='hobby' 인 태그의 checked 속성의 속성값이 true 이면
+					// <2> cnt 변수를 1증가 한다
+					// <3> name='hobby_all' 태그의 checked 속성의 속성값을 false로 지정한다
+					//-------------------------------------------
+					if($(this).prop("checked")) {				// <1>
+						cnt++;			// <2>
+						hobby_all_chk.prop("checked", false);	// <3>
 					} 
-					if(cnt == hobby_chk.length) {
-						hobby_all_chk.prop("checked", true);
+
+					//-------------------------------------------
+					// <1> cnt에 저장된 데이터가 name='hobby' 태그를 관리하는 JQeury의 길이와 같다면
+					// <2> name='hobby_all' 태그의 checked 속성의 속성값을 true로 지정한다
+					//-------------------------------------------
+					if(cnt == hobby_chk.length) {				// <1>
+						hobby_all_chk.prop("checked", true);	// <2>
 					}
 				});
 				
 				//-------------------------------------------
 				// 위 코드는 아래와 같이 코딩할 수 있다.
+				//-------------------------------------------
+				// name='hobby_all' 태그의 checked 속성의 속성값을
+				// name='hobby' 태그 중 체크된 태그를 관리하는 JQuery 객체를 리턴받아서 filter(":checked")
+				// 리턴받은 JQuery 객체의 길이가  (length)
+				// name='hobby' 태그의 길이와 같다면 true, 같지 않다면 false 값을 지정한다.
 				//-------------------------------------------
 				// hobby_all_chk.prop("checked", hobby_chk.filter(":checked").length == hobby_chk.length);
 			});

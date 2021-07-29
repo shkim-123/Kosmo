@@ -7,7 +7,7 @@
 		$(document).ready(function() {
 
 			//-------------------------------------------
-			// 변수 tableObj 선언, class='dogList' 인 JQuery 객체 메위주 저장
+			// 변수 tableObj 선언, class='dogList'인 JQuery 객체 메위주 저장
 			//-------------------------------------------
 			var tableObj = $(".dogList");
 			
@@ -15,31 +15,69 @@
 			//-------------------------------------------
 			// 테이블에 번호 추가하기 (정순) each() 로 풀어보기
 			//-------------------------------------------
+			// class="dogList" 인 태그의 후손 중 tr 태그를 관리하는 JQuery 객체를 리턴받아
+			// 각 태그에 차례대로 접근하여 실행구문을 반복 실행한다.
+			//-------------------------------------------
 			tableObj.find("tr").each(function(i) {
-				var index = $(this).index();
+				//-------------------------------------------
+				// <1> index 변수 선언, 접근한 tr 태그의 index를 리턴받아 저장한다.
+				// <2> index 가 0 이라면, 접근한 tr 태그 내부에 첫째 자식으로 <th bgcolor='gray'>번호 태그를 삽입한다.
+				// <3> index 가 0 이 아니라면, 접근한 tr 태그 내부에 첫째 자식으로 <td>index변수데이터 태그를 삽입한다.
+				//-------------------------------------------
+				// prepend("html코드") : 현재 JQuery 객체가 관리하는 태그 내부에 첫째 자식으로 html코드를 삽입한다.
+				//-------------------------------------------
+				var index = $(this).index();	// <1>
 
 				if(index == 0) {
-					$(this).prepend("<th bgcolor='gray'>번호</th>");
+					$(this).prepend("<th bgcolor='gray'>번호");	// <2>
 				} else {
-					$(this).prepend("<td>"+index+"</td>");
+					$(this).prepend("<td>"+index);				// <3>
 				}
 			});
 			*/
+			
 
+			
 			//-------------------------------------------
 			// 테이블에 번호 추가하기 (역순) 반복문으로 풀어보기
 			//-------------------------------------------
-			var num = tableObj.find("tr").length;
-			for(var i = 0; i < tableObj.find("tr").length; i++) {
+			// <1> num 변수 선언, class='dogList' 인 태그의 후손 중 tr 태그를 관리하는 
+			//	JQuery 객체를 리턴받아 길이를 구하여 대입한다.
+			// <2> class='dogList' 태그의 후손 중 tr 태그를 관리하는 JQuery 객체의 길이만큼 반복수행한다.
+			// <3> i 가 0 이라면 class='dogList' 태그의 후손 중 tr 태그의 
+			//	i 번째 태그 내부에 첫째 자식으로 <th bgcolor='gray'>번호 태그를 삽입한다.
+			// <4> i 가 0 이 아니라면 class='dogList' 태그의 후손 중 tr 태그의
+			//	i 번째 태그 내우베 첫째 자식으로 "<td>"+num변수의데이터 태그를 삽입한다.
+			// <5> num 변수의 데이터를 1 감소 한다.
+			//-------------------------------------------
+			var num = tableObj.find("tr").length;			// <1>
+			for(var i = 0; i < tableObj.find("tr").length; i++) {	// <2>
 				
 				if(i == 0) {
-					tableObj.find("tr").eq(i).prepend("<th bgcolor='gray'>번호</th>");
+					tableObj.find("tr").eq(i).prepend("<th bgcolor='gray'>번호");	// <3>
 				} else {
-					tableObj.find("tr").eq(i).prepend("<td>"+num+"</td>");
+					tableObj.find("tr").eq(i).prepend("<td>"+num);	// <4>
 				}
 
-				num--;
+				num--;		// <5>
 			}
+			
+
+			/*
+			// ST 코드
+			$(document).ready(function() {
+				var obj = $(".dogList");
+				var length = obj.length;
+				var no = 0;
+
+				obj.each( function(){
+					console.log(123);
+					if( no==0 ){
+						$(".dogList tr").prepend("<th>번호</th>")
+					}
+				})
+        	});
+			*/
 
 		});
 	</script>
