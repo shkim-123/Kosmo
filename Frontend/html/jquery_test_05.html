@@ -1,0 +1,39 @@
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="jquery-1.11.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+
+			//-------------------------------------------
+			// 테이블에 번호 추가하기
+			//-------------------------------------------
+			var tableObj = $(".dogList");
+
+			tableObj.find("tr").each(function(i) {
+				var index = $(this).index();
+
+				if(index == 0) {
+					$(this).prepend("<th bgcolor='gray'>번호</th>");
+				} else {
+					$(this).prepend("<td>"+index+"</td>");
+				}
+			});
+
+		});
+	</script>
+	
+</head>
+
+<body><center>
+	<table class="dogList" border=1  cellpadding=4 style="border-collapse:collapse">
+		<tr><th bgcolor="gray">개이름
+		<tr><td>진도개
+		<tr><td>셰퍼드
+		<tr><td>비글
+		<tr><td>삽살개
+		<tr><td>풍산개
+	</table>
+</body>
+</html>

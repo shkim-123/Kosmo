@@ -59,43 +59,17 @@
 				// hobby_all_chk.prop("checked", hobby_chk.filter(":checked").length == hobby_chk.length);
 			});
 
-			//-------------------------------------------
-			// 테이블에 번호 추가하기
-			//-------------------------------------------
-			var tableObj = $(".dogList");
-
-			tableObj.find("tr").each(function(i) {
-				var index = $(this).index();
-
-				if(index == 0) {
-					$(this).prepend("<th bgcolor='gray'>번호</th>");
-				} else {
-					$(this).prepend("<td>"+index+"</td>");
-				}
-			});
-
 		});
 	</script>
 </head>
 <body><center>
 	<hr>
-	<input type="checkbox" name="hobby_all" >전체
+	<input type="checkbox" name="hobby_all">전체
 	<hr>
 	<input type="checkbox" name="hobby" value="독서">독서<br>
 	<input type="checkbox" name="hobby" value="운동">운동<br>
 	<input type="checkbox" name="hobby" value="여행">여행<br>
 	<input type="checkbox" name="hobby" value="수집">수집
-
-	<hr>
-
-	<table class="dogList" border=1 cellpadding=4 style="border-collapse: collapse;">
-		<tr><th bgcolor="gray">개이름</th></tr>
-		<tr><td>진돗개</td></tr>
-		<tr><td>셰퍼드</td></tr>
-		<tr><td>비글</td></tr>
-		<tr><td>삽살개</td></tr>
-		<tr><td>풍산개</td></tr>
-	</table>
 </body>
 
 </html>
