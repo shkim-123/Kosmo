@@ -23,22 +23,26 @@ jquery_02.html
 	<!-- Jquery 라이브러리 수입. -->
 	<script src="jquery-1.11.0.min.js"></script>
 	<script>
+
 		//-------------------------------------------
-		//$(document).ready(   function(){자스코딩}  );
+		// $(document).ready(   function(){자스코딩}  );
 		//-------------------------------------------
 		// body 태그 안의 요소들을 읽어들인 후 익명함수 내부의 자스코딩을 실행.
 		$(document).ready(function() {   
 
+			//-------------------------------------------
 			// 함수 암살자 ★등장★
+			// return 이후의 코드를 실행하고 싶지 않을때 사용한다.
+			//-------------------------------------------
 			// return;
 
 			//-------------------------------------------
-			// id="staff" 가 있는 태그의 후손 중, thead 태그 안의 후손 중 tr 태그의
+			// <1> tableObj 변수에 id=staff 를 가진 태그를 관리하는 JQuery 객체의 메위주 저장
+			// <2> id="staff" 가 있는 태그의 후손 중, thead 태그 안의 후손 중 tr 태그의
 			// 배경색을 gray 색상으로 설정하기
 			//-------------------------------------------
-			var tableObj = $("#staff");
-			tableObj.find("thead tr").attr("bgcolor", "gray");
-			console.log(tableObj);
+			var tableObj = $("#staff");							// <1>
+			tableObj.find("thead tr").attr("bgcolor", "gray");	// <2>
 
 			//-------------------------------------------
 			// id="staff" 가 있는 태그의 후손의 <tbody> 후손의 tr 중
@@ -53,7 +57,6 @@ jquery_02.html
 			tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF");
 				
 			/*
-
 			//-------------------------------------------
 			// id="staff" 가 있는 태그의 후손의 <tbody> 후손의 tr 중
 			// 인덱스번호가 짝수(사람입장에선 홀수)인 태그에 마우스를 올렸을때 bgcolor = fffde7 속성 삽입하기
@@ -90,32 +93,97 @@ jquery_02.html
 			tableObj.find("tbody tr:odd").mouseout(function(){
 				$(this).attr("bgcolor", "lightgray");
 			});
-
 			*/
 
-
-			
-
 			//-------------------------------------------
-			// id="staff" 가 있는 태그의 후손의 <tbody> 후손의 tr 중
-			// hover() 이벤트 호출하기
+			// id="staff" 가 있는 태그의 후손의 <tbody> 태그 후손의 각 tr 에 마우스 대면
+			// 배경색을 "fffde7"로 바꾸고 마우스를 빼면 원래 색상을 넣어주기
 			// hover( mouseover, mouseout );
 			//-------------------------------------------
+			// <1> tr_bgcolor 변수 선언, 마우스를 댄 tr 태그의 bgcolor 속성의 속성값을 임시로 저장하다.
+			//-------------------------------------------
+			var tr_bgcolor = "";			// <1>
 			tableObj.find("tbody tr").hover(
 				function(){ 
-					//$(this).attr("bgcolor", "#fffde7"); 
-					$(this).toggleClass("style1");
+					//-------------------------------------------
+					// 마우스를 댄 행의 배경색상을 바꾸기
+					//-------------------------------------------
+					// <1> 현재 마우스오버한 tr 태그의 bgcolor 속성의 속성값을 tr_bgcolor 변수에 저장하기
+					// <2> 현재 마우스오버한 tr 태그의 bgcolor 속성의 속성값을 #fffde7 색상으로 지정하기
+					// <3> 내가 한 방법
+					//	현재 마우스오버한 tr 태그에 style1 클래스 추가하기(토글)
+					//-------------------------------------------
+					tr_bgcolor = $(this).attr("bgcolor");	// <1>
+					$(this).attr("bgcolor", "#fffde7"); 	// <2>
+					// $(this).toggleClass("style1");		// <3>
 				}
 				, function(){ 
-					//$(this).attr("bgcolor", "#FFFFFF"); 
-					//tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF"); 
-					//tableObj.find("tbody tr:odd").attr("bgcolor", "lightgray"); 
-					$(this).toggleClass("style1");
+					//-------------------------------------------
+					// 마우스를 뺀 행의 배경색상을 바꾸기
+					//-------------------------------------------
+					// <1> 현재 마우스아웃한 태그의 bgcolor 속성의 속성값을 tr_bgcolor 변수에 저장된 데이터로 수정
+					//	데이터에 저장한 색상값을 대입해 준다.
+					// <2> 인덱스 번호가 짝수인 tr태그의 bgcolor 속성의 속성값을 #FFFFFF 로 지정하기
+					// <3> 인덱스 번호가 홀수인 tr태그의 bgcolor 속성의 속성값을 lightgray로 지정하기
+					// <4> 내가 한 방법
+					//	현재 마우스아웃한 tr 태그에 style1 클래스 빼기(토글)
+					//-------------------------------------------
+					$(this).attr("bgcolor", tr_bgcolor); 	// <1>
+					// tableObj.find("tbody tr:even").attr("bgcolor", "#FFFFFF"); 	// <2>
+					// tableObj.find("tbody tr:odd").attr("bgcolor", "lightgray"); 	// <3>
+					// $(this).toggleClass("style1");		// <4>
 				}
 			);
 			
+			//-------------------------------------------
+			// id="staff" 가 있는 태그의 후손의 <thead> 후손의 <tr> 후손의 <th> 에 마우스를 대면
+			// 그 밑의 tbody 태그 후손의 tr 태그 후손 td의 배경색 바꾸기
+			// 즉, 마우스를 댄 th 태그의 밑 즉, 세로 방향의 td의 배경색 바꾸기
+			//-------------------------------------------
+			// <1> 순서번호를 저장할 변수 no 선언
+			//-------------------------------------------
+			var no = 0;					// <1>
+			tableObj.find("thead tr th").hover(
+				function(){ 
+					//-------------------------------------------
+					// 마우스를 댄 열의 배경색상을 바꾸기
+					//-------------------------------------------
+					// <1> 마우스가 올라간 th 태그의 형제 순서번호 저장
+					// 참고) 이 순서번호는 열의 번호와 일치한다.
+					// index() : JQuery 객체가 관리하는 태그가 형제들 중 몇 번째 인덱스 번호인지 리턴해 주는 메소드
+					//-------------------------------------------
+					no = $(this).index() + 1;		// <1>
+
+					//-------------------------------------------
+					// <1> tbody 안의 각 tr 태그 안에서 위에서 구한 순서번호에 해당하는 td 태그의 배경색을 바꾸기
+					// 문자열 안에 변수 참여시키는 방법: + 연결
+					// id="staff" 가 있는 태그의 후손의 tbody 후손의 td 태그의 순서번호가 no 변수에 있는
+					// <2> tbody 안의 각 tr 태그 안에서 위에서 구한 순서번호에 해당하는 td 태그에 class=style1 을 삽입하기
+					// <3> 내가 한 방법
+					//	tbody 안의 각 tr 태그 안에서 위에서 구한 순서번호에 대항하는 td 태그에 style1 클래스 추가하기(토글)
+					//-------------------------------------------	
+					// tableObj.find("tbody td:nth-child("+no+")").attr("bgcolor", "#fffde7");	// <1>
+					tableObj.find("tbody td:nth-child("+no+")").addClass("style1");				// <2>
+					// tableObj.find("tbody td:nth-child("+no+")").toggleClass("style1");		// <3>
+				}
+				, function(){ 
+					//-------------------------------------------
+					// 마우스를 뺀 열의 배경색상을 원래대로 돌려놓기
+					//-------------------------------------------
+					// <1> tbody 안의 각 tr 태그 안에서 위에서 구한 순서번호에 해당하는 td 태그에 class=style1 을 제거하기
+					// <2> tbody 안의 각 tr 태그 안에서 모든 td 태그에 class=style1 을 제거하기
+					//	굳이 순서번호를 고를 필요 없이 지울때는 한꺼번에 지우는 것이 좋다.
+					// <3> 내가 한 방법
+					//	tbody 안의 각 tr 태그 안에서 위에서 구한 순서번호에 대항하는 td 태그에 style1 클래스 빼기(토글)
+					//-------------------------------------------
+					// tableObj.find("tbody td:nth-child("+no+")").removeClass("style1");	// <1>
+					tableObj.find("tbody td").removeClass("style1");						// <2>
+					// tableObj.find("tbody td:nth-child("+no+")").toggleClass("style1");	// <3>
+				}
+			);
 
 		});
+		
 	</script>
 </head>
 
