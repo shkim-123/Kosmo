@@ -11,7 +11,7 @@
 :calendar: 6.10 ~ 6.29
 
 ## 4. Frontend (HTML / CSS / JavaScript / JQuery)
-:calendar: 6.30 ~ 7.23
+:calendar: 6.30 ~ 7.31
 
 ## 5. JSP / Spring
 :calendar: 8월 중
