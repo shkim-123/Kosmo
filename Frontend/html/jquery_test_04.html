@@ -5,34 +5,44 @@
 	<script src="jquery-1.11.0.min.js"></script>
 	<script>
 		//**********************************************
-		//$(document).ready(   function(){자스코딩}  );
+		//$(document).ready( function(){자스코딩} );
 		//**********************************************
 		// body 태그 안의 요소들을 읽어들인 후 익명함수 내부의 자스코딩을 실행.
 		$(document).ready(function(){
 
 			//-------------------------------------------
-			// <1> 변수 hobby_all_chk 선언, name="hobby_all" 인 JQuery 객체의 메위주 저장
-			// <2> 변수 hobby_chk 선언, name="hobby" 인 JQuery 객체의 메위주 저장
+			// <1> 변수 hobby_all_chk 선언, name="hobby_all" 을 가진 태그를 관리하는 
+			//	JQuery 객체 생성해서 객체의 메위주를 hobby_all_chk에 저장하기
+			// <2> 변수 hobby_chk 선언, name="hobby" 을 가진 태그를 관리하는 
+			//	JQuery 객체 생성해서 객체의 메위주를 hobby_chk에 저장하기
 			//-------------------------------------------
 			var hobby_all_chk = $("[name='hobby_all']");	// <1>
 			var hobby_chk = $("[name='hobby']");			// <2>
 
 			//-------------------------------------------
+			// hobby_all_chk에 저장된 JQuery 객체가 관리하는 태그에 change 이벤트가 발생하면 실행할 구문 설정 
+			// (이벤트 설정, 이벤트 처리)
 			// name='hobby_all'인 태그에 change() 이벤트가 발생했을 경우	
 			// 전체 체크박스 눌렀을 때 전체 체크박스 처리
 			//-------------------------------------------
 			hobby_all_chk.change(function() {
 				//-------------------------------------------
 				// <1> 변수 isChecked 선언, name='hobby_all'인 태그의 checked 속성의 속성값을 저장
-				// <2> isChecked 데이터의 값이 true라면 name='hobby' 인 태그의 checked 속성의 속성값을 true로 지정
-				// <3> isChecked 데이터의 값이 false라면 name='hobby' 인 태그의 checked 속성의 속성값을 false로 지정
+				//	변수 isChecked 선언, change 이벤트가 발생한 태그의 체크여부를 저장하기
+				//	주의) 현재 this는 change 이벤트가 발생한 태그를 지징하는 선택자이다.
+				// <2> 변수 isChecked에 true가 저장되어 있으면 즉, change 이벤트가 발생한 태그가 저장되어 있다면
+				// <3> isChecked 데이터의 값이 true라면 name='hobby' 인 태그의 checked 속성의 속성값을 true로 지정
+				//	변수 hobby_chk 에 저장된 JQuery 객체가 관리하는 태그에 체크를 넣기
+				// <4> 변수 isChecked에 false가 저장되어 있으면 즉, change 이벤트가 발생한 태그가 저장되어 있다면
+				// <5> isChecked 데이터의 값이 false라면 name='hobby' 인 태그의 checked 속성의 속성값을 false로 지정
+				//	변수 hobby_chk에 저장된 JQuery 객체가 관리하는 태그에 체크를 빼기
 				//-------------------------------------------
 				var isChecked = $(this).prop("checked");	// <1>
 
-				if(isChecked) {
-					hobby_chk.prop("checked", true);		// <2>
-				} else {
-					hobby_chk.prop("checked", false);		// <3>
+				if(isChecked) {				// <2>
+					hobby_chk.prop("checked", true);		// <3>
+				} else {					// <4>
+					hobby_chk.prop("checked", false);		// <5>
 				}
 
 				//-------------------------------------------
@@ -45,6 +55,8 @@
 			});
 
 			//-------------------------------------------
+			// hobby_chk에 저장된 JQuery 객체가 관리하는 태그에 change 이벤트가 발생하면 실행할 구문 서정하기
+			// 즉, 독서, 운동, 여행, 수집으로 체크박스에 체크가 들어가거나 체크가 빠지면 실행할 구문 설정하기
 			// name='hobby'인 태그에 change() 이벤트가 발생했을 경우
 			// 전체 체크된 경우 전체 체크박스 표시됨
 			//-------------------------------------------
@@ -87,6 +99,18 @@
 				// name='hobby' 태그 중 체크된 태그를 관리하는 JQuery 객체를 리턴받아서 filter(":checked")
 				// 리턴받은 JQuery 객체의 길이가  (length)
 				// name='hobby' 태그의 길이와 같다면 true, 같지 않다면 false 값을 지정한다.
+				//-------------------------------------------
+				// hobby_all_chk에 저장된 JQuery 객체가 관리하는 태그에 
+				// hobby_chk.filter(":checked").length 의 실행결과에 따라 체크를 넣어주거나 빼주기
+				// 즉, hobby_chk.filter(":checked").length가 true면 체크가 들어가는 것이고,
+				// 	hobby_chk.filter(":checked").length가 false면 체크가 빠진다.
+				// hobby_chk.filter(":checked").length의 의미 
+				//	: 체크된 태그의 개수와 존재하는 태그의 개수가 같으면 true, 다르면 false
+				//	체크된 태그의 개수와 존재하는 태그의 개수가 같다라는 말은 모두 체크되어 있다는 말이다.
+				//-------------------------------------------
+				// filter("선택자") : 현재 JQuery 객체가 관리하는 태그 중에 선택자가 가리키는 태그를 관리하는 JQuery 객체 반환
+				//-------------------------------------------
+				// ★실행구문의 결과 위주로 즉, 데이터로 봐야한다.★
 				//-------------------------------------------
 				// hobby_all_chk.prop("checked", hobby_chk.filter(":checked").length == hobby_chk.length);
 			});

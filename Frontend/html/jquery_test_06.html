@@ -8,52 +8,108 @@
 		$(document).ready(function() {
 
 			//-------------------------------------------
-			// 변수 hobby_obj 선언, name='hobby' 인 JQuery 객체 메위주 저장
+			// 변수 hobby_obj 선언, name='hobby' 를 가진 태그를 관리하는
+			// JQuery 객체를 생성하고 객체의 메위주를 hobby_obj에 저장하기
 			//-------------------------------------------
 			var hobby_obj = $("[name='hobby']");
 
-			/*
+			
 			//-------------------------------------------
 			// class=reverse 를 가진 JQuery 객체에 click 이벤트 발생한 경우
 			// each(), 반복문 없이 풀어보기
 			//-------------------------------------------
 			$(".reverse").click(function() {
 				
+				/*
 				//-------------------------------------------
-				// <1> 변수 isChecked 선언, checked 속성을 가진 태그를 관리하는 JQuery 객체 메위주 저장
-				// <2> 변수 isNotChecked 선언, checked 속성을 안 가진 태그를 관리하는 JQuery 객체 메위주 저장
+				// <1> 변수 checkedObj 선언, checked 속성을 가진 태그를 관리하는 JQuery 객체 메위주 저장
+				// <2> 변수 not_checkedObj 선언, checked 속성을 안 가진 태그를 관리하는 JQuery 객체 메위주 저장
+				// <3> <2>의 경우 이와 같이 코딩할 수 있다.
 				//-------------------------------------------
-				var isChecked = hobby_obj.filter(":checked");	// <1>
-				var isNotChecked = hobby_obj.not(":checked");	// <2>
+				var checkedObj = hobby_obj.filter(":checked");	// <1>
+				var not_checkedObj = hobby_obj.not(":checked");	// <2>
+				// var not_checkedObj = hobby_obj.filter(":not(:checked)");	// <3>
 
 				//-------------------------------------------
-				// <1> isChecked 변수에 저장된 태그의 DOM 객체에 접근하여 "checked" 속성 false 주기
-				// <2> isNotChecked 변수에 저장된 태그의 DOM 객체에 접근하여 "checked" 속성 true 주기
+				// <1> checkedObj 변수에 저장된 태그의 DOM 객체에 접근하여 "checked" 속성 false 주기
+				// <2> not_checkedObj 변수에 저장된 태그의 DOM 객체에 접근하여 "checked" 속성 true 주기
 				//-------------------------------------------	
-				isChecked.prop("checked", false);		// <1>
-				isNotChecked.prop("checked", true);		// <2>
+				checkedObj.prop("checked", false);				// <1>
+				not_checkedObj.prop("checked", true);			// <2>
+				*/
+
+				//-------------------------------------------
+				// 번외 문제) 아래 코드는 왜 제대로 실행이 안될까?
+				//-------------------------------------------	
+				// <1> name='hobby'를 가진 태그 중 체크된 태그들을 관리하는 태그의 JQuery 객체 리턴 받아서
+				//	DOM 객체에 접근하여 "checked" 속성의 속성값을 false로 지정한다.
+				// <2> name='hobby'를 가진 태그 중 체크안된 태그들을 관리하는 태그의 JQuery 객체 리턴 바당서
+				//	DOM 객체에 접근하여 "checked" 속성의 속성값을 true로 지정한다.
+				//-------------------------------------------	
+				// 제대로 실행이 안되는 이유
+				// <1>에서 체크된 태그들의 체크값을 체크 안되도록 처리한 후에
+				// <2>에서 체크안된 태그들의 체크값을 가져오려했기 때문이다.
+				// <2>에서 태그들을 걸러낸 시점에는 이미 <1>에서 checked의 속성값이 false로 변경되어 
+				// <2>에서는 모든 태그들이 대상이 될 수 밖에 없다.
+				//-------------------------------------------	
+				hobby_obj.filter(":checked").prop("checked", false);		// <1>	
+				hobby_obj.filter(":not(:checked)").prop("checked", true);	// <2>
 
 			});
-			*/
 			
-			/*
+			
+			
 			//-------------------------------------------
 			// each() 사용해서 풀어보기
+			// class="reverse"을 가진 태그를 클릭하면 function(i){~} 라는 익명함수 호출하기
 			//-------------------------------------------
 			$(".reverse").click(function() {
-
+				
+				/*
 				//-------------------------------------------
-				// <1> name='hobby' 인 태그들에 차례대로 접근하여 실행구문 반복 수행
-				// <2> 현재 태그의 checked 속성에 현재 태그의 checked 속성값과 반대의 값을 지정한다.
+				// <1> name='hobby'인 태그들에 차례대로 접근하여 실행구문 반복 수행
+				// <2> thisObj 변수 선언, 현재 태그의 JQuery 객체 생성하여 리턴받은 메위주 저장
+				// <3> 현재 태그의 checked 속성에 현재 태그의 checked 속성값과 반대의 값을 지정한다.
 				// true 인 경우, false를 false인 경우 true 지정
 				//-------------------------------------------
-				hobby_obj.each(function(i) {		// <1>
-					$(this).prop("checked", !$(this).prop("checked"));	// <2>
+				hobby_obj.each(function(i) {							// <1>
+					var thisObj = $(this);								// <2>
+					thisObj.prop("checked", !thisObj.prop("checked"));	// <3>
 				});
+				*/
+
+				/*
+				//-------------------------------------------
+				// 위 코드는 아래와 같이 코딩할 수 있다.
+				//-------------------------------------------
+				// hobby_obj에 저장된 JQuery 객체가 관리하는 태그에 차례대로 접근해서
+				// function(i){~} 라는 익명함수 안의 코딩을 실행하기
+				//-------------------------------------------
+				hobby_obj.each(function(i) {							
+					//-------------------------------------------
+					// <1> 변수 thisObj 선언, 현재 태그를 JQuery 객체 생성하여 리턴된 메위주 저장
+					//	주의) 현재 this는 i번째 태그를 지칭하는 선택자
+					// <2> 변수 isChecked 선언하고 i번째 태그의 체크여부를 저장하기
+					// <3> 만약 변수 isChecked에 true가 저장되어 있으면. 즉, 체크가 되어 있으면
+					// <4> 체크를 풀기
+					// <5> 만약 변수 isChecked에 false가 저장되어 있으면. 즉, 체크가 안되어 있으면
+					// <6> 체크를 넣기
+					//-------------------------------------------
+					var thisObj = $(this);						// <1>
+					var isChecked = thisObj.prop("checked");	// <2>
+					
+					if(isChecked == true){						// <3>
+						thisObj.prop("checked", false);			// <4>
+					} else {									// <5>
+						thisObj.prop("checked", true);			// <6>
+					}
+				});
+				*/
 
 			});
-			*/
 			
+			
+			/*
 			//-------------------------------------------
 			// 반복문 사용해서 풀어보기
 			//-------------------------------------------
@@ -62,7 +118,7 @@
 				//-------------------------------------------
 				// name='hobby' 태그를 관리하는 JQuery 객체의 길이만큼 반복 수행
 				//-------------------------------------------
-				for(var i = 0; i < hobby_obj.length; i++){
+				for(var i = 0; i < hobby_obj.length; i++) {
 					//-------------------------------------------
 					// <1> thisObj 변수 선언, name='hobby'를 관리하는 JQuery 객체 중 
 					//	input 태그의 인덱스번호가 i번째인 태그를 관리하는 JQuery 객체 리턴받아 저장 
@@ -78,6 +134,7 @@
 				}
 
 			});
+			*/
 			
 		});
 
