@@ -1,0 +1,209 @@
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_09_searching.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=>[검색 키워드]를 입력하고 [검색] 버튼 클릭하면 [검색 결과]만 화면에 보여준다.
+-->
+<html><meta charset="UTF-8">
+<head>
+	<style>.style1 { background-color: #00f; color: #fff; } </style>
+	<script src="jquery-1.11.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+
+			//-------------------------------------------
+			// 변수 tableObj 선언하고 class="sungjuk"을 가진 태그를 관리하는 JQuery 객체 생성하고 메위주를 저장하기
+			//-------------------------------------------
+			var tableObj = $(".sungjuk");
+
+			//-------------------------------------------
+			// thead 태그 안의 tr의 배경색을 lightblue로 하기
+			// <1> attr() 로 설정하는 방법
+			// <2> JQuery 객체에 css라는 메소드를 호출하여 css 차원에서 배경색을 lightblue로 하기
+			//-------------------------------------------
+			// tableObj.find("thead tr").attr("bgcolor", "lightblue");		// <1>
+			tableObj.find("thead tr").css("background-color", "lightblue");	// <2>
+
+			sattingBgcolor(tableObj);
+
+			//-------------------------------------------
+			// class="search" 가진 태그에 click 이벤트가 일어나면
+			// 키워드를 가지고 검색한 후 검색된 행만 보여주고 검색되지 않은 행은 감추는
+			//-------------------------------------------
+			$(".search").click(function() {
+				//-------------------------------------------
+				// <1> 입력된 키워드 값을 얻어내어 keyword1 변수에 저장
+				//-------------------------------------------
+				var keyword1 = $(".keyword1").val();
+				
+				//-------------------------------------------
+				// 입력된 키워드 값이 공백으로 구성되거나 또는 비어 있으면 경고하고 키워드 비우고 검색 중지 
+				//-------------------------------------------
+				if(keyword1.split(" ").join("") == "") {
+					alert("검색 데이터가 없습니다.");
+					$(".keyword1").val("");
+					$(".keyword1").focus();
+					return;
+				}
+
+				//-------------------------------------------
+				// <1> keyword1 변수에 저장된 데이터의 앞뒤 공백을 제거
+				//	String객체의 trim() 메서드는 익스9 이전에는 실행이 안되어 주석 처리하였다.
+				// <2> JQuery 라이브러리가 제공한 $ 변수에는 태그를 관리하지 않는 JQuery 객체의 메위주가 저장되어 있다.
+				//	JQuery 객체의 trim("문자열") 메소드를 호출하면 앞뒤 공백을 제거하고 문자를 리턴한다.
+				//-------------------------------------------
+				// JQuery 객체가 가지고 있는 trim("문자열") 메소드
+				// 	: 매개변수로 문자열을 넘겨주면 앞 뒤 공백을 제거하고 문자열을 리턴해준다. 
+				//-------------------------------------------
+				// $ : 태그를 관리하지 않는 JQuery 객체의 메위주를 리턴한다.
+				// $() : 태그를 관리하는 JQuery 객체의 메위주를 리턴한다.
+				//-------------------------------------------
+				// keyword1 = keyword1.trim();		// <1>
+				keyword1 = $.trim(keyword1);		// <2>
+
+				//-------------------------------------------
+				// 입력된 키워드 값을 소문자로 바꿈.
+				// 영어는 비교할 때 소문자 또는 대문자로 모두 바꾼 후 비교해야한다.
+				//-------------------------------------------	
+				keyword1 = keyword1.toLowerCase();
+
+				//-------------------------------------------
+				// 변수 trsObj 선언하고 class=sungjuk 가진 태그 후손의 tbody 태그 후손의 
+				// tr 태그(=현재 17개 tr)를 관리하는 JQuery 객체의 메위주를 변수 trsObj에 저장하기
+				//-------------------------------------------
+				var trsObj = tableObj.find("tbody tr");
+
+				//-------------------------------------------
+				// table 태그 후손 중 tbody 후손 중 모든 tr을 감추기
+				//-------------------------------------------
+				trsObj.hide();
+				
+				//-------------------------------------------
+				// 검색 대상이 되는 tr 태그들을 차례대로 접근해서
+				// tr 태그 내부에 검색 키워드를 가지고 있으면 화면에 보이기 
+				//-------------------------------------------
+				trsObj.each( function(i) {
+
+					//-------------------------------------------
+					// i번째 tr 태그를 관리하는 JQuery 객체의 메위주를 얻어서 변수 trObj에 저장하기
+					//-------------------------------------------
+					var trObj = $(this);
+
+					//-------------------------------------------
+					// <1> i번째 tr 태그 내부의 1번째 td 태그가 안고 있는 문자열 얻고 소문자로 바꾸어 변수 text1에 저장
+					// <2> i번째 tr 태그 내부의 2번째 td 태그가 안고 있는 문자열 얻고 소문자로 바꾸어 변수 text2에 저장
+					// <3> i번째 tr 태그 내부의 3번째 td 태그가 안고 있는 문자열 얻고 소문자로 바꾸어 변수 text3에 저장
+					//-------------------------------------------
+					// var text1 = trObj.find("td").first().text();
+					// var text1 = trObj.find("td:eq(0)").text().toLowerCase();	// <1>
+					// var text2 = trObj.find("td:eq(1)").text().toLowerCase();	// <2>
+					// var text3 = trObj.find("td:eq(2)").text().toLowerCase();	// <3>
+					// var text = text1+text2+text3;
+					// if( text1.indexOf(keyword1) >= 0 || text2.indexOf(keyword1) >= 0 || text3.indexOf(keyword1) >= 0 ) {
+					// 	trObj.show();
+					// }
+					
+					//-------------------------------------------
+					// <1> text 변수 선언, td 태그가 안고 있는 문자열 얻고 소문자로 바꾸어 변수 text에 저장
+					// <2> text 변수에 포함된 데이터가 있다면
+					// <3> 해당 태그 보여주기
+					//-------------------------------------------
+					var text = trObj.find("td").text().toLowerCase();	// <1>
+					
+					if(text.indexOf(keyword1) >= 0) {					// <2>
+						trObj.show();									// <3>
+					}
+					
+				});
+				
+				//-------------------------------------------
+				// tr 태그 bg 컬러 세팅해 주는 함수 호출
+				//-------------------------------------------
+				sattingBgcolor(tableObj);
+
+			});
+
+			//-------------------------------------------
+			// class="allSearch" 가진 태그에 click 이벤트가 일어나면
+			// 모든 행을 보여준다
+			//-------------------------------------------
+			$(".allSearch").click(function(){
+				$(".keyword1").val("");
+				tableObj.find("tbody tr").show();
+				sattingBgcolor(tableObj);
+			});
+
+		}); 
+		// JQ end -----------------------------------
+
+		//-------------------------------------------
+		// 매개변수로 받은 테이블 JQuery 객체의 
+		// tbody > tr 태그 중 웹 화면에서 보이는 태그의 bg 컬러를 세팅하는 함수 선언
+		//-------------------------------------------
+		function sattingBgcolor(tableObj) {
+			//-------------------------------------------
+			// <1> tbody 태그 안의 짝수 tr의 배경색을 lightgray로 하기
+			//	JQuery 객체에 css라는 메소드를 호출하여 css 차원에서 배경색을 lightgray로 하기
+			// <2> tbody 태그 안의 홀수 tr의 배경색을 white로 하기
+			//	JQuery 객체에 css라는 메소드를 호출하여 css 차원에서 배경색을 white로 하기
+			//-------------------------------------------	
+			tableObj.find("tbody tr:visible:odd").css("background-color", "lightgray");	// <1>
+			tableObj.find("tbody tr:visible:even").css("background-color", "white");	// <2>
+		}
+
+	</script>
+</head>
+
+<body><center>
+<!-------------------------------------------------->
+키워드 : 
+<input type="text"  name="keyword1"  class="keyword1"> 
+<input type="button" value="검색" class="search" >
+<input type="button" value="모두검색" class="allSearch" ><br><br>
+<!-------------------------------------------------->
+<div class="count"></div>
+<table border="1" cellpadding=5 class="sungjuk" style="border-collapse:collapse;">
+	<thead>
+		<tr ><th>번호<th>이름<th>평균
+	</thead>
+	<tbody>
+		<tr><td>101<td>John<td>87
+		<tr><td>102<td>Naman<td>90
+		<tr><td>103<td>Chirag<td>85
+		<tr><td>104<td>David<td>92
+		<tr><td>105<td>Kelly<td>81
+		<tr><td>106<td>Charles<td>77
+		<tr><td>107<td>Jerry<td>91
+		<tr><td>108<td>Beth<td>87
+		<tr><td>109<td>Caroline<td>82
+		<tr><td>110<td>Hanen<td>71
+		<tr><td>111<td>Douglas<td>57
+		<tr><td>112<td>Tim<td>86
+		<tr><td>113<td>Michael<td>68
+		<tr><td>114<td>Kimbley<td>88
+		<tr><td>115<td>Christinax<td>72
+		<tr><td>116<td>유원영<td>100
+		<tr><td>117<td>강다니엘<td>20
+	</tbody>
+</table>
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
