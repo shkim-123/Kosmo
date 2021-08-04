@@ -1,0 +1,245 @@
+<!-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_test_13.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ -->
+  <html>
+	<head>
+		<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+		<script language="JavaScript">
+		
+		$(document).ready(function(){
+
+			//-------------------------------------------
+			// skillsObj 변수 선언, id="skills"를 관리하는 JQuery 객체 생성하여 메위주 저장
+			//-------------------------------------------
+			var skillsObj = $("#skills");
+
+			//-------------------------------------------
+			// skillsObj가 관리하는 태그들의 후손 중 select 태그의 change 이벤트 처리
+			//-------------------------------------------
+			skillsObj.find("select").change(function() {
+
+				//-------------------------------------------
+				// <1> thisObj 변수 선언, 현재 선택한 select 태그를 관리하는 JQuery 객체 생성하여 메위주 저장
+				// <2> thisValue 변수 선언, thisObj의 value 값 저장
+				// <3> optionStr 변수 선언, thisObj의 html 값 문자열로 리턴 받아 저장
+				// <4> valueArr 변수 선언, Array 객체 생성 후 메위주 저장
+				//-------------------------------------------
+				var thisObj = $(this);				// <1>
+				var thisValue = thisObj.val();		// <2>
+				var optionStr = thisObj.html();		// <3>
+				var valueArr = [];					// <4>
+				
+				//-------------------------------------------
+				// thisObj의 이전 형제 태그에 각각 접근하여 value="" 인 경우 alert() 처리
+				// <1> thisOb의 선택값을 value=''로 선택하도록 변경
+				// <2> thisValue 변수에 "" 데이터 저장
+				// <3> each문을 벗어남
+				//-------------------------------------------	
+				thisObj.prevAll().each(function(i) {
+					if($(this).val() == "") {
+						alert("앞의 소유스킬을 먼저 선택해 주세요.");
+						thisObj.find("[value='']").prop("selected", true);	// <1>	
+						thisValue = "";										// <2>
+						return false;										// <3>
+					}
+				});
+
+				//-------------------------------------------
+				// 각 select 태그에 접근하여 valueArr 변수의 value 값 저장
+				//-------------------------------------------
+				skillsObj.find("select").each(function(i) {
+					valueArr.push($(this).val());
+				});
+
+				//-------------------------------------------
+				// thisObj의 이후 형제 태그에 각각 접근하여 설정
+				//-------------------------------------------
+				thisObj.nextAll().each(function(i) {
+					//-------------------------------------------
+					// <1> nextThisObj 변수 선언, 접근한 select 태그를 관리하는 JQuery 객체 생성하여 메위주 저장
+					// <2> nextValue 변수 선언, nextThisObj의 value 값 저장
+					// <3> nextIndex 변수 선언, nextThisObj의 index 값 저장
+					//-------------------------------------------
+					var nextThisObj = $(this);				// <1>
+					var nextValue = nextThisObj.val();		// <2>
+					var nextIndex = nextThisObj.index();	// <3>
+
+					//-------------------------------------------
+					// nextThisObj의 후손을 삭제
+					// nextThisObj의 태그 안에 optionStr에 저장되어 있는 문자열을 추가한다.
+					//-------------------------------------------	
+					nextThisObj.empty();
+					nextThisObj.html(""+ optionStr +"");
+
+					if(thisValue != "") {
+						nextThisObj.find("[value='"+ thisValue + "']").remove();
+					} 
+
+					if(nextIndex == 1 && valueArr[1] != "" && valueArr[0] != nextValue) {
+						nextThisObj.find("[value='"+ nextValue + "']").prop("selected", true);
+					}
+
+					if(nextIndex == 2 && valueArr[1] != "" && valueArr[0] != nextValue) {
+						nextThisObj.find("[value='"+ nextValue + "']").prop("selected", true);
+					}
+
+					if(nextIndex == 2 && valueArr[1] != "" && valueArr[2] != "") {
+						nextThisObj.find("[value='"+ valueArr[1] + "']").remove();
+					}
+
+					if(nextIndex == 2 && valueArr[1] != "" && valueArr[2] == "") {
+						nextThisObj.find("[value='"+ valueArr[1] + "']").remove();
+					}
+
+					if(nextIndex == 2 && valueArr[1] == "" ) {
+						nextThisObj.find("[value='']").prop("selected", true);
+					}
+					
+					if(thisValue == "") {
+						nextThisObj.find("[value='']").prop("selected", true);
+					}
+
+					valueArr[nextIndex] = nextThisObj.val();
+
+				});
+
+				
+				/*
+				//-------------------------------------------
+				// <1> thisObj 변수 선언, 선택한 select 태그를 관리하는 JQuery 객체 생성하여 저장
+				// <2> selectValue 변수 선언, 선택한 value 저장
+				// <3> prevValue 변수 선언, 이전에 선택된 값이 있을 경우 value 저장
+				// <4> nextAllObj 변수 선언, 선택된 select 태그 다음에 나오는 형제들의 
+				//	select 태그를 관리하는 JQuery 객체 생성하여 저장
+				//-------------------------------------------
+				var thisObj = $(this);					// <1>
+				var thisValue = thisObj.val();			// <2>
+				// var prevValue = thisObj.prev().val();	// <3>
+				var prevAllObj = thisObj.prevAll();		// <4>
+				var nextAllObj = thisObj.nextAll();		// <4>
+				var prevValueArr = [];
+				var nextValueArr = [];
+
+
+				//-------------------------------------------
+				// 선택한 select 태그 이전에 나온 select 태그들이 선택한 값 저장
+				//-------------------------------------------
+				prevAllObj.each(function(i){
+					prevValueArr.push($(this).val());
+				});
+
+				//-------------------------------------------
+				// 선택한 select 태그 다음에 나온 select 태그들이 선택한 값 저장
+				//-------------------------------------------
+				nextAllObj.each(function(i){
+					nextValueArr.push($(this).val());
+				});
+
+				//-------------------------------------------
+				// nextAllObj가 관리하는 태그 후손 중 option태그를 보이기
+				//-------------------------------------------
+				nextAllObj.find("option").show();
+				
+				//-------------------------------------------
+				// <1> nextAllObj가 관리하는 태그 후손 중 value값을 '' 으로 선택하게 하기
+				//-------------------------------------------
+				// nextAllObj.find("[value='']").prop("selected", true);
+				
+				// 이미 선택된 값인 경우 다음 select 박스 안보이게
+				// 세번째 값을 첫번째 값이 선택 시 두번째 셀렉트 박스는 보이게 수정해야함
+				// for(var j = 0; j < nextValueArr.length; j++){
+				// 	if(thisValue == nextValueArr[j]) {
+				// 		nextAllObj.find("[value='']").prop("selected", true);
+				// 	} else if(thisValue == ""){{
+				// 		nextAllObj.find("[value='']").prop("selected", true);
+				// 	}}
+				// }
+				
+				//-------------------------------------------
+				// nextAllObj가 관리하는 태그 후손 중 value=thisValue 값을 가진 태그 안보이게 처리
+				// nextAllObj가 관리하는 태그 후손 중 value=prevValue 값을 가진 태그 안보이게 처리
+				//-------------------------------------------
+				// nextAllObj.find("[value='"+ thisValue + "']").hide();
+				// nextAllObj.find("[value='"+ prevValue + "']").hide();
+
+				//-------------------------------------------
+				// nextAllObj가 관리하는 태그가 각각 접근하여 이전에 선택한 값 하이드 처리
+				// i가 1인 경우 
+				//-------------------------------------------
+				nextAllObj.each(function(i){
+					var nextThisObj = $(this);
+
+					if(thisValue == nextThisObj.val()){
+						nextThisObj.find("[value='']").prop("selected", true);
+					}
+
+					// if(thisValue == ""){
+					// 	nextThisObj.find("[value='']").prop("selected", true);
+					// }
+
+					nextThisObj.find("[value='"+ thisValue + "']").hide();
+					// 이전에 선택한 값 숨기기
+					for(var j = 0; j < prevValueArr.length; j++){
+						nextThisObj.find("[value='"+ prevValueArr[j] + "']").hide();
+						if(prevValueArr[j] == ""){
+							nextThisObj.find("[value='']").prop("selected", true);
+							nextValueArr[j] == "";
+						}
+					}
+					// 여기 좀 이상함
+					if(i == 1){
+						nextThisObj.find("[value='"+ nextValueArr[0] + "']").hide();
+						if(nextThisObj.prev().val() == ""){
+							nextThisObj.find("[value='']").prop("selected", true);
+						}
+					}
+				});
+
+				// 선택한 태그 이전 형제 select 태그에 선택된 값이 없을 경우
+
+				// prevAll 의 값이 '' 인 상태에서 thisObj의 값을 선택하려 했을 경우 alert
+
+				//-------------------------------------------
+				// '' 무조건 보이기
+				//-------------------------------------------
+				nextAllObj.find("[value='']").show();
+				*/
+
+			});
+
+		});
+</script>
+	</head>
+	<body>
+		<!---------------------------------------------------------------->
+		<span id="skills">
+		[소유스킬] :
+		<select name="skill1">
+			<option value="">
+			<option value="JSP">JSP
+			<option value="ASP">ASP
+			<option value="PHP">PHP
+			<option value="Oracle">Oracle
+			<option value="Java">Java
+		</select>
+		<select name="skill2">
+			<option value="">
+			<option value="JSP">JSP
+			<option value="ASP">ASP
+			<option value="PHP">PHP
+			<option value="Oracle">Oracle
+			<option value="Java">Java
+		</select>
+		<select name="skill3">
+			<option value="">
+			<option value="JSP">JSP
+			<option value="ASP">ASP
+			<option value="PHP">PHP
+			<option value="Oracle">Oracle
+			<option value="Java">Java
+		</select>
+		</span>
+	</body>
+</html>

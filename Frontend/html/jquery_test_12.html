@@ -1,0 +1,108 @@
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_test_12.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=>tr 태그의 순서를 3초마다 바꾸어 본다.-->
+<html><meta charset="UTF-8">
+<head>
+	<script src="jquery-1.11.0.min.js"></script>
+	<script>
+
+		//-------------------------------------------
+		// 첫번째 tr를 복사해서 마지막 tr 태그 다음에 삽입하고 첫번째 tr을 삭제하는 함수 선언 
+		//-------------------------------------------
+		function upTr(idV) {
+
+			//-------------------------------------------
+			// <1> tableObj 변수 선언, id='idV매개변수저장값' 가진 테이블 태그를 관리하는 
+			// JQuery 객체를 생성하고 객체의 메위주를 변수에 저장
+			// <2> firstTrObj 변수 선언, 첫 번째 tr을 관리하는 JQuery 객체의 메위주를 변수에 저장
+			// <3> lastTrObj 변수 선언, 마지막 tr을 관리하는 JQuery 객체의 메위주를 변수에 저장
+			//-------------------------------------------
+			var tableObj = $("#" + idV);					// <1>
+			var firstTrObj = tableObj.find("tr").eq(0);		// <2>
+			var lastTrObj = tableObj.find("tr").last();		// <3>
+			//-------------------------------------------
+			// 위 firstTrObj 코딩은 아래 코딩으로 대체가 가능하다
+			//-------------------------------------------
+			// var firstTrObj = tableObj.find("tr:eq(0)");		// eq 선택자로 잡은 경우
+			// var firstTrObj = tableObj.find("tr").first();	// first() 메소드로 잡은 경우
+			
+			//-------------------------------------------
+			// <1> 첫 번째 tr을 복제해서 마지막 tr 다음에 삽입하자
+			// <2> 첫번째 tr을 삭제하자
+			//-------------------------------------------
+			lastTrObj.after(firstTrObj.clone());		// <1>
+			firstTrObj.remove();						// <2>
+
+			// lastTrObj.after(firstTrObj);		
+
+
+		}
+
+		//-------------------------------------------
+		// 첫번째 td를 복사해서 마지막 td 태그 다음에 삽입하고 첫번째 td을 삭제하는 함수 선언 
+		//-------------------------------------------
+		function leftTd(idV) {
+			//-------------------------------------------
+			// <1> tableObj 변수 선언, id='idV매개변수저장값' 가진 테이블 태그를 관리하는 
+			// JQuery 객체를 생성하고 객체의 메위주를 변수에 저장
+			// <2> firstTdObj 변수 선언, 첫 번째 td를 관리하는 JQuery 객체의 메위주를 변수에 저장
+			// <3> lastTdObj 변수 선언, 마지막 td를 관리하는 JQuery 객체의 메위주를 변수에 저장
+			//-------------------------------------------
+			var tableObj = $("#" + idV);					// <1>
+			var firstTdObj = tableObj.find("tr td").eq(0);		// <2>
+			var lastTdObj = tableObj.find("tr td").last();		// <3>
+
+
+			//-------------------------------------------
+			// <1> 첫 번째 td를 복제해서 마지막 td 다음에 삽입하자
+			// <2> 첫번째 td를 삭제하자
+			//-------------------------------------------
+			lastTdObj.after(firstTdObj.clone());		// <1>
+			firstTdObj.remove();						// <2>	
+			
+			// lastTdObj.after(firstTdObj);	
+
+		}
+
+		//-------------------------------------------
+		// body 태그 안의 콘텐츠를 모두 읽어들인 후 실행할 코드 설정하기
+		//-------------------------------------------
+		$(document).ready(function() {
+
+			//-------------------------------------------
+			// <1> 3초마다 함수 upTr('character')를 반복적으로 호출
+			// <2> 3초마다 함수 leftTd('movie')를 반복적으로 호출
+			//-------------------------------------------
+			setInterval(function(){ upTr('character'); }, 3*1000);
+			setInterval(function(){ leftTd('movie'); }, 3*1000);
+
+		});
+
+	</script>
+</head>
+
+<body><center>
+	<table border=0 cellspacing=0 cellpadding=5 id="character" align=center>
+		<tr bgcolor=#FFFF00>
+			<td>보노보노</td>
+		<tr bgcolor=#FFCC00>
+			<td>도라이몽</tr>
+		<tr bgcolor=#FF9900>
+			<td>짱구</td>
+		<tr bgcolor=#FF6600>
+			<td>피카츄</td>
+	</table><br><br>
+
+	 <table border=0 cellspacing=0 cellpadding=5 id="movie" align=center>
+		<tr bgcolor=#FFFF00>
+			<td bgcolor=#FFFF00>랑종</td>
+			<td bgcolor=#FFCC00>곡성</td>
+			<td bgcolor=#FF9900>엑소시스트</td>
+			<td bgcolor=#FF6600>여고괴담</td>
+	</table><br><br> 
+
+</body>
+
+</html>
+
