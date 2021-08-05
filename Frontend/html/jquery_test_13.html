@@ -3,18 +3,20 @@
 jquery_test_13.html
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  -->
-  <html>
+  <html><meta charset="UTF-8">
 	<head>
 		<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
 		<script language="JavaScript">
 		
 		$(document).ready(function(){
 
+			 
+			// (M.ver)
 			//-------------------------------------------
 			// skillsObj 변수 선언, id="skills"를 관리하는 JQuery 객체 생성하여 메위주 저장
 			//-------------------------------------------
 			var skillsObj = $("#skills");
-
+			
 			//-------------------------------------------
 			// skillsObj가 관리하는 태그들의 후손 중 select 태그의 change 이벤트 처리
 			//-------------------------------------------
@@ -66,6 +68,8 @@ jquery_test_13.html
 					var nextValue = nextThisObj.val();		// <2>
 					var nextIndex = nextThisObj.index();	// <3>
 
+					console.log("===========================================");
+
 					//-------------------------------------------
 					// nextThisObj의 후손을 삭제
 					// nextThisObj의 태그 안에 optionStr에 저장되어 있는 문자열을 추가한다.
@@ -73,6 +77,47 @@ jquery_test_13.html
 					nextThisObj.empty();
 					nextThisObj.html(""+ optionStr +"");
 
+
+					// -------------------------------------------------------
+					// select 추가되어도 사용할 수 있게 수정중
+					// -------------------------------------------------------
+
+					if(thisValue != "") {
+						nextThisObj.find("[value='"+ thisValue + "']").remove();
+						console.log(1);
+					} else if(thisValue == "") {
+						nextThisObj.find("[value='']").prop("selected", true);
+						console.log(2);
+					}
+
+					for(var j = 0; j < valueArr.length; j++){
+						for(var k = j+1; k < valueArr.length; k++){
+							if(valueArr[j] != nextValue && valueArr[k] != "") {
+								nextThisObj.find("[value='"+ nextValue + "']").prop("selected", true);
+								console.log(3);
+							}
+
+							if(nextIndex == k && valueArr[j] != "" && (valueArr[k] != "" || valueArr[k] == "")){
+								nextThisObj.find("[value='"+ valueArr[1] + "']").remove();
+								console.log(4);
+							} 
+
+							if(nextIndex == k && valueArr[j] == "") {
+								nextThisObj.find("[value='']").prop("selected", true);
+								console.log(5);
+							}
+						}
+					}
+
+					// -------------------------------------------------------
+					// select 추가되어도 사용할 수 있게 수정중 여기까지!!
+					// -------------------------------------------------------
+
+					/*
+
+					// select 태그들이 추가되어도 할 수 있도록 수정해보자
+					// 단, select 태그들이 추가되는 개수는 option 태그의 개수를 넘길 수는 없다
+					
 					if(thisValue != "") {
 						nextThisObj.find("[value='"+ thisValue + "']").remove();
 					} 
@@ -101,12 +146,25 @@ jquery_test_13.html
 						nextThisObj.find("[value='']").prop("selected", true);
 					}
 
+					*/
+
 					valueArr[nextIndex] = nextThisObj.val();
 
 				});
+				
+			});
+
 
 				
-				/*
+			/*
+			// hide(), show() 로 하려 했는제 fail..
+
+			var skillsObj = $("#skills");
+			
+			//-------------------------------------------
+			// skillsObj가 관리하는 태그들의 후손 중 select 태그의 change 이벤트 처리
+			//-------------------------------------------
+			skillsObj.find("select").change(function() {	
 				//-------------------------------------------
 				// <1> thisObj 변수 선언, 선택한 select 태그를 관리하는 JQuery 객체 생성하여 저장
 				// <2> selectValue 변수 선언, 선택한 value 저장
@@ -205,9 +263,106 @@ jquery_test_13.html
 				// '' 무조건 보이기
 				//-------------------------------------------
 				nextAllObj.find("[value='']").show();
-				*/
+			});
+			*/
+
+			/*
+			// (T.vel)
+			//-------------------------------------------
+			// id="skills" 를 가진 태그의 아들 중 name="skill~"를 가진 태그들에
+			// change 이벤트가 발생하면 실행할 코드 설정
+			//-------------------------------------------
+			$("#skills").children("[name^=skill]").change(function(){
+				//-------------------------------------------
+				// <1> selectObj 변수 선언, change 이벤트가 발생한 select 태그를 관리하는 
+				//	JQuery 객체의 메위주를 얻어 저장하기
+				// <2> choicedVal 변수 선언, change 이벤트가 발생한 select 태그의 현재 선택값 저장
+				// <3> idx 변수 선언, change 이벤트가 발생한 select 태그의 형제 중 나의 인덱스 번호 저장
+				// <4> values 변수 선언, change 이벤트가 발생한 select 태그의 선택값과 형제들의 선택값을 저장할 
+				//	Array 객체 생성하고 선택값을 구해서 Array 객체에 저장
+				// <5>
+				//-------------------------------------------
+				var selectObj = $(this);							// <1>
+				var choicedVal = selectObj.val();					// <2>
+				var idx = selectObj.index();						// <3>
+				var values = [];									// <4>
+				var allSelectObj = selectObj.parent().children("[name^=skill]"); 	// <5>
+
+				//-------------------------------------------
+				allSelectObj.each(function(){
+					var value = $(this).val();
+					if(value == null || value == ""){
+						values.push("");
+					} else {
+						values.push(value);
+					}
+				});
+
+				//-------------------------------------------
+				// i번째 select 태그와 ii 번째 select 태그와의 선택값 관계가 
+				// 이상이 있으면 선택값을 비운다.
+				//-------------------------------------------
+				for( var i = 0; i < values.length; i++ ){
+					for( var ii = i+1; ii < values.length; ii++ ){
+						//-------------------------------------------
+						// i번째 select 태그의 선택값은 없는데 
+						// ii번째 select 태그의 선택값은 있다면
+						// 즉, i번째 형은 없는데 ii번째 동생은 있다면
+						//-------------------------------------------
+						if( values[i] == ""  && values[ii] != "" ) {
+							// i번째 select 태그 이후의 모든 select 태그의 value 값을 비우기
+							allSelectObj.eq(i).nextAll().val('');
+						}
+						//-------------------------------------------
+						// i번째 select 태그의 선택값이 있고 
+						// i번째 select 태그의 선택값과 ii번째 select 태그의 선택값이 같으면
+						// 즉, i번째 형의 값과 ii번째 동생의 값이 같으면
+						//------------------------------------------- 
+						else if( values[i] != "" && values[i] == values[ii] ) {
+							// ii번째 select 태그부터 시작해서 그 이후의 모든 select 태그의 value 값을 비우기
+							allSelectObj.eq(ii-1).nextAll().val('');
+						}
+
+					}
+				}
+
+				//-------------------------------------------
+				// 형이 가진 option 태그를 복사해 바로 아래 동생의 select 태그안에 덮에 씌우고
+				// 형이 선택한 데이터가 있으면 그 데이터를 가진 option 태그를 지우기
+				//-------------------------------------------
+				for( var i=0; i < allSelectObj.length-1; i++ ) {
+					//-------------------------------------------
+					// <1> nowValue 변수 선언, i번째 select 태그의 선택값을 얻기
+					// <2> i+1번째 select 태그의 선택값을 얻어서 변수에 저장하기
+					//-------------------------------------------
+					var nowValue = allSelectObj.eq(i).val();		// <1>
+					var nextValue = allSelectObj.eq(i+1).val();		// <2>
+					
+					//-------------------------------------------	
+					// <1> i번째 select 태그가 가진 option 태그를 복사해 i+1 번째 select 태그의 안에 덮어 씌우기
+					//-------------------------------------------	
+					allSelectObj.eq(i+1).html( allSelectObj.eq(i).html() );
+
+					// i번째 select 태그의 선택값이 있으면
+					if( nowValue != "" ) {
+						// i+1 번째 select 태그 내부의 option 태그 중 
+						// i번째 select 태그의 선택값을 가진 option 태그를 지우기
+						allSelectObj.eq(i+1).children().filter("[value='" + nowValue + "']").remove();
+
+						// i+1번째 select 태그에 선택값이 있었다면 그 값을 다시 선택하게 하기
+						if( nextValue != "" ){
+							allSelectObj.eq(i+1).val(nextValue);
+						}
+					} 
+					// i번째 select 태그의 선택값이 없으면
+					else {
+						// i+1번째 select 태그의 선택값 지우기
+						allSelectObj.eq(i+1).val("");
+					}
+				}
 
 			});
+			*/
 
 		});
 </script>

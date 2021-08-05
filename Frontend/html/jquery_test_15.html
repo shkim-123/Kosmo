@@ -1,0 +1,312 @@
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_test_15.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=>학점 관련 [체크박스]를 체크하고 [검색] 버튼 클릭하면 체크한 학점에 맞는 [검색 결과]만 화면에 보여준다.
+-->
+<html><meta charset="UTF-8">
+<head>
+	<style>.style1 { background-color: #00f; color: #fff; } </style>
+	<script src="jquery-1.11.0.min.js"></script>
+	<script>
+
+		//-------------------------------------------
+		$(document).ready(function() {
+
+			//-------------------------------------------
+			// <1> tableObj 변수 선언, class="sungjuk" 태그를 관리하는 JQuery 객체 생성
+			// <2> tbodyObj 변수 선언, class="sungjuk" 후손 중 tbody 태그를 관리하는 JQuery 객체 생성
+			// <3> tbodyTrsObj 변수 선언, tbody 의 자식 태그들을 관리하는 JQuery 객체 생성
+			//-------------------------------------------
+			var tableObj = $(".sungjuk");				// <1>
+			var tbodyObj = tableObj.find("tbody");		// <2>
+			var tbodyTrsObj = tbodyObj.children();		// <3>
+			//var defaultTbodyObj = tbodyObj.html();
+			
+			//-------------------------------------------
+			// 배경색 넣어주기
+			//-------------------------------------------
+			tableObj.find("thead tr").css("background-color", "#b6b8c3");
+			inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+
+			//-------------------------------------------
+			// class="search" 인 태그 클릭 이벤트 처리, 검색 버튼
+			//-------------------------------------------
+			$(".search").click(function(){
+				//-------------------------------------------
+				// checkedObj 변수 선언, 선택된 input 태그를 관리하는 JQuery 객체 생성
+				// 평균열을 관리하는 avgText 객체 생성
+				//-------------------------------------------
+				var checkedObj = $("input:checked");
+				var avgText = tbodyObj.find("td:last-child");
+				
+				//-------------------------------------------
+				// 선택한 체크박스 없을 경우 class="allSearch" 에 click 이벤트 발생 시켜서
+				// return 하여 함수 중단
+				//------------------------------------------- 
+				if(checkedObj.length == 0) {
+					$(".allSearch").click();
+					return;
+				}
+
+				// 정렬 함수 호출
+				tableTrSort(tbodyObj, 2);
+				
+				/*
+				// 공용 함수로 분리
+
+				var trArr = [];
+				//-------------------------------------------
+				// 정렬
+				//-------------------------------------------
+				tbodyTrsObj.each(function(){
+					trArr.push($(this));
+				});
+
+				// tbody 의 후손들 비우기
+				tbodyObj.empty();
+
+				// 셀렉션 솔트
+				for( var j = 0; j < trArr.length-1 ; j++ ) {
+					for( var k = j+1; k < trArr.length; k++ ) {
+						//var text1 = parseInt(trArr[j].find("td:last-child").text());
+						//var text2 = parseInt(trArr[k].find("td:last-child").text());
+						var text1 = parseInt(trArr[j].find("td").eq(2).text());
+						var text2 = parseInt(trArr[k].find("td").eq(2).text());
+						var temp = 0;
+
+						if(text1 > text2){
+							temp = trArr[j];
+							trArr[j] = trArr[k];
+							trArr[k] = temp; 
+						}
+					}
+				}
+
+				// tbody 의 자식들 밀어넣기
+				for( var j=0; j < trArr.length; j++) {
+					tbodyObj.append(trArr[j]);
+				}
+				*/
+
+				//-------------------------------------------
+				// tbody > tr 들 안보이게 처리
+				//-------------------------------------------
+				tbodyTrsObj.hide();
+
+				//-------------------------------------------
+				// checkedObj의 value 값 확인하여 value 값 범위에 해당하는 점수인 경우 태그 보이게 처리
+				//-------------------------------------------
+				checkedObj.each(function(){
+					var thisValue = $(this).val();
+					for(var j = 0; j < avgText.length; j++){
+						var jumsu = Math.floor(parseInt(avgText.eq(j).text())*0.1);
+
+						if(thisValue == "A" && (jumsu == 9 || jumsu == 10)){
+							avgText.eq(j).parent().show();
+						} else if(thisValue == "B" && jumsu == 8){
+							avgText.eq(j).parent().show();
+						} else if(thisValue == "C" && jumsu == 7){
+							avgText.eq(j).parent().show();
+						} else if(thisValue == "D" && jumsu == 6){
+							avgText.eq(j).parent().show();
+						} else if(thisValue == "F" && (jumsu == 5 || jumsu == 4 || jumsu == 3 || jumsu == 2 || jumsu ==1 || jumsu ==0)){
+							avgText.eq(j).parent().show();
+						} 
+					}	
+
+				});
+
+				//-------------------------------------------
+				// 배경색 넣어주기
+				//-------------------------------------------
+				inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+
+			});
+			// 검색 버튼 클릭 이벤트 처리 끗
+
+			//-------------------------------------------
+			// class="allSearch" 태그 클릭 이벤트 처리, 모두 검색 버튼
+			// 체크 풀고, tr들 모두 보이게 하기
+			//-------------------------------------------
+			$(".allSearch").click(function(){
+
+				//-------------------------------------------
+				// 체크된 input 태그를 관리하는 JQuery 객체 생성하여 DOM 객체에 접근하여 checked 속성 false로 바꾸기
+				// 즉, 체크 풀기
+				//-------------------------------------------
+				$("input:checked").prop("checked", false);
+				
+				// tr들 모두 보이게 하기
+				tbodyTrsObj.show();
+
+				// 정렬 함수 호출
+				tableTrSort(tbodyObj, 0);
+				
+				/*
+				// 공용 함수로 분리
+
+				var trArr = [];
+				//-------------------------------------------
+				// 정렬
+				//-------------------------------------------
+				tbodyTrsObj.each(function(){
+					trArr.push($(this));
+				});
+
+				// tbody 의 후손들 비우기
+				tbodyObj.empty();
+
+				// 셀렉션 솔트
+				for( var j = 0; j < trArr.length-1 ; j++ ) {
+					for( var k = j+1; k < trArr.length; k++ ) {
+						//var text1 = parseInt(trArr[j].find("td:first-child").text());
+						//var text2 = parseInt(trArr[k].find("td:first-child").text());
+						var text1 = parseInt(trArr[j].find("td").eq(0).text());
+						var text2 = parseInt(trArr[k].find("td").eq(0).text());
+						var temp = 0;
+
+						if(text1 > text2){
+							temp = trArr[j];
+							trArr[j] = trArr[k];
+							trArr[k] = temp; 
+						}
+					}
+				}
+
+				// tbody 의 자식들 밀어넣기
+				for( var j=0; j < trArr.length; j++) {
+					tbodyObj.append(trArr[j]);
+				}
+				*/
+				//-------------------------------------------------------
+
+				// 초기값으로 넣어주기 (버그있음...)
+				//tbodyObj.html(defaultTbodyObj);
+
+				//-------------------------------------------
+				// 배경색 넣어주기
+				//-------------------------------------------
+				inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+
+			});
+			// 모두 검색 클릭 이벤트 처리 끗
+
+		}); 
+		//-------------------------------------------
+
+
+		//-------------------------------------------------------
+		// table 태그의 tbody 태그 아래 tr 태그들을 정렬하는 공용 함수 
+		//-------------------------------------------------------
+		// tbodyObj : table 태그를 관리하는 JQuery 객체의 메위주
+		// idx : 정렬할 열의 인덱스 번호(정수)
+		//-------------------------------------------------------
+		function tableTrSort(tbodyObj, idx) {
+			//-------------------------------------------
+			// trArr 변수 선언, tr 태그들을 담아둘 Array 객체 생성하여 저장
+			//-------------------------------------------
+			var trArr = [];
+
+			//-------------------------------------------
+			// trArr에 tbodyObj의 자식들 즉, tr 태그를 관리하는 JQuery 객체를 하나씩 담기
+			//-------------------------------------------
+			tbodyObj.children().each(function(){
+				trArr.push($(this));
+			});
+
+			//-------------------------------------------
+			// tbody 의 후손들 비우기
+			//-------------------------------------------
+			tbodyObj.empty();
+
+			//-------------------------------------------
+			// 오름차순 정렬
+			//-------------------------------------------
+			for( var j = 0; j < trArr.length-1 ; j++ ) {
+				for( var k = j+1; k < trArr.length; k++ ) {
+					var text1 = parseInt(trArr[j].find("td").eq(idx).text());
+					var text2 = parseInt(trArr[k].find("td").eq(idx).text());
+					var temp = 0;
+
+					if(text1 > text2){
+						temp = trArr[j];
+						trArr[j] = trArr[k];
+						trArr[k] = temp; 
+					}
+				}
+			}
+
+			//-------------------------------------------
+			// tbody 에 자식들 밀어넣기
+			//-------------------------------------------
+			for( var j=0; j < trArr.length; j++) {
+				tbodyObj.append(trArr[j]);
+			}
+
+		}
+		//-------------------------------------------------------
+
+
+		//-------------------------------------------------------
+		// bgcolor 변경 공용 함수
+		//-------------------------------------------------------
+		function inputBgColor_to_tr(
+			trsObj			// 화면에 보이거나 안보이게 할 대상이 되는 tr태그를 관리하는 JQuery 객체의 메위주
+			, oddBgcolor	// 홀수번째 tr 태그의 배경색
+			, evenBgcolor	// 짝수번째 tr 태그의 배경색
+		){
+			// tr 태그 중 화면에 보이는 tr 태그를 관리하는 JQuery 객체의 메위주 얻기
+			var visibleTrsObj = trsObj.filter(":visible");
+			
+			// tr 태그 중 화면에 보이는 tr 중 홀수 tr만 골라서 배경색을 주기
+			visibleTrsObj.filter(":even").css("background-color", oddBgcolor);
+			
+			// tr 태그 중 화면에 보이는 tr 중 짝수 tr만 골라서 배경색을 주기
+			visibleTrsObj.filter(":odd").css("background-color", evenBgcolor);
+		}
+		//-------------------------------------------------------
+
+	</script>
+</head>
+<body><center>
+<!-------------------------------------------------->
+<input type="checkbox" name="hakjum" value="A">A학점
+<input type="checkbox" name="hakjum" value="B">B학점
+<input type="checkbox" name="hakjum" value="C">C학점
+<input type="checkbox" name="hakjum" value="D">D학점
+<input type="checkbox" name="hakjum" value="F">F학점<br>
+
+<input type="button" value="검색" class="search" >
+<input type="button" value="모두검색" class="allSearch" ><br><br>
+<!-------------------------------------------------->
+<div class="count"></div>
+<table border="1" cellpadding=5 class="sungjuk" style="border-collapse:collapse;">
+	<thead>
+		<tr ><th>번호<th>이름<th>평균
+	</thead>
+	<tbody>
+		<tr><td>101<td>John<td>87
+		<tr><td>102<td>Naman<td>90
+		<tr><td>103<td>Chirag<td>85
+		<tr><td>104<td>David<td>92
+		<tr><td>105<td>Kelly<td>81
+		<tr><td>106<td>Charles<td>77
+		<tr><td>107<td>Jerry<td>91
+		<tr><td>108<td>Beth<td>87
+		<tr><td>109<td>Caroline<td>82
+		<tr><td>110<td>Hanen<td>71
+		<tr><td>111<td>Douglas<td>57
+		<tr><td>112<td>Tim<td>86
+		<tr><td>113<td>Michael<td>68
+		<tr><td>114<td>Kimbley<td>88
+		<tr><td>115<td>Christinax<td>72
+		<tr><td>116<td>유원영<td>100
+		<tr><td>117<td>강다니엘<td>20
+		<tr><td>118<td>박인선<td>20
+	</tbody>
+</table>
+</body>
+
+
+</html>
