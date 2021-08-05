@@ -102,7 +102,8 @@ jquery_test_15.html
 					for(var j = 0; j < avgText.length; j++){
 						var jumsu = Math.floor(parseInt(avgText.eq(j).text())*0.1);
 
-						if(thisValue == "A" && (jumsu == 9 || jumsu == 10)){
+						//if(thisValue == "A" && (jumsu == 9 || jumsu == 10)){
+						if(thisValue == "A" && jumsu >= 9){
 							avgText.eq(j).parent().show();
 						} else if(thisValue == "B" && jumsu == 8){
 							avgText.eq(j).parent().show();
@@ -110,7 +111,8 @@ jquery_test_15.html
 							avgText.eq(j).parent().show();
 						} else if(thisValue == "D" && jumsu == 6){
 							avgText.eq(j).parent().show();
-						} else if(thisValue == "F" && (jumsu == 5 || jumsu == 4 || jumsu == 3 || jumsu == 2 || jumsu ==1 || jumsu ==0)){
+						//} else if(thisValue == "F" && (jumsu == 5 || jumsu == 4 || jumsu == 3 || jumsu == 2 || jumsu ==1 || jumsu ==0)){
+						} else if(thisValue == "F" && (jumsu <= 5)){
 							avgText.eq(j).parent().show();
 						} 
 					}	
