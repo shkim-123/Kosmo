@@ -22,35 +22,59 @@ jquery_test_15.html
 			var tbodyObj = tableObj.find("tbody");		// <2>
 			var tbodyTrsObj = tbodyObj.children();		// <3>
 			//var defaultTbodyObj = tbodyObj.html();
-			
+			var theadTrsObj = tableObj.find("thead tr");
+
 			//-------------------------------------------
 			// 배경색 넣어주기
 			//-------------------------------------------
 			tableObj.find("thead tr").css("background-color", "#b6b8c3");
-			inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+			inputBgColor_to_tr(tbodyTrsObj, "#ffffff", "#e8eaf6");
+			
+			//-------------------------------------------
+			// 일련번호 추가 함수 호출
+			//-------------------------------------------
+			inputNumber(tbodyTrsObj);	
+			//-------------------------------------------
+			// 검색 결과물을 내장한 table 태그 안에 역순 일련번호가 있는 
+			// 새로운 1열을 넣어주거나 수정해주는 inputFirstColumn 함수 호출하기
+			//-------------------------------------------
+			// inputFirstColumn(tableObj);
 
 			//-------------------------------------------
-			// class="search" 인 태그 클릭 이벤트 처리, 검색 버튼
+			// 검색된 tr, 즉 화면에 보이는 tr의 개수를 class=count 가진 태그안에 삽입하는 함수 호출
 			//-------------------------------------------
-			$(".search").click(function(){
+			inputSearchCnt(tbodyTrsObj);
+
+			//-------------------------------------------
+			// <1> class="search" 인 태그 클릭 이벤트 처리, 검색 버튼
+			// <2> bind() 메소드 사용, unbind() 메소드로 이벤트를 취소 시킬 수 있다.
+			//-------------------------------------------	
+			// $(".search").click(function(){		// <1> 
+			$(".search").bind("click", function(){	// <2>
 				//-------------------------------------------
-				// checkedObj 변수 선언, 선택된 input 태그를 관리하는 JQuery 객체 생성
-				// 평균열을 관리하는 avgText 객체 생성
+				// <1> checkedObj 변수 선언, 선택된 input 태그를 관리하는 JQuery 객체 생성
+				// <1-1> 수정, name="hakjum" 태그 중 체크된 태그를 관리하는 JQuery 객체 생성
+				// <2> 평균열을 관리하는 avgText 객체 생성
 				//-------------------------------------------
-				var checkedObj = $("input:checked");
-				var avgText = tbodyObj.find("td:last-child");
+				// var checkedObj = $("input:checked");			// <1>
+				var checkedObj = $("[name='hakjum']").filter(":checked");	// <1-1>
+				var avgText = tbodyObj.find("td:last-child");	// <2>
 				
 				//-------------------------------------------
-				// 선택한 체크박스 없을 경우 class="allSearch" 에 click 이벤트 발생 시켜서
-				// return 하여 함수 중단
+				// <1> 선택한 체크박스 없을 경우, length / size() 사용
+				// <2> class="allSearch" 에 click 이벤트 발생 시켜서 모든 값 보여줌
+				// <2-1> alert 처리
+				// <3> return 하여 함수 중단
 				//------------------------------------------- 
-				if(checkedObj.length == 0) {
-					$(".allSearch").click();
-					return;
+				// if(checkedObj.length == 0) {			// <1>
+				if(checkedObj.size() == 0) {			// <1>
+					$(".allSearch").click();			// <2>
+					// alert("학점을 선택해 주세요.");	 // <2-1>
+					return;								// <3>
 				}
 
 				// 정렬 함수 호출
-				tableTrSort(tbodyObj, 2);
+				//tableTrSort(tbodyObj, 3);
 				
 				/*
 				// 공용 함수로 분리
@@ -94,10 +118,11 @@ jquery_test_15.html
 				//-------------------------------------------
 				tbodyTrsObj.hide();
 
+				// (M.ver) ====================================================================
 				//-------------------------------------------
 				// checkedObj의 value 값 확인하여 value 값 범위에 해당하는 점수인 경우 태그 보이게 처리
 				//-------------------------------------------
-				checkedObj.each(function(){
+				checkedObj.each(function() {
 					var thisValue = $(this).val();
 					for(var j = 0; j < avgText.length; j++){
 						var jumsu = Math.floor(parseInt(avgText.eq(j).text())*0.1);
@@ -116,13 +141,131 @@ jquery_test_15.html
 							avgText.eq(j).parent().show();
 						} 
 					}	
+				});
+				// (M.ver end) =================================================================
+
+
+				/*
+				// (T.ver) ====================================================================
+
+				//-------------------------------------------
+				// 체크된 학점을 Array 객체에 저장하기
+				//-------------------------------------------
+				var hakjums = [];		// var hakjums = new Array(); 
+				
+				$("[name='hakjum']").each(function(){
+
+					//-------------------------------------------
+					// i번째 name='hakjum'을 가진 태그를 관리하는 JQuery 객체의
+					// 메위주를 변수 thisObj에 저장하기
+					//-------------------------------------------
+					var thisObj = $(this);
+					
+					//-------------------------------------------
+					// 만약에 i번째 태그가 체크 되어 있다면 Array 객체에 value 값 저장하기
+					//-------------------------------------------
+					// if( thisObj.prop("checked") ){
+					// if( thisObj.filter(":checked").length == 1 ){
+					if( thisObj.is(":checked") ){
+						hakjums.push(thisObj.val());
+					}
+				});
+
+				//-------------------------------------------
+				// 검색 대상이 되는 tr에 차례대로 접근해서 각 tr 내부에 
+				// 체크한 학점에 맞는 평균이 있으면 tr 태그 보이게 한다.
+				//-------------------------------------------
+				tbodyTrsObj.each(function(){
+					//-------------------------------------------
+					// <1> thisTrObj 변수 선언, i번째 tr 태그를 관리하는 JQuery 객체를 생성하고 객체위 메위주 저장
+					// <2> avg 변수 선언, i번째 tr 태그 안의 3번째 td가 감싸고 있는 문자,
+					//	즉, 평균을 얻은 후 avg 변수에 저장
+					//-------------------------------------------
+					var thisTrObj = $(this);
+					var avg = thisTrObj.children().eq(3).text();
+
+					avg = $.trim(avg);
+					avg = parseInt(avg, 10);
+					
+					//-------------------------------------------
+					// hakjum 변수 선언, A 저장
+					// 평균에서 학점 구해 저장하기
+					//-------------------------------------------
+					var hakjum = "A";	
+					if( avg >= 80 && avg < 90){ hakjum = "B"; }
+					else if( avg >= 70 && avg < 80){ hakjum = "C"; }
+					else if( avg >= 60 && avg < 70){ hakjum = "D"; }
+					else if( avg >= 0 && avg < 60){ hakjum = "F"; }
+					
+					//-------------------------------------------
+					// i번째 tr 태그 내부의 평균에 해당하는 학점이 Array 객체의 배열변수에 존재하면
+					// 변수 flag에 true 저장하고 반복문을 중단하기
+					//-------------------------------------------
+					var flag = false;
+					for(var j = 0; j < hakjums.length; j++){
+						//-------------------------------------------
+						// 만약에 j번째 배열변수 안의 값이 hakjum 변수 안의 값과 같으면
+						//-------------------------------------------
+						if(hakjums[j] == hakjum) {flag = true; break;}
+					}
+
+					//-------------------------------------------
+					// flag에 true가 있으면 i번째 tr 보이기
+					//-------------------------------------------
+					if(flag) {thisTrObj.show();}
+
+					/*
+					//-------------------------------------------
+					// i번째 tr 내부의 평균이 Array 객체에 저장된 학점에 
+					// 맞는 평균이면 i번째 tr을 보이고 반복문을 중단하기
+					//-------------------------------------------
+					var flag = false;
+					for(var j=0; j < hakjums.length; j++){
+						
+						// 만약에 j번째 배열 변수 안의 값이 A이고 avg 변수 안의 값이 90~100 사이라면 j번째 tr 태그 보이기
+						if(hakjums[j] == "A" && avg >= 90 && avg <= 100){
+							//thisTrObj.show();
+							flag = true; break;
+						} else if(hakjums[j] == "B" && avg >= 80 && avg < 90){
+							//thisTrObj.show();
+							flag = true; break;
+						} else if(hakjums[j] == "C" && avg >= 70 && avg < 80){
+							//thisTrObj.show();
+							flag = true; break;
+						} else if(hakjums[j] == "D" && avg >= 60 && avg < 70){
+							//thisTrObj.show();
+							flag = true; break;
+						} else if(hakjums[j] == "F" && avg >= 0 && avg < 60){
+							//thisTrObj.show();
+							flag = true; break;
+						}
+					}
+					//-------------------------------------------
+					// flag에 true가 있으면 i번째 tr 보이기
+					//-------------------------------------------
+					if( flag ){ thisTrObj.show(); }
+					
 
 				});
+				// (T.ver end) =================================================================
+				*/
+
+				//-------------------------------------------
+				// 총 개수 표시 함수 호출
+				//-------------------------------------------
+				inputSearchCnt(tbodyTrsObj);
+
+				//-------------------------------------------
+				// 일련번호 추가 함수 호출
+				//-------------------------------------------
+				inputNumber(tbodyObj.children());
+				// inputFirstColumn(tableObj)
 
 				//-------------------------------------------
 				// 배경색 넣어주기
 				//-------------------------------------------
 				inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+
 
 			});
 			// 검색 버튼 클릭 이벤트 처리 끗
@@ -137,14 +280,17 @@ jquery_test_15.html
 				// 체크된 input 태그를 관리하는 JQuery 객체 생성하여 DOM 객체에 접근하여 checked 속성 false로 바꾸기
 				// 즉, 체크 풀기
 				//-------------------------------------------
-				$("input:checked").prop("checked", false);
+				//$("input:checked").prop("checked", false);
+				
+				// 학점 체크를 모두 풀기
+				$("[name='hakjum']").prop("checked", false);
 				
 				// tr들 모두 보이게 하기
 				tbodyTrsObj.show();
 
 				// 정렬 함수 호출
-				tableTrSort(tbodyObj, 0);
-				
+				//tableTrSort(tbodyObj, 1);
+
 				/*
 				// 공용 함수로 분리
 
@@ -185,6 +331,17 @@ jquery_test_15.html
 
 				// 초기값으로 넣어주기 (버그있음...)
 				//tbodyObj.html(defaultTbodyObj);
+				
+				//-------------------------------------------
+				// 총 개수 추가 함수 호출
+				//-------------------------------------------
+				inputSearchCnt(tbodyTrsObj);
+
+				//-------------------------------------------
+				// 일련번호 추가 함수 호출
+				//-------------------------------------------
+				inputNumber(tbodyObj.children());
+				// inputFirstColumn(tableObj)
 
 				//-------------------------------------------
 				// 배경색 넣어주기
@@ -194,21 +351,216 @@ jquery_test_15.html
 			});
 			// 모두 검색 클릭 이벤트 처리 끗
 
-		}); 
-		//-------------------------------------------
+			//-------------------------------------------------------
+			// thead > tr 태그에 마우스 올리면 커서 손모양으로 바꾸기
+			//-------------------------------------------------------
+			theadTrsObj.mouseover(function(){
+				$(this).css("cursor", "pointer");
+			})
 
+			//-------------------------------------------------------
+			// thead > tr > th 태그의 click 이벤트 처리
+			//-------------------------------------------------------
+			theadTrsObj.find("th").bind("click", function(){
+				var theadThThisObj = $(this);
+				var theadTrIdx = theadThThisObj.index();
+
+				// 정렬 함수 호출
+				tableTrSort(theadThThisObj, tbodyObj, theadTrIdx);
+
+				// bg 컬러 바꾸자
+				inputBgColor_to_tr(tbodyObj.find("tr"), "#ffffff", "#e8eaf6");
+			});
+
+		}); 
+		// $(document).ready 끗-------------------------------------------
+
+
+		
+		// M.ver
+		//-------------------------------------------------------
+		// 일련번호(역순) 추가해주는 함수 선언
+		//-------------------------------------------------------
+		//function inputNumber(trsObj, cnt){
+		function inputNumber(trsObj){
+			//-------------------------------------------------------
+			// <1> visibleTrsObj 변수 선언, trsObj 태그 중 보이는 태그를 관리하는 JQuery 객체 생성
+			// <2> visibleTrNo 변수 선언, 보이는 태그의 길이를 저장
+			// <3> thText 변수 선언, thead > 첫번째 th 태그의 text 구해서 저장
+			// <4> thText 변수에 thText 의 앞뒤 공백 제거하여 리턴된 문자열 저장
+			//-------------------------------------------------------
+			var visibleTrsObj = trsObj.filter(":visible");			// <1>
+			var visibleTrNo = visibleTrsObj.length;					// <2>
+			var thText = trsObj.parent().prev().children().find(":first-child").text();	// <3>
+			thText = $.trim(thText);								// <4>
+
+			//-------------------------------------------------------	
+			// 번호 열에 ▲, ▼ 문자가 있다면, thText 변수에 "번호" 로 저장
+			// 해당 태그의 text도 "번호" 로 바꾸기, 왜냐하면.. 번호를 역순으로 부여하는데
+			// asc -> desc 로 정렬할 때 이미 역순 정렬되어 있어서 충돌남;;
+			//-------------------------------------------------------
+			if(thText.indexOf("▲") >= 0 || thText.indexOf("▼") >= 0){
+				thText = "번호";
+				trsObj.parent().prev().children().find(":first-child").text("번호");
+			}
+				
+			//-------------------------------------------------------
+			// thText에 저장된 데이터가 "번호"가 아니라면
+			// <1> thead > tr 의 첫번째 자식으로 "<th>번호" html 코드 추가하기
+			//-------------------------------------------------------	
+			if(thText != "번호") {
+			 	trsObj.parent().prev().children().prepend("<th>번호");	// <1>
+			}
+			
+			//if(cnt != 0) {
+				// trsObj.find(":first-child").remove();
+			//}
+
+			//-------------------------------------------------------
+			// 보이는 tr 태그들에 각각 접근함
+			// <1> thisObj 변수 선언, 접근한 태그의 JQuery 객체 생성하여 저장
+			// <2> thText에 저장된 데이터가 "번호"가 아니라면
+			// <3> 접근한 tr 태그의 첫번째 자식으로 <td>+일련번호 html 코드 추가하고, visibleTrNo-1
+			// <4> thText에 저장된 데이터가 "번호" 라면
+			// <5> 접근한 tr 태그의 자식 중 첫번째 태그의 text를 일련번호로 수정하고, visibleTrNo-1
+			//-------------------------------------------------------
+			visibleTrsObj.each(function(i){								
+				var thisObj = $(this);								// <1>
+
+				if(thText != "번호") {								// <2>
+					thisObj.prepend("<td>"+ visibleTrNo--);			// <3>		
+				} else {											// <4>
+					thisObj.children().first().text(visibleTrNo--);	// <5>
+				}
+
+			});
+
+			// trsObj.filter(":hidden").each(function(i){
+			// 	var thisObj = $(this);	
+
+			// 	thisObj.prepend("<td>");	
+			// });
+
+		} 
+		//-------------------------------------------------------
+
+		// T.ver
+		//-------------------------------------------------------
+		// 검색결과물의 table 태그에 일련번호가 있는 새로운 1열을 삽입하기
+		// 그런데, 이미 있다면 화면에 보이는 행의 일련번호를 새로운 일련번호로 수정하기
+		//-------------------------------------------------------
+		function inputFirstColumn(tableObj) {
+			//-------------------------------------------------------
+			// <1> trsObj 변수 선언, 검색 대상인 모든 tr 태그를 관리하는 JQuery 객체 구해서 저장
+			// <2> visible_trsObj 변수 선언, 검색 대상인 모든 tr 태그 중 
+			// 화면에 보이는 tr를 관리하는 JQuery 객체를 구해서 저장하기
+			// <3> visibleTrCnt 변수 선언, 화면에 보이는 tr의 개수 구해서 저장
+			//-------------------------------------------------------
+			var trsObj = tableObj.find("tr");				// <1>
+			var visible_trsObj = trsObj.filter(":visible");	// <2>
+			var visibleTrCnt = visible_trsObj.length - 1;	// <3>
+
+			//-------------------------------------------------------	
+			// table 태그 안의 첫 tr 안의 1열에 "번호" 컬럼이 있으면 flag 변수에 true 저장하기
+			//-------------------------------------------------------	
+			var flag = false;
+			var text = trsObj.first().find("th:eq(0)").text();
+			text = $.trim(text);
+			if(text == "번호") { flag = true; }
+
+			//-------------------------------------------------------	
+			// flag 변수에 true가 저장되어 있으면, 즉, table 태그의 1행 1열에 '번호' 컬럼이 있으면
+			//-------------------------------------------------------	
+			if(flag){
+				// 보이는 tr 태그 안의 번호 컬럼 열에 새로운 역순 일련번호를 구해서 덮어씌우기
+				visible_trsObj.each(function(i){
+					if(i > 0) {
+						$(this).find("td:eq(0)").text(visibleTrCnt--);
+					} 
+				})
+			} else {
+				// 모든 tr 태그 안에 새로운 1열을 삽입하기
+				trsObj.each(function(i){
+					var thisTrObj = $(this);
+					if( i==0 ){
+						thisTrObj.prepend("<th>번호");
+					} else {
+						thisTrObj.prepend("<td>" + visibleTrCnt--);
+					}
+				});
+			}
+		} 
+		//-------------------------------------------------------
+
+		//-------------------------------------------------------
+		// class="count" 가진 태그 안에 검색결과물. 즉, 화면에 보이는 tr태그의 총개수 삽입하는 함수 선언
+		//-------------------------------------------------------
+		function inputSearchCnt(trsObj){
+			var visibleTrsCnt = trsObj.filter(":visible").size();
+			$(".count").text("총 : " + visibleTrsCnt + "개");
+
+			// T.ver
+			// $(".count").text( $(".sungjuk tr:visible").length-1 + "개");
+		}
+		//-------------------------------------------------------
 
 		//-------------------------------------------------------
 		// table 태그의 tbody 태그 아래 tr 태그들을 정렬하는 공용 함수 
 		//-------------------------------------------------------
+		// thisThObj : 선택한 Th의 JQuery 객체의 메위주
 		// tbodyObj : table 태그를 관리하는 JQuery 객체의 메위주
 		// idx : 정렬할 열의 인덱스 번호(정수)
 		//-------------------------------------------------------
-		function tableTrSort(tbodyObj, idx) {
+		function tableTrSort(thisThObj, tbodyObj, idx) {
+
 			//-------------------------------------------
 			// trArr 변수 선언, tr 태그들을 담아둘 Array 객체 생성하여 저장
 			//-------------------------------------------
 			var trArr = [];
+			var ascDesc = "";
+
+			//-------------------------------------------
+			// 클릭한 th의 형제 th 태그 안의 문자열에 ▲, ▼ 제거
+			//-------------------------------------------
+			thisThObj.siblings().each(function() {
+				//-------------------------------------------
+				// <1> thisObj 변수 선언, 선택한 th태그, 즉 this를 저장
+				// <2> txt 변수 선언, i번째 th 태그 안의 문자열을 얻자
+				// <3> 앞뒤 공백을 제거하기
+				// <4> 데이터를 복사하여 ▲ 를 ""으로 변경 후 txt 변수에 저장
+				// <5> 데이터를 복사하여 ▼ 를 ""으로 변경 후 txt 변수에 저장
+				// <6> i번째 th 태그 안에 앞뒤 공백, ▲, ▼ 제거한 문자열 넣기  
+				//-------------------------------------------
+				var thisObj = $(this);			// <1>
+				var txt = thisObj.text();		// <2>
+				txt = $.trim(txt);				// <3>
+				txt = txt.replace("▲", "");		// <4>
+				txt = txt.replace("▼", "");		// <5>
+				thisObj.text(txt);				// <6>
+			});
+			// each end
+
+			//-------------------------------------------
+			// 클릭한 th안의 문자열 뒤에 ▲, ▼ 붙이기
+			//-------------------------------------------
+			// <1> 클릭한 th 안의 문자열을 얻어 변수 txt 저장
+			// <2> 만약 txt 변수 안의 문자열에 ▲가 있으면 ▼로 바꾸고 ascDesc 변수에 "desc" 저장하기
+			// <3> 만약 txt 변수 안의 문자열에 ▼가 있으면 ▲로 바꾸고 ascDesc 변수에 "asc" 저장하기
+			// <4> 만약 txt 변수 안의 문자열에 ▲도 없고 ▼도 없을 경우 ▲로 넣어주고 ascDesc 변수에 "asc" 저장하기
+			// <5> txt 안의 문자열을 클릭한 th안에 덮어쓰기
+			//-------------------------------------------
+			var txt = thisThObj.text();			// <1>
+			if(txt.indexOf("▲") >= 0){			// <2>
+				txt = txt.replace("▲", "▼");
+				ascDesc = "desc";
+			} else if(txt.indexOf("▼") >= 0){	// <3>
+				txt = txt.replace("▼", "▲");
+				ascDesc = "asc";
+			} else {							// <4>
+				txt = txt + "▲";
+				ascDesc = "asc";
+			}
+			thisThObj.text(txt);				// <5>
 
 			//-------------------------------------------
 			// trArr에 tbodyObj의 자식들 즉, tr 태그를 관리하는 JQuery 객체를 하나씩 담기
@@ -227,11 +579,29 @@ jquery_test_15.html
 			//-------------------------------------------
 			for( var j = 0; j < trArr.length-1 ; j++ ) {
 				for( var k = j+1; k < trArr.length; k++ ) {
-					var text1 = parseInt(trArr[j].find("td").eq(idx).text());
-					var text2 = parseInt(trArr[k].find("td").eq(idx).text());
+					// var text1 = parseInt(trArr[j].find("td").eq(idx).text(), 10);
+					// var text2 = parseInt(trArr[k].find("td").eq(idx).text(), 10);
+					var text1 = trArr[j].find("td").eq(idx).text();
+					var text2 = trArr[k].find("td").eq(idx).text();
+					var findNumber = "0123456789";
 					var temp = 0;
+				
+					// 공백 제거, 소문자로 변경
+					text1 = $.trim(text1).toLowerCase();
+					text2 = $.trim(text2).toLowerCase();
 
-					if(text1 > text2){
+					// 숫자문자 라면, 숫자로 변경
+					if(findNumber.indexOf(text1.charAt(0)) >= 0){
+						text1 = parseInt(text1, 10);
+						text2 = parseInt(text2, 10);
+					}
+
+					// asc 라면 오름차순, desc 라면 내림차순
+					if(ascDesc == "asc" && text1 > text2) {
+						temp = trArr[j];
+						trArr[j] = trArr[k];
+						trArr[k] = temp; 
+					} else if(ascDesc == "desc" && text1 < text2) {
 						temp = trArr[j];
 						trArr[j] = trArr[k];
 						trArr[k] = temp; 
@@ -285,7 +655,7 @@ jquery_test_15.html
 <div class="count"></div>
 <table border="1" cellpadding=5 class="sungjuk" style="border-collapse:collapse;">
 	<thead>
-		<tr ><th>번호<th>이름<th>평균
+		<tr><th>학생번호<th>이름<th>평균
 	</thead>
 	<tbody>
 		<tr><td>101<td>John<td>87
