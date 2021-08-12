@@ -586,8 +586,10 @@ update employee set salary = salary*0.9 where
     )
 
 --163. employee와 똑같은 구조와 똑같은 데이터를 가진 쌍둥이 테이블 employee2 만들면?
+create table employee2 as select * from employee
 --
 --164. employee와 똑같은 구조를 가진 쌍둥이 테이블 employee3를 만들되 데이터는 복사해 오지 않으려면?
+create table employee3 as select * from employee where 1=2
 --
 --
 --
