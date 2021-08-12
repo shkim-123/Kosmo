@@ -350,64 +350,202 @@ order by 5
 --
 --121. 고객번호, 고객명, 고객전화번호, 담당직원명, 담당직원직급, 부서번호를 출력하면?
 --<조건> 담당직원이 없는 고객도 포함. 단, 조인을 사용하지 말고 서브쿼리를 사용하십시오.
-select cus_no, cus_name,
+select cus_no, cus_name, tel_num, (select emp_name from employee e where e.emp_no = c.emp_no)
+            , (select jikup from employee e where e.emp_no = c.emp_no)
+            , (select dep_no from employee e where e.emp_no = c.emp_no)
+from customer c
 --
 --122. 고객번호, 고객명, 고객전화번호, 담당직원명, 담당직원직급, 부서번호를 출력하면?
 --<조건>고객정보는 모두 보이고 직원정보는 10번 부서만 보일 것. 단, 조인을 사용하지 말고 서브쿼리를 사용하십시오.
+select cus_no, cus_name, tel_num
+    , (select emp_name from employee e where e.emp_no = c.emp_no and dep_no = 10)
+    , (select jikup from employee e where e.emp_no = c.emp_no and dep_no = 10)
+    , (select dep_no from employee e where e.emp_no = c.emp_no and dep_no = 10)
+from customer c
 --
+
+-- 21.08.11 수요일
 --124. 부서별로 부서번호, 급여합, 평균급여, 인원수를 출력하면? 단, 평균은 소수 둘째 자리에서 반올림 할 것
+select dep_no, sum(salary), round(avg(salary), 1), count(*)
+from employee
+group by dep_no
 --125. 직급별로 직급, 급여합, 평균급여, 인원수를 출력하면? 단, 평균은 소수 둘째 자리에서 반올림 할 것
+select jikup, sum(salary), round(avg(salary), 1), count(*)
+from employee
+group by jikup
 --126. 부서별, 직급별, 부서번호, 직급, 급여합, 평균급여, 인원수를 출력하면? 단, 평균은 소수 둘째 자리에서 반올림 할 것
+select dep_no, jikup, sum(salary), round(avg(salary), 1), count(*)
+from employee
+group by dep_no, jikup
 --127. 부서별, 직급별, 부서번호, 직급, 급여합, 평균급여, 인원수를 출력하되 인원수는 3명 이상인 출력하면?
+select dep_no, jikup, sum(salary), round(avg(salary), 1), count(*)
+from employee
+group by dep_no, jikup
+having count(*) >= 3
 --128. 부서별, 성별로 부서번호, 성별, 급여합, 평균급여, 인원수를 출력하면?
+select dep_no, decode(substr(jumin_num, 7, 1), '1', '남', '3', '남', '여'), sum(salary), round(avg(salary), 1), count(*)
+from employee
+group by dep_no, decode(substr(jumin_num, 7, 1), '1', '남', '3', '남', '여')
 --129. 입사년도별로 입사년도, 인원수를 출력하고 년도별로 오름차순 하면?
+select extract(year from hire_date), count(*)
+from employee
+group by extract(year from hire_date)
+order by 1
 --130. 부서별로 부서번호, 평균근무년수를 출력하면? (근년수는 소수점 둘째 자리에서 반올림할 것)
+select dep_no, round(avg((sysdate - hire_date)/365), 1)
+from employee
+group by dep_no
 --131. 입사분기별로 입사분기, 인원수를 출력하면?
+select to_char(hire_date, 'q'), count(*)
+from employee
+group by to_char(hire_date, 'q')
 --132. 입사연대별, 성별로 입사연대, 성별, 연대별입사자수 출력하면?
+select substr(extract(year from hire_date), 1, 3)||'0년대',  decode(substr(jumin_num, 7, 1), '1', '남', '3', '남', '여'), count(*)
+from employee
+group by substr(extract(year from hire_date), 1, 3)||'0년대',  decode(substr(jumin_num, 7, 1), '1', '남', '3', '남', '여')
 --
 --133. 직원명, 입사일(년-월-일 ~/4분기 한글 1자리 요일), 퇴직일(년-월-일) 출력하면?
 --<조건> 퇴직일은 입사 후 20년 5개월 10일 후
+select emp_name, to_char(hire_date, 'yyyy-mm-dd q"/4분기" dy', 'nls_date_language=korean')
+        , to_char(add_months(hire_date+10, 5) + 20*365, 'yyyy-mm-dd')
+from employee
 --
 --134. 직원들이 있는 부서별로 부서번호, 부서위치, 직원수를 출력하면? 모든 부서 다 나와라
+select d.dep_no, d.loc, count(e.emp_no)
+from dept d, employee e
+where d.dep_no = e.dep_no(+)
+group by d.dep_no, d.loc
 --
 --135. 월별로 입사월, 인원수를 검색하면? 입사월 오름차순 유지 <조건> 입사월 오름차순 유지
 --<조건> 위 결과에서 2월, 9월은 없어서 빠진다. 2월, 9월도 포함시키고 인원수는 0으로 포함하려면?
+select extract(month from hire_date), count(*)
+from employee
+group by extract(month from hire_date)
+-- order by 1
+union select 2, 0  from dual
+union select 9, 0  from dual
 --
 --136. employee 테이블에서 직급순서대로 정렬하여 직급별로 직급, 직급평균연봉, 인원수를 검색하면? (높은 직급이 먼저 나와야함)
+select jikup, round(avg(salary), 1), count(*)
+from employee
+group by jikup
+order by decode(jikup, '사장', 1, '부장', 2, '과장', 3, '대리', 4, '주임', 5, 6)
 --137. 부서별 부서번호, 부서명, 직원수, 직원이관리하는고객수를 검색하면?
+select d.dep_no, d.dep_name, count(distinct e.emp_no), count(distinct c.cus_no)
+from dept d, employee e, customer c
+where d.dep_no = e.dep_no(+) and e.emp_no = c.emp_no(+)
+group by d.dep_no, d.dep_name
+order by 1
 --
 --138. 퇴직일이 60세라는 기준 하에 아래처럼 출력하면?
 --직원번호, 직원명, 근무년차, 퇴직일까지 남은 년도, 생일(년-월-일 요일명), 소속부서명, 직속상관명, 직속상관 부서명.
 --단, 모든 직원 다 나오고, 직급 높은 사람이 먼저 나오고 직급이 같으면 나이가 많은 사람이 나와야함.
+select e.emp_no, e.emp_name, ceil((sysdate - e.hire_date)/365)  "근무년차"
+        , 60 -
+           ( extract(year from sysdate)
+            - to_number(decode(substr(e.jumin_num, 7, 1), '1', '19', '2', '19', '20')||substr(e.jumin_num, 1, 2)) + 1 ) "퇴직일까지남은년도"
+        , to_char(to_date(decode(substr(e.jumin_num, 7, 1), '1', '19', '2', '19', '20')
+                    ||substr(e.jumin_num, 1, 6), 'yyyymmdd'), 'yyyy-mm-dd day', 'nls_date_language=korean' ) "생일"
+        , d.dep_name, e2.emp_name, d2.dep_name
+from employee e, dept d, employee e2, dept d2
+where e.dep_no = d.dep_no(+) and e.mgr_emp_no = e2.emp_no(+) and e2.dep_no = d2.dep_no(+)
+order by decode(e.jikup, '사장', 1, '부장', 2, '과장', 3, '대리', 4, '주임', 5, 6)
+        , decode(substr(e.jumin_num, 7, 1), '1', '19', '2', '19', '20')||substr(e.jumin_num, 1, 6)
 --
 --140. 연봉 서열대로 직원을 검색하되 1행부터 10행까지만 검색하면?
+select * from (
+select rownum "RNUM", zxc.* from (
+    select * from employee order by salary desc
+    ) zxc where rownum <= 10 ) where rnum >= 1
 --
 --140-6. 고객 나이 서열중 6행부터 10행까지 검색하면?
+select * from (
+select rownum "RNUM", zxc.* from (
+    select * from customer order by decode(substr(jumin_num, 7, 1), '1', '19', '2', '19', '20')||substr(jumin_num, 1, 6)
+    ) zxc where rownum <= 10  ) where rnum >= 6
 --
 --140-7. 직원 직급 서열 중 2행부터 5행까지 검색하면?
+select * from (select rownum "RNUM", zxc.* from (
+    select * from employee order by decode(jikup, '사장', 1, '부장', 2, '과장', 3, '대리', 4, '주임', 5, 6)
+    ) zxc where rownum <= 5 ) where rnum >= 2
 --
 --141. 오늘부터 10일 이후까지 날짜 중에 토요일, 일요일, 월요일을 제외한 날의 개수를 구하면?
+select count(*) from (
+select sysdate "XDAY" from dual union
+select sysdate+1 from dual union select sysdate+2 from dual union select sysdate+3 from dual union
+select sysdate+4 from dual union select sysdate+5 from dual union select sysdate+6 from dual union
+select sysdate+7 from dual union select sysdate+8 from dual union select sysdate+9 from dual union
+select sysdate+10 from dual
+) where to_char(xday, 'dy', 'nls_date_language=korean') not in('토', '일', '월')
 --
 --142. 이번달 중에 토요일, 일요일을 제외한 날의 개수를 구하면? = 이번달 평일 수 구하기
+select count(*) from (
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd') "XDAY" from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+1 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+2 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+3 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+4 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+5 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+6 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+7 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+8 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+9 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+10 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+11 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+12 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+13 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+14 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+15 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+16 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+17 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+18 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+19 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+20 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+21 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+22 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+23 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+24 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+25 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+26 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+27 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+28 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+29 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+30 from dual union
+select to_date(to_char(sysdate, 'yyyymm')||'01', 'yyyymmdd')+31 from dual
+) d where to_char(d.xday, 'dy', 'nls_date_language=korean') not in ('토', '일')
+
 --
 --146. employee 테이블로부터 salary 컬럼만 제외하고 다 볼 수 있는 뷰 employee_vw1를 생성하면?
+create view employee_vw1 as
+select emp_no, emp_name, dep_no, jikup, hire_date, jumin_num, phone, mgr_emp_no from employee
+
 --
 --147. 뷰 employee_vw1에 데이터 '이승엽', 40, '과장', '1990-09-01', '7811231452719', '01090056376', 1 를 입력하면?
+insert into employee_vw1(emp_no, emp_name, dep_no, jikup, hire_date, jumin_num, phone, mgr_emp_no)
+    values((select nvl(max(emp_no), 0)+1 from employee_vw1), '이승엽', 40, '과장', to_date('1990-09-01', 'yyyy-mm-dd'), '7811231452719', '01090056376', 1 )
 --
 --148. 뷰 employee_vw1에서 주민번호 '7811231452719', 직원명 '이승엽'의 직급을 부장으로 수정하면?
+update employee_vw1 set jikup = '부장' where jumin_num = '7811231452719' and emp_name = '이승엽'
 --
 --149. 뷰 employee_vw1에서 주민번호 '7811231452719' 인 직원을 제거하면?
+delete from employee_vw1 where jumin_num = '7811231452719'
 --
 --150. 뷰 employee_vw1 를 제거하면?
+drop view employee_vw1
 --
 --150-1. 부서별, 직급별 부서번호, 부서명, 직급, 평균연봉을 출력하는 뷰 employee_vw3를 생성하면?
+create view employee_vw3 as
+select d.dep_no, d.dep_name, e.jikup, round(avg(e.salary), 1) "AVG_SALARY"
+from dept d, employee e
+where d.dep_no = e.dep_no
+group by  d.dep_no, d.dep_name, e.jikup
 --
 --151. 다음 뷰에 대한 질문에 대답하면?
 --CREATE VIEW employee_vw4 AS
 --SELECT emp_no, emp_name, dep_no FROM employee;
 --위의 뷰를 만든 후 INSERT INTO employee_vw4 VALUES(21, '사오순', 40);
 --실행하면 성공하나 실패하나?
---
+-- 실패
 --
 --152. 다음 뷰에 대한 질문에 대답하면?
 --INSERT INTO dept VALUES(60, '전략부', '부산');
@@ -416,22 +554,37 @@ select cus_no, cus_name,
 --WHERE dep_no = 60 WITH CHECK OPTION;
 --문제!!
 --UPDATE dept_vw1 SET dep_no = 70 WHERE dep_no = 60; 을 실행하면?
---
+-- 실패
 --156. employee 테이블에 '장보고', 40, '대리', 3500, '2012-05-28', '8311091109310', '01092499215', 3 데이터를 입력하면?
+insert into employee(emp_no, emp_name, dep_no, jikup, salary, hire_date, jumin_num, phone, mgr_emp_no)
+        values((select nvl(max(emp_no), 0) + 1 from employee), '장보고', 40, '대리', 3500, to_date('2012-05-28', 'yyyy-mm-dd'), '8311091109310', '01092499215', 3)
 --
 --157. employee 테이블에서 직원 번호가 18번 이고, 주민번호 '8203121977315'인 '강감찬' 직원의 직급을 '주임'으로 수정하려면?
+update employee set jikup = '주임' where emp_no = 18
 --
 --158. 여성 직원의 월급을 500만원 인상하는 UPDATE 문은?
+update employee set salary = salary + 500 where substr(jumin_num, 7, 1) in('2', '4')
 --
 --159. employee 테이블에서 평균 연봉 이상의 직원 연봉을 2% 삭감하면?
+update employee set salary = salary*0.98 where salary >= (select avg(salary) from employee)
 --
 --160. employee 테이블에서 평균 연봉 보다 작은 연봉자의 연봉을 50만원 인상하면?
+update employee set salary = salary+50 where salary < (select avg(salary) from employee)
 --
 --161. 담당 고객이 있는 직원의 급여를 5% 인상하면?
+update employee set salary = salary*1.05 where emp_no in((select distinct emp_no from customer where emp_no is not null )
 --
 --162. 연봉 서열 2~5위까지 5명의 연봉을 10% 인하하면?
 --정렬 기준 → 연봉높은 순서 > 직급 높은 순서 > 입사일 빠른 순서 > 나이 높은 순서
---
+update employee set salary = salary*0.9 where
+    emp_no in(
+        (select emp_no from (select rownum "RNUM", zxc.* from (select * from employee
+                order by salary desc, decode(jikup, '사장', 1, '부장', 2, '과장', 3, '대리', 4, '주임', 5, 6)
+                    , hire_date, decode(substr(jumin_num, 7, 1), '1' ,'19', '2', '19', '20')||substr(jumin_num, 1, 6)  ) zxc
+                    where rownum <= 5 ) where rnum >=2
+        )
+    )
+
 --163. employee와 똑같은 구조와 똑같은 데이터를 가진 쌍둥이 테이블 employee2 만들면?
 --
 --164. employee와 똑같은 구조를 가진 쌍둥이 테이블 employee3를 만들되 데이터는 복사해 오지 않으려면?
