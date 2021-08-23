@@ -113,7 +113,7 @@
 				//--------------------------------------------------------------
 				if(idCnt == 1) {							// <1>
 					alert("로그인 성공!");
-					// location.replace("/boardList.do");
+					location.replace("/boardList.do");
 				} else {									// <2>
 					alert("로그인 실패!");
 				}
