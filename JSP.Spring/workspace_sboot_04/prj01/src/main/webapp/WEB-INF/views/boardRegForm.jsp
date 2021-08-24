@@ -19,6 +19,14 @@
 
 <script>
 
+	$(document).ready(function(){
+		$(".writer").val("사오정");
+		$(".subject").val("제목이란다");
+		$(".email").val("abc@naver.com");
+		$(".content").val("내용이란다");
+		$(".pwd").val("1234");
+	});
+
 	//--------------------------------------------------------------
 	// [게시판 등록 화면]에 입력된 데이터의 유효성 체크를 자스로 하지 않고
 	// 비동기 방식으로 서버에 "/boardRegProc.do"로 접속하는 함수 선언
@@ -55,10 +63,35 @@
 			// 응답메시지 안의 html 소스는 boardRegProc.jsp 의 실행결과물이다.
 			//--------------------------------------------------------------
 			, success : function(responseHtml){
+				var msg = $(responseHtml).filter(".msg").text();
+				msg = $.trim(msg);
 
-				alert(responseHtml);
+				if( msg != null && msg.length > 0 ){
+					alert(msg);
+					return;
+				}
+		
 				
-				alert("서버통신 성공!");
+				//--------------------------------------------------------------
+				// <1> 매개변수로 들어온 html 소스에서 class="boardRegCnt"를 가진 태그가 끌어안고 있는 숫자 꺼내기
+				//	즉, 게시판 글 입력 성공 행의 개수 꺼내기
+				// <2> 꺼낸 개수의 정수로 형변환하기
+				//--------------------------------------------------------------
+				var boardRegCnt = $(responseHtml).filter(".boardRegCnt").text();	// <1>
+				boardRegCnt = parseInt(boardRegCnt, 10);							// <2>
+
+
+				//--------------------------------------------------------------
+				// <1> 만약, 게시판 글 입력 성공 행의 개수가 1이면, 즉, 입력이 성공했으면
+				// <2> 그렇지 않으면, 입력이 실패했으면
+				//--------------------------------------------------------------
+				if(boardRegCnt == 1){						// <1>
+					alert("새글쓰기 성공!");
+					location.replace("/boardList.do");
+				} else {									// <2>
+					alert("새글쓰기 실패!");
+				}
+				
 			}
 			//--------------------------------------------------------------
 			// 서버의 응답을 못 받았을 경우 실행할 익명함수 설정
@@ -87,7 +120,7 @@
 				<th bgcolor="lightgray">이름</th>
 				<td>
 					<!-- ************************************************************* -->
-					<input type="text" size="10" name="writer" maxlength="10">
+					<input type="text" size="10" name="writer" class="writer" maxlength="10">
 					<!-- ************************************************************* -->
 				</td>
 			</tr>
@@ -96,7 +129,7 @@
 				<th bgcolor="lightgray">제목</th>
 				<td>
 					<!-- ************************************************************* -->
-					<input type="text" size="40" name="subject" maxlength="30">
+					<input type="text" size="40" name="subject" class="subject" maxlength="30">
 					<!-- ************************************************************* -->
 				</td>
 			</tr>
@@ -105,7 +138,7 @@
 				<th bgcolor="lightgray">이메일</th>
 				<td>
 					<!-- ************************************************************* -->
-					<input type="text" size="40" name="email" maxlength="30">
+					<input type="text" size="40" name="email" class="email" maxlength="30">
 					<!-- ************************************************************* -->
 				</td>
 			</tr>
@@ -114,7 +147,7 @@
 				<th bgcolor="lightgray">내용</th>
 				<td>
 					<!-- ************************************************************* -->
-					<textarea name="content" rows="13" cols="40"></textarea>
+					<textarea name="content" class="content" rows="13" cols="40"></textarea>
 					<!-- ************************************************************* -->
 				</td>
 			</tr>
@@ -123,7 +156,7 @@
 				<th bgcolor="lightgray">비밀번호</th>
 				<td>
 					<!-- ************************************************************* -->
-					<input type="password" size="8" name="pwd" maxlength="4">
+					<input type="password" size="8" name="pwd" class="pwd" maxlength="4">
 					<!-- ************************************************************* -->
 				</td>
 			</tr>
