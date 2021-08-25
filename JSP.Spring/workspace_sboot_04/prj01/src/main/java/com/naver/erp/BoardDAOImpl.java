@@ -1,5 +1,8 @@
 package com.naver.erp;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,7 +23,7 @@ public class BoardDAOImpl implements BoardDAO {
 	//----------------------------------------------------------------
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-		
+	
 	//----------------------------------------------------------------
 	// [게시판 글 입력 후 입력 적용 행의 개수]를 리턴하는 메소드 선언
 	//----------------------------------------------------------------
@@ -49,6 +52,48 @@ public class BoardDAOImpl implements BoardDAO {
 		System.out.println("===BoardDAOImpl.insertBoard 종료===");
 		
 		return boardRegCnt;
+	}
+
+	//----------------------------------------------------------------
+	// [검색한 게시판 목록] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
+	@Override
+	public List<Map<String, String>> getBoardList() {
+		
+		System.out.println("===BoardDAOImpl.getBoardList 시작===");
+		
+		List<Map<String, String>> boardList = this.sqlSession.selectList(
+				"com.naver.erp.BoardDAO.getBoardList"	// 실행할 SQL 구문의 위치 지정
+		);
+		
+		System.out.println("===BoardDAOImpl.getBoardList 종료===");
+		
+		return boardList;
+	}
+	
+	@Override
+	public BoardDTO getBoard(int b_no) {
+		
+		System.out.println("===BoardDAOImpl.getBoard 시작===");
+		
+		BoardDTO boardDTO = sqlSession.selectOne("com.naver.erp.BoardDAO.getBoard", b_no);
+		
+		System.out.println("===BoardDAOImpl.getBoard 종료===");
+		
+		return boardDTO;
+	}
+	
+	@Override
+	public int updateBoard(int b_no) {
+		
+		System.out.println("===BoardDAOImpl.updateBoard 시작===");
+		
+		int boardUpCnt = sqlSession.update("com.naver.erp.BoardDAO.updateBoard", b_no);
+		
+		System.out.println("===BoardDAOImpl.updateBoard 종료===");
+		
+		return boardUpCnt;
+		
 	}
 	
 }

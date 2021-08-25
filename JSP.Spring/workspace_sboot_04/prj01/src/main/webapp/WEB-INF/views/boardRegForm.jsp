@@ -167,7 +167,7 @@
 		
 		<input type="button" value="저장" onClick="checkBoardRegForm();">
 		<input type="reset" value="다시작성">
-		<input type="button" value="목록보기" onClick="document.boardListForm.submit();">
+		<input type="button" value="목록보기" onClick="location.replace('/boardList.do')">
 		
 		<!-- <input type="hidden" name="b_no" value=""> -->
 	

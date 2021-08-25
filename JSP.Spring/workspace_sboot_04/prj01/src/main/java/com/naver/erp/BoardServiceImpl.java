@@ -24,6 +24,7 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDAO boardDAO;
 	
+	
 	//----------------------------------------------------------------
 	// [1개 게시판 글 입력 후 입력 적용 행의 개수]를 리턴하는 메소드 선언
 	//----------------------------------------------------------------
@@ -45,6 +46,36 @@ public class BoardServiceImpl implements BoardService {
 		// 1개 게시판 글 입력 적용 행의 개수 리턴하기
 		//----------------------------------------------------------------
 		return boardRegCnt;
+	}
+	
+	@Override
+	public BoardDTO getBoard(int b_no) {
+		
+		System.out.println("===BoardServiceImpl.getBoard 시작===");
+		
+		int boardUpCnt = updateBoard(b_no);
+		
+		System.out.println("===BoardServiceImpl.getBoard boardUpCnt => " + boardUpCnt);
+		
+		BoardDTO boardDTO = this.boardDAO.getBoard(b_no);
+		
+		System.out.println("===BoardServiceImpl.getBoard boardDTO => " + boardDTO);
+		
+		System.out.println("===BoardServiceImpl.getBoard 종료===");
+		
+		return boardDTO;
+	}
+	
+	@Override
+	public int updateBoard(int b_no) {
+		
+		System.out.println("===BoardServiceImpl.updateBoard 시작===");
+		
+		int boardUpCnt = this.boardDAO.updateBoard(b_no);
+		
+		System.out.println("===BoardServiceImpl.updateBoard 종료===");
+		
+		return boardUpCnt;
 	}
 	
 }

@@ -38,6 +38,35 @@
 			,0
 		)
 	</insert>
+	
+	<!-- ************************************************************* -->
+	<!-- 게시판 검색하는 select 문을 내포한 select 태그 선언 -->
+	<!-- resultType은 한 행의 데이터를 담을 자료형을 써주면 된다 -->
+	<!-- 컬럼명 또는 alias가 키값으로 들어간다 -->
+	<!-- 즉, readcount, reg_date는 alias를 부여해야 한다. -->
+	<!-- varchar2(=문자형)으로 자료형을 통일해야 한다. (=resultType이 HashMap<String, String> 이므로 -->
+	<!-- ************************************************************* -->
+	<select id="getBoardList" resultType="java.util.HashMap">
+		select b_no||'' as "B_NO"
+			, subject, writer, readcount||'' as "READCOUNT"
+		    , to_char(reg_date, 'yyyy-mm-dd day', 'nls_date_language=korean') as "REG_DATE" 
+		    , print_level||'' as "PRINT_LEVEL"
+		from board 
+		order by group_no desc, print_no
+	</select>
+	
+	
+	<!-- 매개변수에 들어온 b_no에 따른 게시물 select문 -->
+	<select id="getBoard" parameterType="int" resultType="com.naver.erp.BoardDTO">
+		select writer, readcount, subject, reg_date, email, content 
+		from board
+		where b_no = #{b_no}		
+	</select>
+	
+	<!-- 조회수+1 update문 -->
+	<update id="updateBoard" parameterType="int">
+		update board set readcount = readcount+1 where b_no = #{b_no}
+	</update>
 
 
 </mapper>

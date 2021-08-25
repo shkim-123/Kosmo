@@ -1,5 +1,7 @@
 package com.naver.erp;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,12 @@ public class BoardController {
 	private BoardService boardService;
 	
 	//----------------------------------------------------------------
+	// 속성변수 boardDAO 선언하고 [BoardDAO 인터페이스]를 구현한 클래스를 찾아 객체 생성해 객체의 메위주를 저장
+	//----------------------------------------------------------------
+	@Autowired
+	private BoardDAO boardDAO;
+	
+	//----------------------------------------------------------------
 	// 가상주소 /boardList.do 로 접근하면 호출되는 메소드 선언
 	// @RequestMappgin 내부에 method="RequestMethod.POST" 가 없으므로
 	// 가상주소 /boardList.do 접근 시 get 또는 post 방식 접근 모두 허용한다.
@@ -41,18 +49,39 @@ public class BoardController {
 		
 		System.out.println("===BoardController.getBoardList 시작===");
 		
-		// ★★★하이라이트 검색 화면★★★
-		
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 생성하기
 		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
-		// [ModelAndView 객체] 리턴하기
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("boardList.jsp");
+
+		try {
+			
+			//----------------------------------------------------------------
+			// 오라클 board 테이블 안의 데이터를 검색해와 자바 객체에 저장하기. 즉, [게시판 목록] 얻기
+			//----------------------------------------------------------------
+			List<Map<String,String>> boardList = this.boardDAO.getBoardList();
+			
+			System.out.println("===BoardController.getBoardList boardList => " + boardList);
+			
+			//----------------------------------------------------------------
+			// [ModelAndView 객체]에 [게시판 목록 검색 결과]를 저장하기
+			//----------------------------------------------------------------
+			mav.addObject("boardList", boardList);
+			
+		} catch(Exception ex) {
+			//----------------------------------------------------------------
+			// DB 연동 에러 발생 시 -1 저장
+			//----------------------------------------------------------------
+			mav.addObject("boardList", -1);
+		}
 		
 		System.out.println("===BoardController.getBoardList 종료===");
 		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------
 		return mav;
 	}
 	
@@ -124,6 +153,7 @@ public class BoardController {
 			// <1> 유효성 체크 에러 메시지 저장할 변수 선언
 			// <2> [게시판 입력 적용행의 개수] 저장할 변수 선언
 			// <3> check_BoardDTO 메소드를 호출하여 [유효성 체크]하고 에러 메시지 문자 얻기
+			//	check_BoardDTO 메소드로 분리한 이유 : 재활용, 코딩이 길어서 분리
 			//----------------------------------------------------------------
 			String msg = "";
 			int boardRegCnt = 0;
@@ -223,5 +253,52 @@ public class BoardController {
 		return checkMsg;
 	}
 	
+	//----------------------------------------------------------------
+	// 가상주소 /boardContentForm.do 로 접근하면 호출되는 메소드 선언
+	//----------------------------------------------------------------
+	// b_no 파라미터명에 해당하는 파라미터값은 숫자문자면 int로 명시하면 숫자로 스프링이 형변환해준다
+	// 단, 반드시 파라미터값이 들어가야 한다. (int에 null이 들어가면 에러가 난다.)
+	//----------------------------------------------------------------
+	@RequestMapping( value="/boardContentForm.do" )
+	public ModelAndView goBoardContentForm(@RequestParam(value="b_no") int b_no) {
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		//----------------------------------------------------------------		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("boardContentForm.jsp");
+		
+		try {
+			//----------------------------------------------------------------
+			// [BoardServiceImpl 객체]의 getBoard 메소드 호출로 [1개의 게시판 글]을 BoardDTO 객체에 담아오기 
+			//----------------------------------------------------------------
+			BoardDTO board = this.boardService.getBoard(b_no);
+			
+			mav.addObject("board", board);
+			
+			
+		} catch(Exception ex) {
+			mav.addObject("board", -1);
+		}
+		
+		mav.addObject("b_no", b_no);
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------		
+		return mav;
+	}
 	
+	
+	// 댓글 등록 화면 이동
+	@RequestMapping( value="/replyRegForm.do" )
+	public ModelAndView replyRegForm() {
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("replyRegForm.jsp");
+		
+		return mav;
+	}
 }

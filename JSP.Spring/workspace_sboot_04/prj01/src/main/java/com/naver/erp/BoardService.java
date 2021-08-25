@@ -7,4 +7,8 @@ public interface BoardService {
 	//----------------------------------------------------------------
 	int insertBoard(BoardDTO boardDTO);
 	
+	BoardDTO getBoard(int b_no);
+	
+	int updateBoard(int b_no);
+	
 }
