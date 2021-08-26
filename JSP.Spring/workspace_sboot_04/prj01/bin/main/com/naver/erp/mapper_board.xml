@@ -55,18 +55,49 @@
 		order by group_no desc, print_no
 	</select>
 	
-	
-	<!-- 매개변수에 들어온 b_no에 따른 게시물 select문 -->
+	<!-- ************************************************************* -->
+	<!-- 게시판 1개 글 검색하는 select 문을 내포한 select 태그 선언 -->
+	<!-- 오라클의 자료형과 DTO 객체의 속성변수 자료형과 일치해야 한다. -->
+	<!-- 컬럼명/alias와 DTO 객체의 속성변수명과 일치해야 한다. -->
+	<!-- ************************************************************* -->
 	<select id="getBoard" parameterType="int" resultType="com.naver.erp.BoardDTO">
-		select writer, readcount, subject, reg_date, email, content 
+		select
+			b_no			"b_no"
+			,subject		"subject"
+			,writer			"writer"
+			,reg_date		"reg_date"
+			,readcount		"readcount"
+			,content		"content"
+			,pwd			"pwd"
+			,email			"email"
+			,group_no		"group_no"
+			,print_no		"print_no"
+			,print_level	"print_level"
 		from board
 		where b_no = #{b_no}		
 	</select>
 	
-	<!-- 조회수+1 update문 -->
-	<update id="updateBoard" parameterType="int">
+	<!-- ************************************************************* -->
+	<!-- 조회수 1 증가하는 즉, 수정하는 update 문을 내포한 update 태그 선언 -->
+	<!-- ************************************************************* -->
+	<update id="updateReadcount" parameterType="int">
 		update board set readcount = readcount+1 where b_no = #{b_no}
 	</update>
+	
+	<!-- 게시글 작성자, 제목, 이메일, 내용을 업데이트하는 update 태그 선언 -->
+	<update id="boardUpdate" parameterType="com.naver.erp.BoardDTO">
+		update board set writer=#{writer}, subject=#{subject}, email=#{email}, content=#{content} where b_no=#{b_no}
+	</update>
+	
+	<!-- 비밀번호를 리턴하는 select 태그 선언 -->
+	<select id="getPwd" parameterType="int" resultType="String">
+		select pwd from board where b_no=#{b_no}
+	</select>
+	
+	<!-- 게시글 삭제하는 delete 태그 선언 -->
+	<delete id="boardDelete" parameterType="com.naver.erp.BoardDTO">
+		delete from board where b_no=#{b_no}
+	</delete>
 
 
 </mapper>

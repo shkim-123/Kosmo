@@ -15,8 +15,20 @@ public interface BoardDAO {
 	//----------------------------------------------------------------
 	List<Map<String, String>> getBoardList();
 	
+	//----------------------------------------------------------------
+	// [1개의 게시판 글 정보]를 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	BoardDTO getBoard(int b_no);
 	
-	int updateBoard(int b_no);
+	//----------------------------------------------------------------
+	// 조회수를 1 증가하고 업데이트한 행의 개수를 얻는 메소드 선언
+	//----------------------------------------------------------------
+	int updateReadcount(int b_no);
+	
+	int boardUpdate(BoardDTO boardDTO);
+	
+	String getPwd(int b_no);
+	
+	int boardDelete(BoardDTO boardDTO);
 	
 }

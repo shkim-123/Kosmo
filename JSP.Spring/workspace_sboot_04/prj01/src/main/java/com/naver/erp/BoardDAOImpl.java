@@ -36,7 +36,7 @@ public class BoardDAOImpl implements BoardDAO {
 		// SqlSessionTemplate 객체의 insert 메소드 호출로
 		// 게시판 글 입력 SQL 구문을 실행하고 입력 성공 행의 개수 얻기
 		//----------------------------------------------------------------
-		int boardRegCnt = sqlSession.insert(
+		int boardRegCnt = this.sqlSession.insert(
 				//----------------------------------------------------------------
 				// 실행할 SQL 구문의 위치를 지정하기
 				// 실행할 SQL 구문의 위치 문자열 패턴은 아래와 같다.
@@ -71,29 +71,103 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	
+	//----------------------------------------------------------------
+	// [1개의 게시판 글 정보]를 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	@Override
 	public BoardDTO getBoard(int b_no) {
 		
 		System.out.println("===BoardDAOImpl.getBoard 시작===");
 		
-		BoardDTO boardDTO = sqlSession.selectOne("com.naver.erp.BoardDAO.getBoard", b_no);
+		//----------------------------------------------------------------
+		// [SqlSessionTemplate 객체]의 selectOne(~,~)를 호출하여 [1개 게시판 글 정보] 얻기
+		// selectOne은 1행 n열의 select 결과를 얻을 때 사용하는 메소드이다.
+		//----------------------------------------------------------------
+		BoardDTO boardDTO = this.sqlSession.selectOne(
+				//----------------------------------------------------------------
+				// 실행할 SQL 구문의 위치를 지정하기
+				// 실행할 SQL 구문의 위치 문자열 패턴은 아래와 같다.
+				// xml 파일 중에 "mapper태그의namespace명.mapper태그내부의호출할SQL구문소유한태그id값"
+				//----------------------------------------------------------------
+				"com.naver.erp.BoardDAO.getBoard"	// 실행할 SQL 구문의 위치 지정
+				//----------------------------------------------------------------
+				// 실행할 SQL구문에서 사용할 데이터 지정하기
+				//----------------------------------------------------------------
+				, b_no								// 실행할 SQL 구문에서 사용할 데이터 지정
+		);
 		
 		System.out.println("===BoardDAOImpl.getBoard 종료===");
 		
+		//----------------------------------------------------------------
+		// [1개의 게시판 글 정보]를 리턴하기
+		//----------------------------------------------------------------
 		return boardDTO;
 	}
 	
+	//----------------------------------------------------------------
+	// [게시판 글 조회수 증가하고 수정행의 개수] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	@Override
-	public int updateBoard(int b_no) {
+	public int updateReadcount(int b_no) {
 		
-		System.out.println("===BoardDAOImpl.updateBoard 시작===");
+		System.out.println("===BoardDAOImpl.updateReadcount 시작===");
 		
-		int boardUpCnt = sqlSession.update("com.naver.erp.BoardDAO.updateBoard", b_no);
+		//----------------------------------------------------------------
+		// [SqlSessionTemplate 객체]의 update(~,~)를 호출하여 [조회수 증가]하기
+		//----------------------------------------------------------------
+		int updateCnt = this.sqlSession.update(
+				"com.naver.erp.BoardDAO.updateReadcount"	// 실행할 SQL 구문의 위치 지정
+				, b_no										// 실행할 SQL 구문에서 사용할 데이터 지정
+		);
 		
-		System.out.println("===BoardDAOImpl.updateBoard 종료===");
+		System.out.println("===BoardDAOImpl.updateReadcount 종료===");
+		
+		return updateCnt;
+		
+	}
+	
+	@Override
+	public int boardUpdate(BoardDTO boardDTO) {
+		
+		System.out.println("===BoardDAOImpl.boardUpdate 시작===");
+		
+		int boardUpCnt = this.sqlSession.update("com.naver.erp.BoardDAO.boardUpdate", boardDTO);
+
+		System.out.println("===BoardDAOImpl.boardUpdate boardUpCnt => " + boardUpCnt);
+
+		System.out.println("===BoardDAOImpl.boardUpdate 종료===");
 		
 		return boardUpCnt;
+	}
+	
+	@Override
+	public String getPwd(int b_no) {
 		
+		System.out.println("===BoardDAOImpl.getPwd 시작===");
+		
+		System.out.println("===BoardDAOImpl.getPwd b_no => " + b_no);
+		
+		String pwd = this.sqlSession.selectOne("com.naver.erp.BoardDAO.getPwd", b_no);
+		
+		System.out.println("===BoardDAOImpl.getPwd pwd => " + pwd);
+		
+		System.out.println("===BoardDAOImpl.getPwd 종료===");
+		
+		return pwd;
+	}
+	
+	@Override
+	public int boardDelete(BoardDTO boardDTO) {
+
+		System.out.println("===BoardDAOImpl.boardDelete 시작===");
+		
+		int boardDelCnt = this.sqlSession.delete("com.naver.erp.BoardDAO.boardDelete", boardDTO);
+		
+		System.out.println("===BoardDAOImpl.boardDelete boardDelCnt => " + boardDelCnt);
+
+		System.out.println("===BoardDAOImpl.boardDelete 종료===");
+		
+		return boardDelCnt;
 	}
 	
 }

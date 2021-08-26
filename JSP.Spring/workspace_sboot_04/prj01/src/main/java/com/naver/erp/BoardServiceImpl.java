@@ -48,34 +48,110 @@ public class BoardServiceImpl implements BoardService {
 		return boardRegCnt;
 	}
 	
+	//----------------------------------------------------------------
+	// [1개 게시판 글] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	@Override
-	public BoardDTO getBoard(int b_no) {
+	public BoardDTO getBoard(int b_no) { 
 		
 		System.out.println("===BoardServiceImpl.getBoard 시작===");
 		
-		int boardUpCnt = updateBoard(b_no);
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 updateReadcount 메소드를 호출하여
+		// [조회수 증가]하고 수정한 행의 개수를 얻는다.
+		//----------------------------------------------------------------
+		int updateCnt = this.boardDAO.updateReadcount(b_no);
 		
-		System.out.println("===BoardServiceImpl.getBoard boardUpCnt => " + boardUpCnt);
+		System.out.println("===BoardServiceImpl.getBoard updateCnt => " + updateCnt);
 		
-		BoardDTO boardDTO = this.boardDAO.getBoard(b_no);
+		//----------------------------------------------------------------
+		// 수정된 개수가 0이라면 
+		//----------------------------------------------------------------
+		if(updateCnt == 0) { return null; }
 		
-		System.out.println("===BoardServiceImpl.getBoard boardDTO => " + boardDTO);
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getBoard 메소드를 호출하여 [1개 게시판 글]을 얻는다. 
+		//----------------------------------------------------------------
+		BoardDTO board = this.boardDAO.getBoard(b_no);
+		
+		System.out.println("===BoardServiceImpl.getBoard boardDTO => " + board);
 		
 		System.out.println("===BoardServiceImpl.getBoard 종료===");
 		
-		return boardDTO;
+		//----------------------------------------------------------------
+		// [1개 게시판 글]이 저장된 BoardDTO 객체 리턴하기
+		//----------------------------------------------------------------
+		return board;
 	}
 	
 	@Override
-	public int updateBoard(int b_no) {
+	public int boardUpdate(BoardDTO boardDTO) {
 		
-		System.out.println("===BoardServiceImpl.updateBoard 시작===");
+		System.out.println("===BoardServiceImpl.boardUpdate 시작===");
 		
-		int boardUpCnt = this.boardDAO.updateBoard(b_no);
+		// 입력한 pwd, b_no 가져오기
+		String pwd = boardDTO.getPwd();
+		int b_no = boardDTO.getB_no();
+
+		// 게시글의 원래 비밀번호 가져오기
+		String getPwd = this.boardDAO.getPwd(b_no);
 		
-		System.out.println("===BoardServiceImpl.updateBoard 종료===");
+		// getPwd가 null 인 경우 게시글이 삭제되었다고 판단하여 -3 리턴한다.
+		if( getPwd == null ) { return -3; }
+
+		// 업데이트된 개수를 저장하는 변수 선언
+		int boardUpCnt = 0;
+		
+		// 비밀번호가 일치한 경우
+		if(getPwd.equals(pwd)) {
+			// BoardDAOImpl 객체의 boardUpdate 메소드 호출
+			boardUpCnt = this.boardDAO.boardUpdate(boardDTO);
+			System.out.println("===BoardServiceImpl.boardUpdate boardUpCnt => " + boardUpCnt);
+		} 
+		// 비밀번호가 일치하지 않은 경우 -1 저장
+		else {
+			boardUpCnt = -1;
+		}
+		
+		System.out.println("===BoardServiceImpl.boardUpdate 종료===");
 		
 		return boardUpCnt;
+	}
+	
+	@Override
+	public int boardDelete(BoardDTO boardDTO) {
+		
+		System.out.println("===BoardServiceImpl.boardDelete 시작===");
+		
+		
+		// 입력한 pwd, b_no 가져오기
+		String pwd = boardDTO.getPwd();
+		int b_no = boardDTO.getB_no();
+
+		// 게시글의 원래 비밀번호 가져오기
+		String getPwd = this.boardDAO.getPwd(b_no);
+		
+		// getPwd가 null 인 경우 게시글이 삭제되었다고 판단하여 -3 리턴한다.
+		if( getPwd == null ) { return -3; }
+		
+		
+		int boardDelCnt = 0;
+		
+		// 비밀번호가 일치하는지 확인
+		if(getPwd.equals(pwd)) {
+			// BoardDAOImpl 객체의 boardUpdate 메소드 호출
+			boardDelCnt = this.boardDAO.boardDelete(boardDTO);
+			System.out.println("===BoardServiceImpl.boardUpdate boardDelCnt => " + boardDelCnt);
+		} 
+		// 비밀번호가 일치하지 않은 경우 -1 저장
+		else {
+			boardDelCnt = -1;
+		}
+		
+		
+		System.out.println("===BoardServiceImpl.boardDelete 종료===");
+		
+		return boardDelCnt;
 	}
 	
 }

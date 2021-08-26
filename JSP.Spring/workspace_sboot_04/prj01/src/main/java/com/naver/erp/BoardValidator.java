@@ -50,7 +50,7 @@ public class BoardValidator implements Validator {
 				, "작성자명 입력요망"         // BoardDTO 객체의 속성변수명이 비거나 공백으로 구성되어 있을때 경고 문구
 			);
 			
-			ValidationUtils.rejectIfEmpty(errors, null, null);
+			// ValidationUtils.rejectIfEmpty(errors, null, null);
 			
 			//----------------------------------------------------------------
 			// BoardDTO 객체의 속성변수명 "writer" 저장된 데이터의 길이가 10자 보다 크면
@@ -132,7 +132,7 @@ public class BoardValidator implements Validator {
 			// Errors 객체에 속성변수명 "pwd" 과 경고 메시지 저장하기
 			//----------------------------------------------------------------
 			String pwd = dto.getPwd();
-			if( Pattern.matches("^[0-9]{4}$", pwd)==false ) {
+			if( pwd!=null && !Pattern.matches("^[0-9]{4}$", pwd) ) {
 				errors.rejectValue("pwd", "암호는 숫자 4자리 입니다. 재입력 요망");
 			}
 

@@ -206,6 +206,189 @@ public class BoardController {
 		return mav;
 	}
 	
+
+	//----------------------------------------------------------------
+	// 가상주소 /boardContentForm.do 로 접근하면 호출되는 메소드 선언
+	//----------------------------------------------------------------
+	// b_no 파라미터명에 해당하는 파라미터값은 숫자문자면 int로 명시하면 숫자로 스프링이 형변환해준다
+	// 단, 반드시 파라미터값이 들어가야 한다. (int에 null이 들어가면 에러가 난다.)
+	//----------------------------------------------------------------
+	@RequestMapping( value="/boardContentForm.do" )
+	public ModelAndView goBoardContentForm(@RequestParam(value="b_no") int b_no) {
+		
+		
+		System.out.println("===BoardController.goBoardContentForm 시작===");
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		//----------------------------------------------------------------		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("boardContentForm.jsp");
+		
+		try {
+			
+			//----------------------------------------------------------------
+			// [BoardServiceImpl 객체]의 getBoard 메소드 호출로 [1개의 게시판 글]을 BoardDTO 객체에 담아오기 
+			//----------------------------------------------------------------
+			BoardDTO board = this.boardService.getBoard(b_no);
+			
+			System.out.println("===BoardController.goBoardContentForm board =>" + board);
+			
+			//----------------------------------------------------------------
+			// [ModelAndView 객체]에 BoardDTO 저장하기
+			//----------------------------------------------------------------
+			mav.addObject("board", board);
+			
+			
+		} catch(Exception ex) {
+			mav.addObject("board", -1);
+		}
+		
+		mav.addObject("b_no", b_no);
+		
+		System.out.println("===BoardController.goBoardContentForm 종료===");
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------		
+		return mav;
+	}
+	
+
+	
+	//----------------------------------------------------------------
+	// 수정/삭제 화면 이동
+	//----------------------------------------------------------------
+	@RequestMapping( value="/boardUpDelForm.do" )
+	public ModelAndView goBoardUpDelForm(
+			//----------------------------------------------------------------
+			// "b_no"라는 파라미터명의 파라미터값이 저장되는 매개변수 b_no 선언
+			// 수정 또는 삭제할 게시판 고유 번호가 들어오는 매개변수 선언
+			//----------------------------------------------------------------
+			@RequestParam(value="b_no") int b_no
+	) {
+		
+		System.out.println("===BoardController.goBoardUpDelForm 시작===");
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		//----------------------------------------------------------------			
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("boardUpDelForm.jsp");
+		
+		try {
+			//----------------------------------------------------------------			
+			// [boardDAOImpl 객체]의 getBoard 메소드 호출로 1개의 게시판글을 BoardDTO 객체에 담아서 가져오기
+			//----------------------------------------------------------------			
+			BoardDTO board = this.boardDAO.getBoard(b_no);
+			mav.addObject("board", board);
+			
+			System.out.println("===BoardController.goBoardUpDelForm board => " + board);
+		
+		} catch(Exception ex) {
+			mav.addObject("board", -1);
+		}
+		
+		System.out.println("===BoardController.goBoardUpDelForm 종료===");
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------				
+		return mav;
+	}
+	
+	@RequestMapping(value="/boardUpDelProc.do")
+	public ModelAndView boardUpDelProc(
+			@RequestParam(value="upDel") String upDel
+			, BoardDTO boardDTO
+			, BindingResult bindingResult
+	) {
+		
+		System.out.println("===BoardController.boardUpDelProc 시작===");
+		
+		String msg = "";
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		//----------------------------------------------------------------			
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("boardUpDelProc.jsp");
+		
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★");
+		System.out.println(boardDTO.getWriter());
+		System.out.println(boardDTO.getSubject());
+		System.out.println(boardDTO.getEmail());
+		System.out.println(boardDTO.getContent());
+		System.out.println(boardDTO.getPwd());
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★");
+		
+		
+		// 수정인 경우
+		if("up".equals(upDel)) {
+			
+			msg = check_BoardDTO(boardDTO, bindingResult);
+			
+			// 유효성 체크 통과 시
+			if("".equals(msg)) {
+				
+				try {
+					
+					// 업데이트 성공한 개수 boardUpCnt에 저장
+					int boardUpCnt = this.boardService.boardUpdate(boardDTO);
+				
+					System.out.println("===BoardController.boardUpDelProc boardUpCnt => " + boardUpCnt);
+					
+					mav.addObject("boardUpCnt", boardUpCnt);
+					
+				} catch(Exception ex) {
+					System.out.println("BoardController.boardUpDelProc up 캐치캐치");
+				}
+			
+			} else {
+				mav.addObject("boardUpCnt", -4);
+			}
+			
+			mav.addObject("boardDelCnt", -2);
+			
+		}
+		// 삭제인 경우
+		else if("del".equals(upDel)) {
+			
+			try {
+				
+				int boardDelCnt = this.boardService.boardDelete(boardDTO);
+				
+				System.out.println("===BoardController.boardUpDelProc boardDelCnt => " + boardDelCnt);
+				
+				mav.addObject("boardDelCnt", boardDelCnt);
+				
+			} catch(Exception ex) {
+				System.out.println("BoardController.boardUpDelProc del 캐치캐치");
+			}
+			
+			mav.addObject("boardUpCnt", -2);
+			
+		}
+		
+		// [ModelAndView 객체] msg 저장
+		mav.addObject("msg", msg);
+		
+		System.out.println("===BoardController.boardUpDelProc 종료===");
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------				
+		return mav;		
+		
+	}
+	
+	
+	
+	
+	
 	//----------------------------------------------------------------
 	// 게시판 입력 또는 수정 시 게시판 입력글의 입력양식의 유효성을 검사하고 
 	// 문제가 있으면 경고 문자를 리턴하는 메소드 선언
@@ -253,52 +436,6 @@ public class BoardController {
 		return checkMsg;
 	}
 	
-	//----------------------------------------------------------------
-	// 가상주소 /boardContentForm.do 로 접근하면 호출되는 메소드 선언
-	//----------------------------------------------------------------
-	// b_no 파라미터명에 해당하는 파라미터값은 숫자문자면 int로 명시하면 숫자로 스프링이 형변환해준다
-	// 단, 반드시 파라미터값이 들어가야 한다. (int에 null이 들어가면 에러가 난다.)
-	//----------------------------------------------------------------
-	@RequestMapping( value="/boardContentForm.do" )
-	public ModelAndView goBoardContentForm(@RequestParam(value="b_no") int b_no) {
-		
-		//----------------------------------------------------------------
-		// [ModelAndView 객체] 생성하기
-		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
-		//----------------------------------------------------------------		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardContentForm.jsp");
-		
-		try {
-			//----------------------------------------------------------------
-			// [BoardServiceImpl 객체]의 getBoard 메소드 호출로 [1개의 게시판 글]을 BoardDTO 객체에 담아오기 
-			//----------------------------------------------------------------
-			BoardDTO board = this.boardService.getBoard(b_no);
-			
-			mav.addObject("board", board);
-			
-			
-		} catch(Exception ex) {
-			mav.addObject("board", -1);
-		}
-		
-		mav.addObject("b_no", b_no);
-		
-		//----------------------------------------------------------------
-		// [ModelAndView 객체] 리턴하기
-		//----------------------------------------------------------------		
-		return mav;
-	}
 	
 	
-	// 댓글 등록 화면 이동
-	@RequestMapping( value="/replyRegForm.do" )
-	public ModelAndView replyRegForm() {
-		
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("replyRegForm.jsp");
-		
-		return mav;
-	}
 }

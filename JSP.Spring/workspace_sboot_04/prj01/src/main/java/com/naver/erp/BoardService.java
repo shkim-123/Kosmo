@@ -7,8 +7,15 @@ public interface BoardService {
 	//----------------------------------------------------------------
 	int insertBoard(BoardDTO boardDTO);
 	
+	//----------------------------------------------------------------
+	// [1개 게시판 글] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	BoardDTO getBoard(int b_no);
 	
-	int updateBoard(int b_no);
+	
+	int boardUpdate(BoardDTO boardDTO);
+	
+	
+	int boardDelete(BoardDTO boardDTO);
 	
 }

@@ -115,7 +115,7 @@
 	<!-- ************************************************************* -->
 	<form name="boardRegForm" method="post" action="/boardRegProc.do">
 		<table border="1">
-			<caption>[새글쓰기]</caption>
+			<caption><b>[새글쓰기]</b></caption>
 			<tr>
 				<th bgcolor="lightgray">이름</th>
 				<td>

@@ -22,6 +22,18 @@
 <!-- JQuery 삽입 -->
 <script src="/resources/jquery-1.11.0.min.js" type="text/javascript"></script>
 
+<style>
+	a {
+		text-decoration:none;
+	    display:block;
+	    width:80px;
+	    line-height:30px;
+	    text-align:center;
+	    background-color:#222;
+	    color:#fff;
+	}
+</style>
+
 <script>
 
 	//--------------------------------------------------------------
@@ -60,7 +72,7 @@
 	<!-- ************************************************************* -->
 	<!-- href="javascript:자바스크립트코드" 클릭 시 코딩한 자바스크립트코드를 실행한다. -->
 	<!-- ************************************************************* -->
-	<a href="javascript:goBoardRegForm();">[새글쓰기]</a>
+	<a href="javascript:goBoardRegForm();">새글쓰기</a>
 		
 	<table border="1">
 		
@@ -132,6 +144,7 @@
 	
 	<!-- ************************************************************* -->
 	<!-- 게시판 상세 보기 화면으로 이동하는 form 태그 선언하기 -->
+	<!-- form 태그 안에 action 값이 있다면 페이지 이동하겠다는 말이다. -->
 	<!-- ************************************************************* -->
 	<form name="boardContentForm" method="post" action="/boardContentForm.do">
 		<!-- ************************************************************* -->
