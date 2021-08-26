@@ -317,15 +317,6 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("boardUpDelProc.jsp");
 		
-		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★");
-		System.out.println(boardDTO.getWriter());
-		System.out.println(boardDTO.getSubject());
-		System.out.println(boardDTO.getEmail());
-		System.out.println(boardDTO.getContent());
-		System.out.println(boardDTO.getPwd());
-		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★");
-		
-		
 		// 수정인 경우
 		if("up".equals(upDel)) {
 			

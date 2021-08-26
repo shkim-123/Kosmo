@@ -29,8 +29,6 @@
 	}
 
 	function checkBoardUpDelForm(upDel){
-
-
 		
 		var boardUpDelFrom = $("[name='boardUpDelForm']");
 
@@ -42,89 +40,87 @@
 		//----------------------------------------------------------------
 		if(upDel == "up"){
 
-			if(confirm("정말 수정하시겠습니까?")) {
+			if(!confirm("정말 수정하시겠습니까?")) { return; }
 
-				// 비동기 통신
-				$.ajax({
-					url: "/boardUpDelProc.do" 
-					, type: "post"
-					, data: $("[name='boardUpDelForm']").serialize()
-					, success: function(responseHtml) {
-						console.log(responseHtml);
+			// 비동기 통신
+			$.ajax({
+				url: "/boardUpDelProc.do" 
+				, type: "post"
+				, data: boardUpDelFrom.serialize()
+				, success: function(responseHtml) {
+					console.log(responseHtml);
 	
-						var boardUpCnt = $(responseHtml).filter(".boardUpCnt").text();
-						var msg = $(responseHtml).filter(".msg").text();
-						boardUpCnt = parseInt(boardUpCnt, 10);
+					var boardUpCnt = $(responseHtml).filter(".boardUpCnt").text();
+					var msg = $(responseHtml).filter(".msg").text();
+					boardUpCnt = parseInt(boardUpCnt, 10);
 
-						// 1인 경우 업데이트 성공
-						if( boardUpCnt == 1 ){
-							alert("업데이트 성공!");
-							location.replace("/boardList.do");
-						}
-						// -1인 경우 암호 불일치 
-						else if(boardUpCnt == -1) {
-							alert("암호가 일치하지 않습니다.");
-							$(".pwd").val("");
-							$(".pwd").focus();
-						}
-						// -3인 경우 게시글 삭제됨 
-						else if(boardUpCnt == -3) {
-							alert("원 게시글이 삭제되었습니다.");
-							location.replace("/boardList.do");
-						}
-						// -4인 경우 유효성 체크 통과 못함
-						else if(boardUpCnt == -4){
-							alert(msg);
-						}
+					// 1인 경우 업데이트 성공
+					if( boardUpCnt == 1 ){
+						alert("업데이트 성공!");
+						location.replace("/boardList.do");
+					}
+					// -1인 경우 암호 불일치 
+					else if(boardUpCnt == -1) {
+						alert("암호가 일치하지 않습니다.");
+						$(".pwd").val("");
+						$(".pwd").focus();
+					}
+					// -3인 경우 게시글 삭제됨 
+					else if(boardUpCnt == -3) {
+						alert("원 게시글이 삭제되었습니다.");
+						location.replace("/boardList.do");
+					}
+					// -4인 경우 유효성 체크 통과 못함
+					else if(boardUpCnt == -4){
+						alert(msg);
+					}
 						
-					}
-					, error: function() {
-						alert("서버 통신 실패!");
-					}
-				});
+				}
+				, error: function() {
+					alert("서버 통신 실패!");
+				}
+			});
 				
-			} // if문 끝
+		} 
 		//----------------------------------------------------------------
 		// 삭제인 경우
 		//----------------------------------------------------------------
-		} else if(upDel == "del") {
-			if(confirm("정말 삭제하시겠습니까?")){
+		else if(upDel == "del") {
+			if(!confirm("정말 삭제하시겠습니까?")){ return; }
 
-				$.ajax({
-					url: "/boardUpDelProc.do" 
-					, type: "post"
-					, data: $("[name='boardUpDelForm']").serialize()
-					, success: function(responseHtml){
-						console.log(responseHtml);
+			// 비동기 통신
+			$.ajax({
+				url: "/boardUpDelProc.do" 
+				, type: "post"
+				, data: boardUpDelFrom.serialize()
+				, success: function(responseHtml){
+					console.log(responseHtml);
 
+					var boardDelCnt = $(responseHtml).filter(".boardDelCnt").text();
+					boardDelCnt = parseInt(boardDelCnt, 10);
 
-						var boardDelCnt = $(responseHtml).filter(".boardDelCnt").text();
-						boardDelCnt = parseInt(boardDelCnt, 10);
-
-						// 1인 경우 삭제 성공!
-						if(boardDelCnt == 1){
-							alert("삭제 성공!");
-							location.replace("/boardList.do");
-						} 
-						// -1인 경우 암호 불일치 
-						else if(boardDelCnt == -1){
-							alert("암호가 일치하지 않습니다.");
-							$(".pwd").val("");
-							$(".pwd").focus();
-						}
-						// -3인 경우 게시글 삭제됨 
-						else if(boardDelCnt == -3){
-							alert("원 게시글이 삭제되었습니다.");
-							location.replace("/boardList.do");
-						}
-
-						
-					}
-					, error: function() {
-						alert("서버 통신 실패!");
+					// 1인 경우 삭제 성공!
+					if(boardDelCnt == 1){
+						alert("삭제 성공!");
+						location.replace("/boardList.do");
 					} 
-				});
-			} // if문 끝
+					// -1인 경우 암호 불일치 
+					else if(boardDelCnt == -1){
+						alert("암호가 일치하지 않습니다.");
+						$(".pwd").val("");
+						$(".pwd").focus();
+					}
+					// -3인 경우 게시글 삭제됨 
+					else if(boardDelCnt == -3){
+						alert("원 게시글이 삭제되었습니다.");
+						location.replace("/boardList.do");
+					}
+						
+				}
+				, error: function() {
+					alert("서버 통신 실패!");
+				} 
+			});
 		}
 		
 	}
