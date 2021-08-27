@@ -84,20 +84,59 @@
 		update board set readcount = readcount+1 where b_no = #{b_no}
 	</update>
 	
-	<!-- 게시글 작성자, 제목, 이메일, 내용을 업데이트하는 update 태그 선언 -->
-	<update id="boardUpdate" parameterType="com.naver.erp.BoardDTO">
-		update board set writer=#{writer}, subject=#{subject}, email=#{email}, content=#{content} where b_no=#{b_no}
-	</update>
-	
-	<!-- 비밀번호를 리턴하는 select 태그 선언 -->
-	<select id="getPwd" parameterType="int" resultType="String">
-		select pwd from board where b_no=#{b_no}
+	<!-- ************************************************************* -->
+	<!-- 삭제/수정할 게시판의 존재 개수를 리턴하는 select 선언 -->
+	<!-- ************************************************************* -->
+	<select id="getBoardCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board where b_no=#{b_no}
 	</select>
 	
-	<!-- 게시글 삭제하는 delete 태그 선언 -->
-	<delete id="boardDelete" parameterType="com.naver.erp.BoardDTO">
-		delete from board where b_no=#{b_no}
+	<!-- ************************************************************* -->
+	<!-- 삭제/수정할 게시판의 비밀번호 개수를 리턴하는 select 선언 -->
+	<!-- ************************************************************* -->
+	<select id="getPwdCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board where pwd=#{pwd} and b_no=#{b_no}
+	</select>
+	
+	<!-- ************************************************************* -->
+	<!-- 게시판 수정하는 update 문을 내포한 update 태그 선언 -->
+	<!-- ************************************************************* -->
+	<update id="updateBoard"  parameterType="com.naver.erp.BoardDTO">
+		update 
+			board 
+		set 
+			writer=#{writer}
+			,subject=#{subject}
+			,email=#{email}
+			,content=#{content} 
+		where 
+			b_no=#{b_no} and pwd=#{pwd}
+	</update>
+	
+	<!-- ************************************************************* -->
+	<!-- 삭제할 게시판의 자식글 존재 개수를 리턴하는 select 문을 내포한 select 태그 선언  -->
+	<!-- ************************************************************* -->
+	<select id="getChildrenCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board 
+		where group_no = (select group_no from board where b_no=#{b_no})
+		    and print_no = (select print_no+1 from board where b_no=#{b_no})
+		    and print_level = (select print_level+1 from board where b_no=#{b_no})		
+	</select>
+	
+	<!-- ************************************************************* -->
+	<!-- 삭제될 게시판 이후 글의 출력 순서번호를 1씩 감소 시킨 후 수정하는 update 문을 내포한 update 태그 선언 -->
+	<!-- ************************************************************* -->
+	<update id="downPrintNo" parameterType="com.naver.erp.BoardDTO">
+		update board set print_no = print_no-1
+		where group_no = (select group_no from board where b_no=#{b_no})
+			and print_no > (select print_no from board where b_no=#{b_no})		
+	</update>
+	
+	<!-- ************************************************************* -->
+	<!-- 게시판 삭제하는 delete 문을 내포한 delete 태그 선언 -->
+	<!-- ************************************************************* -->
+	<delete id="deleteBoard" parameterType="com.naver.erp.BoardDTO">
+		delete from board where b_no=#{b_no} and pwd=#{pwd}
 	</delete>
-
 
 </mapper>

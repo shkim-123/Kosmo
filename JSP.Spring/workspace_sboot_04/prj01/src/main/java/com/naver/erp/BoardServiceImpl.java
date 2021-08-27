@@ -84,74 +84,88 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 	}
 	
+	//----------------------------------------------------------------
+	// [1개 게시판] 수정 실행하고 수정 적용행의 개수를 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	@Override
-	public int boardUpdate(BoardDTO boardDTO) {
+	public int updateBoard(BoardDTO boardDTO) {
 		
-		System.out.println("===BoardServiceImpl.boardUpdate 시작===");
+		System.out.println("===BoardServiceImpl.updateBoard 시작===");
 		
-		// 입력한 pwd, b_no 가져오기
-		String pwd = boardDTO.getPwd();
-		int b_no = boardDTO.getB_no();
-
-		// 게시글의 원래 비밀번호 가져오기
-		String getPwd = this.boardDAO.getPwd(b_no);
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getBoardCnt 메소드를 호출하여 
+		// 수정할 게시판의 존재 개수를 얻는다.
+		//----------------------------------------------------------------
+		int boardCnt = this.boardDAO.getBoardCnt(boardDTO);
+		if(boardCnt == 0) { return -1; }
 		
-		// getPwd가 null 인 경우 게시글이 삭제되었다고 판단하여 -3 리턴한다.
-		if( getPwd == null ) { return -3; }
-
-		// 업데이트된 개수를 저장하는 변수 선언
-		int boardUpCnt = 0;
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getPwdCnt 메소드를 호출하여 
+		// 수정할 게시판의 비밀번호 존재 개수를 얻는다.
+		//----------------------------------------------------------------
+		int pwdCnt = this.boardDAO.getPwdCnt(boardDTO);
+		if(pwdCnt == 0) { return -2; }
 		
-		// 비밀번호가 일치한 경우
-		if(getPwd.equals(pwd)) {
-			// BoardDAOImpl 객체의 boardUpdate 메소드 호출
-			boardUpCnt = this.boardDAO.boardUpdate(boardDTO);
-			System.out.println("===BoardServiceImpl.boardUpdate boardUpCnt => " + boardUpCnt);
-		} 
-		// 비밀번호가 일치하지 않은 경우 -1 저장
-		else {
-			boardUpCnt = -1;
-		}
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 updateBoard 메소드를 호출하여 
+		// 게시판 수정 명령한 후 수정 적용행의 개수를 얻는다.
+		//----------------------------------------------------------------
+		int updateCnt = this.boardDAO.updateBoard(boardDTO);
 		
-		System.out.println("===BoardServiceImpl.boardUpdate 종료===");
+		System.out.println("===BoardServiceImpl.updateBoard 종료===");
 		
-		return boardUpCnt;
+		//----------------------------------------------------------------
+		// [1개 게시판 글]이 저장된 BoardDTO 객체 리턴하기
+		//----------------------------------------------------------------
+		return updateCnt;
+		
 	}
 	
+	//----------------------------------------------------------------
+	// [1개 게시판] 삭제 후 삭제 적용행의 개수를 리턴하는 메소드 선언
+	//----------------------------------------------------------------
 	@Override
-	public int boardDelete(BoardDTO boardDTO) {
+	public int deleteBoard(BoardDTO boardDTO) {
 		
-		System.out.println("===BoardServiceImpl.boardDelete 시작===");
+		System.out.println("===BoardServiceImpl.deleteBoard 시작===");
 		
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getBoardCnt 메소드를 호출하여 
+		// 삭제할 게시판의 존재 개수를 얻는다.
+		//----------------------------------------------------------------
+		int boardCnt = this.boardDAO.getBoardCnt(boardDTO);
+		if(boardCnt == 0) { return -1; }
 		
-		// 입력한 pwd, b_no 가져오기
-		String pwd = boardDTO.getPwd();
-		int b_no = boardDTO.getB_no();
-
-		// 게시글의 원래 비밀번호 가져오기
-		String getPwd = this.boardDAO.getPwd(b_no);
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getPwdCnt 메소드를 호출하여 
+		// 삭제할 게시판의 비밀번호 존재 개수를 얻는다.
+		//----------------------------------------------------------------
+		int pwdCnt = this.boardDAO.getPwdCnt(boardDTO);
+		if(pwdCnt == 0) { return -2; }
 		
-		// getPwd가 null 인 경우 게시글이 삭제되었다고 판단하여 -3 리턴한다.
-		if( getPwd == null ) { return -3; }
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 getChildrenCnt 메소드를 호출하여
+		// [삭제할 게시판의 자식글 존재 개수]를 얻는다.
+		//----------------------------------------------------------------
+		int childrenCnt = this.boardDAO.getChildrenCnt(boardDTO);
+		if(childrenCnt > 0) { return -3; }
 		
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 downPrintNo 메소드를 호출하여
+		// [삭제할 게시판 이후 글의 출력 순서번호를 1씩 감소 시킨 후 수정 적용행의 개수]를 얻는다.
+		//----------------------------------------------------------------
+		int downPrintNoCnt = this.boardDAO.downPrintNo(boardDTO);
 		
-		int boardDelCnt = 0;
+		//----------------------------------------------------------------
+		// [BoardDAOImpl 객체]의 deleteBoard 메소드를 호출하여
+		// [게시판 삭제 명령한 후 삭제 적용행의 개수]를 얻는다.
+		//----------------------------------------------------------------
+		int deleteCnt = this.boardDAO.deleteBoard(boardDTO);
 		
-		// 비밀번호가 일치하는지 확인
-		if(getPwd.equals(pwd)) {
-			// BoardDAOImpl 객체의 boardUpdate 메소드 호출
-			boardDelCnt = this.boardDAO.boardDelete(boardDTO);
-			System.out.println("===BoardServiceImpl.boardUpdate boardDelCnt => " + boardDelCnt);
-		} 
-		// 비밀번호가 일치하지 않은 경우 -1 저장
-		else {
-			boardDelCnt = -1;
-		}
+		System.out.println("===BoardServiceImpl.deleteBoard 종료===");
 		
-		
-		System.out.println("===BoardServiceImpl.boardDelete 종료===");
-		
-		return boardDelCnt;
+		return deleteCnt;
 	}
+	
 	
 }

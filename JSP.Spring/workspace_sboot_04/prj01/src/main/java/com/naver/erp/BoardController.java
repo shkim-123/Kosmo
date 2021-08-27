@@ -299,16 +299,32 @@ public class BoardController {
 		return mav;
 	}
 	
+	//----------------------------------------------------------------				
+	// /boardUpDelProc.do 접속 시 호출되는 메소드 선언
+	//----------------------------------------------------------------				
 	@RequestMapping(value="/boardUpDelProc.do")
 	public ModelAndView boardUpDelProc(
+			//----------------------------------------------------------------				
+			// "upDel" 라는 파라미터명의 파라미터값이 저장된 매개변수 upDel 선언 
+			//----------------------------------------------------------------				
 			@RequestParam(value="upDel") String upDel
+			//----------------------------------------------------------------				
+			// 파라미터값을 저장할 [BoardDTO 객체]를 매개변수로 선언
+			//----------------------------------------------------------------				
 			, BoardDTO boardDTO
+			//----------------------------------------------------------------				
+			// 유효성 검사 결과를 관리하는 BindingResult 객체가 저장되어 들어오는 매개변수 bindingResult 선언
+			//----------------------------------------------------------------				
 			, BindingResult bindingResult
 	) {
 		
 		System.out.println("===BoardController.boardUpDelProc 시작===");
 		
+		//----------------------------------------------------------------
+		// 유효성 체크 에러 메시지 저장할 변수 msg 선언
+		//----------------------------------------------------------------
 		String msg = "";
+		int boardUpDelCnt = 0;
 		
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 생성하기
@@ -317,54 +333,62 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("boardUpDelProc.jsp");
 		
-		// 수정인 경우
+		//----------------------------------------------------------------			
+		// 만약 [게시판 수정] 모드이면 수정 실행하고 수정 적용행의 개수얻기
+		//----------------------------------------------------------------			
 		if("up".equals(upDel)) {
 			
+			System.out.println("===BoardController.boardUpDelProc up===");
+			
+			//----------------------------------------------------------------		
+			// check_BoardDTO 메소드를 호출하여 유효성 체크하고 에러 메시지 문자 얻기
+			//----------------------------------------------------------------			
 			msg = check_BoardDTO(boardDTO, bindingResult);
 			
-			// 유효성 체크 통과 시
+			//----------------------------------------------------------------			
+			// 만약 msg 안에 ""가 저장되어 있으면, 즉, 유효성 체크를 통과했으면
+			//----------------------------------------------------------------			
 			if("".equals(msg)) {
-				
 				try {
-					
-					// 업데이트 성공한 개수 boardUpCnt에 저장
-					int boardUpCnt = this.boardService.boardUpdate(boardDTO);
+					//----------------------------------------------------------------		
+					// BoardServiceImpl 객체의 updateBoard 라는 메소드 호출로
+					// 게시판 수정 실행하고 수정 적용행의 개수얻기
+					//----------------------------------------------------------------			
+					boardUpDelCnt = this.boardService.updateBoard(boardDTO);
 				
-					System.out.println("===BoardController.boardUpDelProc boardUpCnt => " + boardUpCnt);
-					
-					mav.addObject("boardUpCnt", boardUpCnt);
+					System.out.println("===BoardController.boardUpDelProc boardUpDelCnt => " + boardUpDelCnt);
 					
 				} catch(Exception ex) {
 					System.out.println("BoardController.boardUpDelProc up 캐치캐치");
 				}
 			
-			} else {
-				mav.addObject("boardUpCnt", -4);
 			}
-			
-			mav.addObject("boardDelCnt", -2);
-			
+
 		}
-		// 삭제인 경우
+		//----------------------------------------------------------------			
+		// 만약 [게시판 삭제] 모드이면
+		//----------------------------------------------------------------			
 		else if("del".equals(upDel)) {
 			
+			System.out.println("===BoardController.boardUpDelProc del===");
+			
 			try {
-				
-				int boardDelCnt = this.boardService.boardDelete(boardDTO);
-				
-				System.out.println("===BoardController.boardUpDelProc boardDelCnt => " + boardDelCnt);
-				
-				mav.addObject("boardDelCnt", boardDelCnt);
+				//----------------------------------------------------------------			
+				// 삭제 실행하고 삭제 적용행의 개수 얻기
+				//----------------------------------------------------------------			
+				boardUpDelCnt = this.boardService.deleteBoard(boardDTO);
 				
 			} catch(Exception ex) {
 				System.out.println("BoardController.boardUpDelProc del 캐치캐치");
 			}
 			
-			mav.addObject("boardUpCnt", -2);
-			
 		}
 		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] boardUpDelCnt 저장
 		// [ModelAndView 객체] msg 저장
+		//----------------------------------------------------------------
+		mav.addObject("boardUpDelCnt", boardUpDelCnt);
 		mav.addObject("msg", msg);
 		
 		System.out.println("===BoardController.boardUpDelProc 종료===");
@@ -375,9 +399,6 @@ public class BoardController {
 		return mav;		
 		
 	}
-	
-	
-	
 	
 	
 	//----------------------------------------------------------------
@@ -426,7 +447,6 @@ public class BoardController {
 		//----------------------------------------------------------------
 		return checkMsg;
 	}
-	
 	
 	
 }
