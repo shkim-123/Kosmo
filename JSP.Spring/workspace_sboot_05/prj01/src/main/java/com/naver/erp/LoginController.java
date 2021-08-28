@@ -17,7 +17,7 @@ public class LoginController {
 	private LoginDAO loginDAO;
 	
 
-	@RequestMapping("/loginForm.do")
+	@RequestMapping(value="/loginForm.do")
 	public ModelAndView loginForm() {
 		
 		System.out.println("===LoginForm.loginForm() 시작===");
@@ -30,7 +30,7 @@ public class LoginController {
 		return mav;
 	}
 	
-	@RequestMapping("/loginProc.do")
+	@RequestMapping(value="/loginProc.do")
 	public ModelAndView loginProc(HttpServletRequest request) {
 		
 		System.out.println("===LoginForm.loginProc 시작===");
