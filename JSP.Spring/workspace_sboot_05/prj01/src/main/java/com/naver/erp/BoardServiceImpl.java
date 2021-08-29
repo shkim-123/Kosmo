@@ -37,4 +37,49 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 		
 	}
+	
+	// 게시글 수정하기
+	@Override
+	public int updateBoard(BoardDTO boardDTO) {
+		
+		// 게시글이 존재하는지 확인
+		int boardCnt = this.boardDAO.getBoardCnt(boardDTO);
+		if(boardCnt == 0) {return -1;}
+				
+		// 비밀번호 일치하는지 확인		
+		int pwdCnt = this.boardDAO.getPwdCnt(boardDTO);
+		if(pwdCnt == 0) {return -2;}
+				
+		// 게시글 수정하기
+		int updateCnt = this.boardDAO.updateBoard(boardDTO);
+		
+		return updateCnt;
+		
+	}
+	
+	// 게시글 삭제하기
+	@Override
+	public int deleteBoard(BoardDTO boardDTO) {
+		
+		// 게시글이 존재하는지 확인
+		int boardCnt = this.boardDAO.getBoardCnt(boardDTO);
+		if(boardCnt == 0) {return -1;}
+		
+		// 비밀번호 일치하는지 확인
+		int pwdCnt = this.boardDAO.getPwdCnt(boardDTO);
+		if(pwdCnt == 0) {return -2;}
+		
+		// 댓글이 존재하는지 확인
+		int childrenCnt = this.boardDAO.getChildrenCnt(boardDTO);
+		if(childrenCnt > 0) {return -3;}
+		
+		// 게시글 출력순서번호 -1씩 업데이트
+		int downPrintNoCnt = this.boardDAO.downPrintNo(boardDTO);
+		
+		// 게시글 삭제하기
+		int deleteBoard = this.boardDAO.deleteBoard(boardDTO);
+		
+		return deleteBoard;
+	}
+	
 }

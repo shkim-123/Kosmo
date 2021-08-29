@@ -12,14 +12,19 @@
 
 <script>
 
-	
-	
 	// 목록으로 버튼 눌렀을 경우
 	function goBoardList(){
-		if(!confirm("목록으로 이동하시겠습니까?")){return;}
+		//if(!confirm("목록으로 이동하시겠습니까?")){return;}
 
 		location.replace("/boardList.do");
 	}
+
+	// 수정/삭제 버튼 눌렀을 경우
+	function goBoardUpDelForm(){
+		// location.replace("/boardUpDelForm.do");
+		document.boardContentForm.submit();
+	}
+	
 
 
 </script>
@@ -44,7 +49,7 @@
 			int readcount = boardDTO.getReadcount();
 	%>
 	
-	<form name="boardContentForm">
+	<form name="boardContentForm" method="post" action="/boardUpDelForm.do">
 		<table border="1">
 			<caption>[게시글 보기]</caption>
 			<tr>
@@ -84,6 +89,8 @@
 		</table>
 		
 		<br>
+		
+		<input type="hidden" name="b_no" value="<%=b_no%>">
 		
 		<input type="button" value="댓글쓰기" onClick="">
 		<input type="button" value="수정/삭제하기" onClick="goBoardUpDelForm();">

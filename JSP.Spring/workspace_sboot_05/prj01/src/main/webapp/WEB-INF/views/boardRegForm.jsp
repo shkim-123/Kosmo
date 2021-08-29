@@ -48,7 +48,7 @@
 	
 	// 목록으로 버튼 눌렀을 경우
 	function goBoardList(){
-		if(!confirm("목록으로 이동하시겠습니까?")){return;}
+		//if(!confirm("목록으로 이동하시겠습니까?")){return;}
 
 		location.replace("/boardList.do");
 	}

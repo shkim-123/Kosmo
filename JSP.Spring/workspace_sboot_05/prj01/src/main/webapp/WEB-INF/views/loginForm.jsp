@@ -81,7 +81,7 @@
 
 	<form name="login_form">
 	
-		<table cellpadding="4px">
+		<table cellpadding="4px" border="1">
 			<caption><b>[로그인]</b></caption>
 			<tr>
 				<th>아이디</th>

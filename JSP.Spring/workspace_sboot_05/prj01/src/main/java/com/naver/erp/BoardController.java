@@ -96,6 +96,59 @@ public class BoardController {
 		return mav;
 	}
 	
+	// 게시글 수정/삭제 화면으로 이동
+	@RequestMapping( value="/boardUpDelForm.do" )
+	public ModelAndView goBoardUpDelForm(@RequestParam(value="b_no") int b_no) {
+		ModelAndView mav = new ModelAndView();
+		
+		BoardDTO getBoard = null;
+		
+		try {
+			// 가져온 게시글 저장
+			getBoard = this.boardServie.getBoard(b_no);
+			
+		}catch(Exception ex) {
+			System.out.println("goBoardContentForm catch!! => " + ex);
+		}
+		
+		
+		mav.setViewName("boardUpDelForm.jsp");
+		mav.addObject("getBoard", getBoard);
+		return mav;
+	}
+	
+	// 게시글 수정/삭제하기
+	@RequestMapping( value="/boardUpDelProc.do" )
+	public ModelAndView upDelBoard(
+			BoardDTO boardDTO
+			, @RequestParam(value="upDel") String upDel
+			, BindingResult bindingResult
+	) {
+		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		int upDelCnt = 0;
+		
+		// 수정인 경우
+		if("up".equals(upDel)) {
+			// 유효성 체크
+			msg = checkForm(boardDTO, bindingResult);
+			
+			// 유효성 체크 통과 시 
+			if("".equals(msg)) {
+				upDelCnt = this.boardServie.updateBoard(boardDTO);
+			}
+			
+		} else if("del".equals(upDel)) {
+			upDelCnt = this.boardServie.deleteBoard(boardDTO);
+		}
+		
+		mav.setViewName("boardUpDelProc.jsp");
+		mav.addObject("msg", msg);
+		mav.addObject("upDelCnt", upDelCnt);
+		
+		return mav;
+	}
+	
 	// 유효성 체크 함수
 	public String checkForm(BoardDTO boardDTO, BindingResult bindingResult) {
 		String checkMsg ="";

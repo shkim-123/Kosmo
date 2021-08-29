@@ -49,5 +49,57 @@ public class BoardDAOImpl implements BoardDAO {
 		return getBoard;
 	}
 	
+	// 게시글 존재하는지 리턴
+	@Override
+	public int getBoardCnt(BoardDTO boardDTO) {
+		
+		int boardCnt = this.sqlSession.selectOne("com.naver.erp.BoardDAO.getBoardCnt", boardDTO);
+		
+		return boardCnt;
+	}
 	
+	// 비밀번호 일치하는지 리턴
+	@Override
+	public int getPwdCnt(BoardDTO boardDTO) {
+		
+		int pwdCnt = this.sqlSession.selectOne("com.naver.erp.BoardDAO.getPwdCnt", boardDTO);
+		
+		return pwdCnt;
+	}
+	
+	// 수정한 게시글 개수 리턴
+	@Override
+	public int updateBoard(BoardDTO boardDTO) {
+		
+		int updateBoard = this.sqlSession.update("com.naver.erp.BoardDAO.updateBoard", boardDTO);
+		
+		return updateBoard;
+	}
+	
+	// 댓글이 존재하는지 리턴
+	@Override
+	public int getChildrenCnt(BoardDTO boardDTO) {
+		
+		int childrenCnt = this.sqlSession.selectOne("com.naver.erp.BoardDAO.getChildrenCnt", boardDTO);
+		
+		return childrenCnt;
+	}
+	
+	// 출력순서번호 -1씩 업데이트
+	@Override
+	public int downPrintNo(BoardDTO boardDTO) {
+		
+		int downPrintNoCnt = this.sqlSession.update("com.naver.erp.BoardDAO.downPrintNo", boardDTO);
+		
+		return downPrintNoCnt;
+	}
+	
+	// 삭제한 게시글 개수 리턴
+	@Override
+	public int deleteBoard(BoardDTO boardDTO) {
+		
+		int deleteBoard = this.sqlSession.delete("com.naver.erp.BoardDAO.deleteBoard", boardDTO);
+		
+		return deleteBoard;
+	}
 }

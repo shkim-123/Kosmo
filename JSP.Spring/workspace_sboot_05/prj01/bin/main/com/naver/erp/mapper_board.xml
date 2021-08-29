@@ -29,5 +29,35 @@
 	<select id="getBoard" parameterType="int" resultType="com.naver.erp.BoardDTO">
 		select b_no, subject, writer, content, email, reg_date, readcount from board where b_no=${b_no}
 	</select>
+	
+	<select id="getBoardCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board where b_no=#{b_no}
+	</select>
+	
+	<select id="getPwdCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board where b_no=#{b_no} and pwd=#{pwd}
+	</select>
+	
+	<update id="updateBoard" parameterType="com.naver.erp.BoardDTO">
+		update board set writer=#{writer}, subject=#{subject}, email=#{email}, content=#{content}
+		where b_no=#{b_no} and pwd=#{pwd}
+	</update>
+	
+	<select id="getChildrenCnt" parameterType="com.naver.erp.BoardDTO" resultType="int">
+		select count(*) from board 
+		where group_no = (select group_no from board where b_no=#{b_no})
+			and print_no = (select print_no+1 from board where b_no=#{b_no})
+			and print_level = (select print_level+1 from board where b_no=#{b_no})
+	</select>
+
+	<update id="downPrintNo" parameterType="com.naver.erp.BoardDTO">
+		update board set print_no=print_no-1 
+		where b_no=#{b_no} 
+			and print_no > (select print_no from board where b_no=#{b_no})
+	</update>
+	
+	<delete id="deleteBoard" parameterType="com.naver.erp.BoardDTO">
+		delete from board where b_no=#{b_no} and pwd=#{pwd}
+	</delete>
 
 </mapper>

@@ -9,5 +9,11 @@ public interface BoardService {
 	
 	// 게시글 하나 가져오기
 	BoardDTO getBoard(int b_no);
+	
+	// 게시글 수정하기
+	int updateBoard(BoardDTO boardDTO);
+	
+	// 게시글 삭제하기
+	int deleteBoard(BoardDTO boardDTO);
 
 }
