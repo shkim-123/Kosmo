@@ -89,9 +89,9 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int downPrintNo(BoardDTO boardDTO) {
 		
-		int downPrintNoCnt = this.sqlSession.update("com.naver.erp.BoardDAO.downPrintNo", boardDTO);
+		int downPrintNo = this.sqlSession.update("com.naver.erp.BoardDAO.downPrintNo", boardDTO);
 		
-		return downPrintNoCnt;
+		return downPrintNo;
 	}
 	
 	// 삭제한 게시글 개수 리턴
@@ -101,5 +101,23 @@ public class BoardDAOImpl implements BoardDAO {
 		int deleteBoard = this.sqlSession.delete("com.naver.erp.BoardDAO.deleteBoard", boardDTO);
 		
 		return deleteBoard;
+	}
+	
+	// 출력순서번호 +1씩 업데이트
+	@Override
+	public int upPrintNo(BoardDTO boardDTO) {
+		
+		int upPrintNo = this.sqlSession.update("com.naver.erp.BoardDAO.upPrintNo", boardDTO);
+		
+		return upPrintNo;
+	}
+	
+	// 댓글 등록
+	@Override
+	public int insertReply(BoardDTO boardDTO) {
+		
+		int insertReply = this.sqlSession.insert("com.naver.erp.BoardDAO.insertReply", boardDTO);
+		
+		return insertReply;
 	}
 }

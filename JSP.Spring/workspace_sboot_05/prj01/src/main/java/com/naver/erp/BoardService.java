@@ -16,4 +16,7 @@ public interface BoardService {
 	// 게시글 삭제하기
 	int deleteBoard(BoardDTO boardDTO);
 
+	// 댓글 등록
+	int insertReply(BoardDTO boardDTO);
+	
 }

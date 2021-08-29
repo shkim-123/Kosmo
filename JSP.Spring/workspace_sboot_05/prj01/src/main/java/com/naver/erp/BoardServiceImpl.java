@@ -82,4 +82,21 @@ public class BoardServiceImpl implements BoardService {
 		return deleteBoard;
 	}
 	
+	// 댓글 등록
+	@Override
+	public int insertReply(BoardDTO boardDTO) {
+		
+		// 게시글이 존재하는지 확인
+		int boardCnt = this.boardDAO.getBoardCnt(boardDTO);
+		if(boardCnt == 0) {return -1;}
+		
+		// 게시글 출력순서번호 +1씩 업데이트
+		int upPringNoCnt = this.boardDAO.upPrintNo(boardDTO);
+		
+		// 댓글 등록
+		int insertReply = this.boardDAO.insertReply(boardDTO);
+		
+		return insertReply;
+	}
+	
 }

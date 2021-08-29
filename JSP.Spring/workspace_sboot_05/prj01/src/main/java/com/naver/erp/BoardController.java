@@ -135,16 +135,59 @@ public class BoardController {
 			
 			// 유효성 체크 통과 시 
 			if("".equals(msg)) {
-				upDelCnt = this.boardServie.updateBoard(boardDTO);
+				try {
+					upDelCnt = this.boardServie.updateBoard(boardDTO);
+				} catch(Exception ex) {
+					System.out.println("upDelBoard up catch!! => " + ex );
+				}
 			}
 			
 		} else if("del".equals(upDel)) {
-			upDelCnt = this.boardServie.deleteBoard(boardDTO);
+			try {
+				upDelCnt = this.boardServie.deleteBoard(boardDTO);
+			} catch(Exception ex) {
+				System.out.println("upDelBoard del catch!! => " + ex );
+			}
 		}
 		
 		mav.setViewName("boardUpDelProc.jsp");
 		mav.addObject("msg", msg);
 		mav.addObject("upDelCnt", upDelCnt);
+		
+		return mav;
+	}
+	
+	// 댓글쓰기로 이동
+	@RequestMapping( value="/boardReplyForm.do" )
+	public ModelAndView goBoardReplyForm(@RequestParam(value="b_no") int b_no) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("boardReplyForm.jsp");
+		mav.addObject("b_no", b_no);
+		return mav;
+	}
+	
+	// 댓글 등록
+	@RequestMapping( value="/boardReplyProc.do" )
+	public ModelAndView insertReply(BoardDTO boardDTO, BindingResult bindingResult) {
+		ModelAndView mav = new ModelAndView();
+		String msg="";
+		int insertReplyCnt = 0;
+		
+		// 유효성 체크
+		msg=checkForm(boardDTO, bindingResult);
+		
+		// 유효성 체크 통과 시
+		if("".equals(msg)) {
+			try {
+				insertReplyCnt = this.boardServie.insertReply(boardDTO);
+			} catch(Exception ex) {
+				System.out.println("insertReply catch!! => " + ex);
+			}
+		}
+		
+		mav.setViewName("boardReplyProc.jsp");
+		mav.addObject("msg", msg);
+		mav.addObject("insertReplyCnt", insertReplyCnt);
 		
 		return mav;
 	}

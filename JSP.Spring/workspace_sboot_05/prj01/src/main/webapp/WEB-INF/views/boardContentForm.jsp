@@ -24,6 +24,12 @@
 		// location.replace("/boardUpDelForm.do");
 		document.boardContentForm.submit();
 	}
+
+	// 댓글쓰기 버튼 눌렀을 경우
+	function goBoardReplyForm(){
+		document.boardReplyForm.submit();
+		// location.replace("/boardReplyForm.do");
+	}
 	
 
 
@@ -92,11 +98,16 @@
 		
 		<input type="hidden" name="b_no" value="<%=b_no%>">
 		
-		<input type="button" value="댓글쓰기" onClick="">
+		<input type="button" value="댓글쓰기" onClick="goBoardReplyForm();">
 		<input type="button" value="수정/삭제하기" onClick="goBoardUpDelForm();">
 		<input type="button" value="목록으로" onClick="goBoardList();">
 		
 	</form>
+	
+	<form name="boardReplyForm" method="post" action="/boardReplyForm.do">
+		<input type="hidden" name="b_no" value="<%=b_no%>"> 
+	</form>
+	
 	<% 
 		} else {
 			out.print("<script>alert('이미 삭제된 글입니다'); goBoardList();</script>");

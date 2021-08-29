@@ -53,11 +53,30 @@
 	<update id="downPrintNo" parameterType="com.naver.erp.BoardDTO">
 		update board set print_no=print_no-1 
 		where b_no=#{b_no} 
+			group_no = (select group_no from board where b_no=#{b_no})
 			and print_no > (select print_no from board where b_no=#{b_no})
 	</update>
 	
 	<delete id="deleteBoard" parameterType="com.naver.erp.BoardDTO">
 		delete from board where b_no=#{b_no} and pwd=#{pwd}
 	</delete>
+	
+	<update id="upPrintNo" parameterType="com.naver.erp.BoardDTO">
+		update board set print_no=print_no+1 
+		where b_no=#{b_no} 
+			group_no = (select group_no from board where b_no=#{b_no})
+			and print_no > (select print_no from board where b_no=#{b_no})
+	</update>
+	
+	<insert id="insertReply" parameterType="com.naver.erp.BoardDTO">
+		insert into board(b_no, subject, writer, content, pwd, email, group_no, print_no, print_level)
+		values(
+			(select nvl(max(b_no), 0)+1 from board), #{subject}
+			, #{writer}, #{content}, #{pwd}, #{email}
+			, (select group_no from board where b_no=#{b_no})
+			, (select print_no+1 from board where b_no=#{b_no})
+			, (select print_level+1 from board where b_no=#{b_no})
+		) 
+	</insert>
 
 </mapper>

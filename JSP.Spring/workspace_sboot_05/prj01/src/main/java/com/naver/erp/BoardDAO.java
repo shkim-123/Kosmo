@@ -35,5 +35,11 @@ public interface BoardDAO {
 	// 삭제한 게시글 개수 리턴
 	int deleteBoard(BoardDTO boardDTO);
 	
+	// 출력순서번호 +1씩 업데이트
+	int upPrintNo(BoardDTO boardDTO);
+	
+	// 댓글 등록
+	int insertReply(BoardDTO boardDTO);
+	
 	
 }
