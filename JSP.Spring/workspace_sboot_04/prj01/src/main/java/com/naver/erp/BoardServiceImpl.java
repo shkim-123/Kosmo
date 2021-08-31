@@ -34,6 +34,22 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println("===BoardServiceImpl.insertBoard 시작===");
 		
 		//----------------------------------------------------------------
+		// 만약 부모글의 글 번호가 1 이상이면 댓글쓰기 이므로,
+		// 부모글 이후의 게시판 글에 대해 출력순서번호를 1 증가 시키기
+		//----------------------------------------------------------------
+		if(boardDTO.getB_no() > 0) {
+			System.out.println("===BoardServiceImpl.insertBoard updatePrintNoCnt 시작===");
+			//----------------------------------------------------------------
+			// [BoardDAOImpl 객체]의 updatePrintNo 메소드를 호출하여 출력 순서 번호를 1증가시키고
+			// 수정행에 적용 개수를 리턴받는다.
+			// 게시판 글이 입력되는 부분 이후 글들은 출력 순서번호를 1씩 증가하여야 한다.
+			//----------------------------------------------------------------
+			int updatePrintNoCnt = this.boardDAO.updatePrintNo(boardDTO);
+			System.out.println("===BoardServiceImpl.insertBoard updatePrintNoCnt => " + updatePrintNoCnt);
+			
+		}
+		
+		//----------------------------------------------------------------
 		// BoardDAOImpl 객체의 insertBoard 메소드 호출하여 게시판 글 입력 후 입력 적용 행의 개수 얻기
 		//----------------------------------------------------------------
 		int boardRegCnt = this.boardDAO.insertBoard(boardDTO);

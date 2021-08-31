@@ -45,7 +45,12 @@ public class BoardController {
 	// 가상주소 /boardList.do 접근 시 get 또는 post 방식 접근 모두 허용한다.
 	//----------------------------------------------------------------
 	@RequestMapping( value="/boardList.do" )
-	public ModelAndView getBoardList() {
+	public ModelAndView getBoardList(
+			//----------------------------------------------------------------
+			// 파라미터값을 저장하고 있는 BoardSearchDTO 객체를 받아오는 매개변수 선언
+			//----------------------------------------------------------------
+			BoardSearchDTO boardSearchDTO
+	) {
 		
 		System.out.println("===BoardController.getBoardList 시작===");
 		
@@ -55,27 +60,48 @@ public class BoardController {
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("boardList.jsp");
-
+		List<Map<String,String>> boardList = null;
+		int boardListAllCnt = 0;
+		
 		try {
 			
 			//----------------------------------------------------------------
-			// 오라클 board 테이블 안의 데이터를 검색해와 자바 객체에 저장하기. 즉, [게시판 목록] 얻기
+			// 오라클 board 테이블 안의 데이터를 검색해와 자바 객체에 저장하기.
+			// 즉, 검색 조건에 맞는 [게시판 목록] 얻기
 			//----------------------------------------------------------------
-			List<Map<String,String>> boardList = this.boardDAO.getBoardList();
+			boardList = this.boardDAO.getBoardList(boardSearchDTO);
 			
 			System.out.println("===BoardController.getBoardList boardList => " + boardList);
 			
 			//----------------------------------------------------------------
-			// [ModelAndView 객체]에 [게시판 목록 검색 결과]를 저장하기
+			// 검색 조건에 맞는 [게시판 목록의 총개수] 얻기
 			//----------------------------------------------------------------
-			mav.addObject("boardList", boardList);
+			boardListAllCnt = this.boardDAO.getBoardListAllCnt(boardSearchDTO);
+			
+			System.out.println("===BoardController.getBoardList boardListAllCnt => " + boardListAllCnt);
 			
 		} catch(Exception ex) {
 			//----------------------------------------------------------------
 			// DB 연동 에러 발생 시 -1 저장
 			//----------------------------------------------------------------
-			mav.addObject("boardList", -1);
+			// mav.addObject("boardList", -1);
 		}
+
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체]에 [게시판 목록 검색 결과]를 저장하기
+		// [ModelAndView 객체]에 [게시판 목록의 총 개수]를 저장하기
+		//----------------------------------------------------------------
+		mav.addObject("boardList", boardList);
+		mav.addObject("boardListAllCnt", boardListAllCnt);
+		
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최소 페이지 번호]를 계산해서 저장하기
+		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최대 페이지 번호]를 계산해서 저장하기
+		//----------------------------------------------------------------
+		
+		
 		
 		System.out.println("===BoardController.getBoardList 종료===");
 		
@@ -89,20 +115,36 @@ public class BoardController {
 	// 가상주소 /boardRegForm.do 로 접근하면 호출되는 메소드 선언
 	//----------------------------------------------------------------
 	@RequestMapping( value="/boardRegForm.do" )
-	public ModelAndView goBoardRegForm() {
+	public ModelAndView goBoardRegForm(
+			//----------------------------------------------------------------
+			// 파라미터명이 b_no인 파라미터값을 받아오는 매개변수 b_no 선언하기
+			//----------------------------------------------------------------
+			@RequestParam(
+					value="b_no"		// 파라미터명 설정
+					,required=false		// 파라미터명, 값이 안들어와도 용서한다는 의미
+					,defaultValue="0"	// 파라미터값이 없으면 파라미터값을 0으로 하곘음
+			)int b_no
+	) {
 		
 		System.out.println("===BoardController.goBoardRegForm 시작===");
 		
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 생성하기
-		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
-		// [ModelAndView 객체] 리턴하기
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("b_no => " + b_no);
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
+		//----------------------------------------------------------------
 		mav.setViewName("boardRegForm.jsp");		
 		
 		System.out.println("===BoardController.goBoardRegForm 종료===");
 		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------
 		return mav;
 	}
 	
@@ -143,7 +185,7 @@ public class BoardController {
 		
 		// try-catch 구문으로 예외 처리
 		try {
-	//		System.out.println(boardDTO.getB_no());
+			System.out.println(boardDTO.getB_no());
 	//		System.out.println(boardDTO.getSubject());
 	//		System.out.println(boardDTO.getWriter());
 	//		System.out.println(boardDTO.getContent());
@@ -158,6 +200,8 @@ public class BoardController {
 			String msg = "";
 			int boardRegCnt = 0;
 			msg = check_BoardDTO(boardDTO, bindingResult);
+			
+			System.out.println(msg);
 			
 			//----------------------------------------------------------------
 			// 만약 mgs가 안에 ""가 저장되어 있으면, 즉, 유효성 체크를 통과했으면

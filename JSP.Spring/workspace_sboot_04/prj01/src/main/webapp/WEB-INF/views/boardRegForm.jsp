@@ -86,7 +86,11 @@
 				// <2> 그렇지 않으면, 입력이 실패했으면
 				//--------------------------------------------------------------
 				if(boardRegCnt == 1){						// <1>
-					alert("새글쓰기 성공!");
+					<% if(request.getParameter("b_no")==null) { %>
+						alert("새글쓰기 성공!");
+					<% } else { %>
+						alert("댓글쓰기 성공!");
+					<% } %>
 					location.replace("/boardList.do");
 				} else {									// <2>
 					alert("새글쓰기 실패!");
@@ -115,7 +119,12 @@
 	<!-- ************************************************************* -->
 	<form name="boardRegForm" method="post" action="/boardRegProc.do">
 		<table border="1">
+			<!-- JSP 스크립틀릿 -->
+			<% if( request.getParameter("b_no") == null) { %>
 			<caption><b>[새글쓰기]</b></caption>
+			<% } else {%>
+			<caption><b>[댓글쓰기]</b></caption>
+			<% } %>
 			<tr>
 				<th bgcolor="lightgray">이름</th>
 				<td>
@@ -169,7 +178,15 @@
 		<input type="reset" value="다시작성">
 		<input type="button" value="목록보기" onClick="location.replace('/boardList.do')">
 		
-		<!-- <input type="hidden" name="b_no" value=""> -->
+		<!-- ************************************************************* -->
+		<!-- 만약 파라미터명 b_no 의 파라미터값이 null 이면 name="b_no" 를 가진 hidden 태그에 value에 0 입력하기 -->
+		<!-- 만약 파라미터명 b_no 의 파라미터값이 null 아니면 name="b_no" 를 가진 hidden 태그에 value에 파라미터명값을 입력하기 -->
+		<!-- ************************************************************* -->
+		<% if(request.getParameter("b_no") == null) { %>
+			<input type="hidden" name="b_no" value="0">
+		<% } else { %>
+			<input type="hidden" name="b_no" value="<%=request.getParameter("b_no")%>">
+		<% } %>
 	
 	</form>
 		

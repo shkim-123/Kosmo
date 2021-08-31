@@ -7,6 +7,25 @@
 <mapper namespace="com.naver.erp.BoardDAO">
 
 	<!-- ************************************************************* -->
+	<!-- 게시판 글 목록 구할 때 사용할 where절을 sql 태그 안에 선언하기 -->
+	<!-- ************************************************************* -->
+	<sql id="boardWhere">
+		<!-- ************************************************************* -->
+		<!-- 만약 키워드가 null이 아니고 길이가 0보다 크면 where절에 참여하기 -->
+		<!-- ************************************************************* -->
+		<if test="keyword1!=null and keyword1.length()>0">
+			and (
+				upper(subject) like upper('%${keyword1}%')
+				or upper(content) like upper('%${keyword1}%')
+				or upper(writer) like upper('%${keyword1}%')
+				or upper(email) like upper('%${keyword1}%')
+				or to_char(reg_date, 'yyyy-mm-dd') like '%${keyword1}%' 
+			)
+		</if>
+	</sql>
+
+
+	<!-- ************************************************************* -->
 	<!-- 게시판 글 입력하는 insert 문을 내포한 insert 태그 선언 -->
 	<!-- ************************************************************* -->
 	<!-- parameterType 속성은 안에 내장된 쿼리 호출하면서 삽입되는 데이터의 자료형을 지정함 -->
@@ -33,9 +52,26 @@
 			,#{content}     <!-- BoardDTO 객체의 content 속성변수 안의 값 삽입하기, 문자면 ' 를 앞뒤에 붙여준다 -->
 			,#{pwd}         <!-- BoardDTO 객체의 pwd 속성변수 안의 값 삽입하기, 문자면 ' 를 앞뒤에 붙여준다 -->
 			,#{email}       <!-- BoardDTO 객체의 email 속성변수 안의 값 삽입하기, 문자면 ' 를 앞뒤에 붙여준다 -->
+			
+			<!-- ************************************************************* -->
+			<!-- 만약에 자바의 BoardDTO 객체의 속성변수 b_no가 0 이면, 즉 새글쓰기 모드면-->
+			<!-- 그룹번호를 PK 값으로, 출력순서 번호와 들여쓰기 레벨은 0으로 입력하기 -->
+			<!-- ************************************************************* -->
+			<if test="b_no==0">
 			,(select nvl(max(b_no),0)+1 from board)
 			,0
 			,0
+			</if>
+
+			<!-- ************************************************************* -->
+			<!-- 만약에, 자바의 BoardDTO 객체의 속성변수 b_no가 0보다 크면, 즉 댓글쓰기 모드면 -->
+			<!-- 그룹번호를 엄마 PK 번호로, 출력순서 번호와 들여쓰기 레벨은 엄마꺼보다 1 더 큰 값으로 입력하기 -->
+			<!-- ************************************************************* -->
+			<if test="b_no>0">
+			,(select group_no from board where b_no=#{b_no})
+			,(select print_no+1 from board where b_no=#{b_no})
+			,(select print_level+1 from board where b_no=#{b_no})
+			</if>
 		)
 	</insert>
 	
@@ -46,14 +82,46 @@
 	<!-- 즉, readcount, reg_date는 alias를 부여해야 한다. -->
 	<!-- varchar2(=문자형)으로 자료형을 통일해야 한다. (=resultType이 HashMap<String, String> 이므로 -->
 	<!-- ************************************************************* -->
-	<select id="getBoardList" resultType="java.util.HashMap">
-		select b_no||'' as "B_NO"
-			, subject, writer, readcount||'' as "READCOUNT"
-		    , to_char(reg_date, 'yyyy-mm-dd day', 'nls_date_language=korean') as "REG_DATE" 
-		    , print_level||'' as "PRINT_LEVEL"
-		from board 
-		order by group_no desc, print_no
+	<select id="getBoardList" parameterType="com.naver.erp.BoardSearchDTO" resultType="java.util.HashMap">
+		select * from ( select rownum as "RNUM", zxc.* from (
+			select b_no||'' as "B_NO"
+				, subject, writer, readcount||'' as "READCOUNT"
+			    , to_char(reg_date, 'yyyy-mm-dd(dy)', 'nls_date_language=korean') as "REG_DATE" 
+			    , print_level||'' as "PRINT_LEVEL"
+			from board
+			where 
+				1=1 
+				<!-- ************************************************************* -->
+				<!-- <sql id="boardWhere"> 태그 안에 삽입된 SQL 구문 삽입하기 -->
+				<!-- ************************************************************* -->
+				<include refid="boardWhere"/>
+			order by group_no desc, print_no
+		) zxc
+		
+		<!-- 아래 태그 사이에 들어간 부등호를 부등호로 인정한다. --> 
+		<!-- ${} 데이터를 꺼낼 때 연산을 할 수 있다. 단, 띄어쓰기는 없어야 한다. -->
+		<![CDATA[
+			where rownum <= ${selectPageNo*rowCntPerPage} ) 
+			where rnum >= ${selectPageNo*rowCntPerPage-rowCntPerPage+1}
+		]]>
 	</select>
+	
+	<!-- ************************************************************* -->
+	<!-- 게시판 글 목록 총 개수 구하는 select 태그 선언 -->
+	<!-- ************************************************************* -->
+	<select id="getBoardListAllCnt" parameterType="com.naver.erp.BoardSearchDTO" resultType="int">
+		select 
+			count(*) 
+		from 
+			board
+		where 
+			1=1 
+			<!-- ************************************************************* -->
+			<!-- <sql id="boardWhere"> 태그 안에 삽입된 SQL 구문 삽입하기 -->
+			<!-- ************************************************************* -->
+			<include refid="boardWhere"/>
+	</select>
+	
 	
 	<!-- ************************************************************* -->
 	<!-- 게시판 1개 글 검색하는 select 문을 내포한 select 태그 선언 -->
@@ -138,5 +206,14 @@
 	<delete id="deleteBoard" parameterType="com.naver.erp.BoardDTO">
 		delete from board where b_no=#{b_no} and pwd=#{pwd}
 	</delete>
+	
+	<!-- ************************************************************* -->
+	<!-- 게시판 글 출력 번호 1 증가하는 update문을 내포한 update 태그 선언 -->
+	<!-- ************************************************************* -->
+	<update id="updatePrintNo" parameterType="com.naver.erp.BoardDTO">
+		update board set print_no=print_no+1 
+		where group_no=(select group_no from board where b_no=#{b_no})
+			and print_no > (select print_no from board where b_no=#{b_no})
+	</update>
 
 </mapper>

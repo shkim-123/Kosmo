@@ -58,18 +58,35 @@ public class BoardDAOImpl implements BoardDAO {
 	// [검색한 게시판 목록] 리턴하는 메소드 선언
 	//----------------------------------------------------------------
 	@Override
-	public List<Map<String, String>> getBoardList() {
+	public List<Map<String, String>> getBoardList(BoardSearchDTO boardSearchDTO) {
 		
 		System.out.println("===BoardDAOImpl.getBoardList 시작===");
 		
 		List<Map<String, String>> boardList = this.sqlSession.selectList(
 				"com.naver.erp.BoardDAO.getBoardList"	// 실행할 SQL 구문의 위치 지정
+				, boardSearchDTO				 		// 실행할 SQL 구문에서 사용할 데이터 지정
 		);
 		
 		System.out.println("===BoardDAOImpl.getBoardList 종료===");
 		
 		return boardList;
 	}
+	
+	
+	//----------------------------------------------------------------
+	// [검색한 게시판 목록 총개수] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
+	@Override
+	public int getBoardListAllCnt(BoardSearchDTO boardSearchDTO) {
+		
+		int boardListAllCnt = this.sqlSession.selectOne(
+				"com.naver.erp.BoardDAO.getBoardListAllCnt"	// 실행할 SQL 구문의 위치 지정
+				, boardSearchDTO							// 실행할 SQL 구문에서 사용할 데이터 지정
+		);
+		
+		return boardListAllCnt;
+	}
+	
 	
 	//----------------------------------------------------------------
 	// [1개의 게시판 글 정보]를 리턴하는 메소드 선언
@@ -255,5 +272,29 @@ public class BoardDAOImpl implements BoardDAO {
 		return deleteBoardCnt;
 	}
 	
+	//----------------------------------------------------------------
+	// [게시판 글 출력번호 1 증가하고 수정행의 개수] 리턴하는 메소드 선언
+	//----------------------------------------------------------------
+	@Override
+	public int updatePrintNo(BoardDTO boardDTO) {
+		
+		System.out.println("===BoardDAOImpl.updatePrintNoCnt 시작===");
+		
+		//----------------------------------------------------------------
+		// [SqlSessionTemployee 객체]의 update(~,~)를 호출하여
+		// [게시판 글 출력번호 1 증가하고 수정행의 개수] 얻기
+		//----------------------------------------------------------------
+		int updatePrintNoCnt = this.sqlSession.update(
+				"com.naver.erp.BoardDAO.updatePrintNo"	// 실행할 SQL 구문의 위치 지정
+				, boardDTO								// 실행할 SQL 구문에서 사용할 데이터 지정
+		);
+		
+		System.out.println("===BoardDAOImpl.updatePrintNoCnt 종료===");
+		
+		//----------------------------------------------------------------
+		// [수정 행의 개수] 리턴하기
+		//----------------------------------------------------------------
+		return updatePrintNoCnt;
+	}
 	
 }
