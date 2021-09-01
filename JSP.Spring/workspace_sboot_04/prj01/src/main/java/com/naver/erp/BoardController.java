@@ -41,7 +41,7 @@ public class BoardController {
 	
 	//----------------------------------------------------------------
 	// 가상주소 /boardList.do 로 접근하면 호출되는 메소드 선언
-	// @RequestMappgin 내부에 method="RequestMethod.POST" 가 없으므로
+	// @RequestMapping 내부에 method="RequestMethod.POST" 가 없으므로
 	// 가상주소 /boardList.do 접근 시 get 또는 post 방식 접근 모두 허용한다.
 	//----------------------------------------------------------------
 	@RequestMapping( value="/boardList.do" )
@@ -56,52 +56,88 @@ public class BoardController {
 		
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 생성하기
-		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardList.jsp");
 		List<Map<String,String>> boardList = null;
 		int boardListAllCnt = 0;
+		int last_pageNo = 0;
+		int min_pageNo = 0;
+		int max_pageNo = 0;
+		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
+		int selectPageNo = boardSearchDTO.getSelectPageNo();
+		int pageNoCntPerPage = 10;
 		
 		try {
+			//----------------------------------------------------------------
+			// 검색 조건에 맞는 [게시판 목록의 총개수] 얻기
+			//----------------------------------------------------------------
+			boardListAllCnt = this.boardDAO.getBoardListAllCnt(boardSearchDTO);
+			System.out.println("===BoardController.getBoardList boardListAllCnt => " + boardListAllCnt);
 			
+		} catch(Exception ex) {
+			System.out.println("BoardController.getBoardList boardListAllCnt catch!! => " + ex);
+		}
+		
+		//----------------------------------------------------------------
+		// 마지막 페이지 번호 구하기
+		// 현 화면에 보여줄 최소 페이지 번호 구하기
+		// 현 화면에 보여줄 최대 페이지 번호 구하기
+		//----------------------------------------------------------------
+		if(boardListAllCnt > 0) {
+			last_pageNo = boardListAllCnt/rowCntPerPage;
+				if( boardListAllCnt%rowCntPerPage > 0 ) { last_pageNo++; }
+				//----------------------------------------------------------------
+				// 만약 선택 페이지 번호가 마지막 페이지번호보다 크다면
+				// 선택 페이지 번호를 1로 변경한다
+				//----------------------------------------------------------------
+				if( selectPageNo > last_pageNo ) {
+					selectPageNo = 1;
+					//----------------------------------------------------------------
+					// 완전 조심!!! boardSearchDTO에 setter 메소드 호출하여 데이터를 저장해야 한다.
+					//----------------------------------------------------------------
+					boardSearchDTO.setSelectPageNo(selectPageNo);	
+				}
+				
+			min_pageNo = (selectPageNo - 1)/pageNoCntPerPage * pageNoCntPerPage + 1;
+			max_pageNo = min_pageNo + pageNoCntPerPage - 1;
+				if(max_pageNo > last_pageNo) { max_pageNo = last_pageNo; }
+		}
+		
+		try {
 			//----------------------------------------------------------------
 			// 오라클 board 테이블 안의 데이터를 검색해와 자바 객체에 저장하기.
 			// 즉, 검색 조건에 맞는 [게시판 목록] 얻기
 			//----------------------------------------------------------------
 			boardList = this.boardDAO.getBoardList(boardSearchDTO);
-			
 			System.out.println("===BoardController.getBoardList boardList => " + boardList);
-			
-			//----------------------------------------------------------------
-			// 검색 조건에 맞는 [게시판 목록의 총개수] 얻기
-			//----------------------------------------------------------------
-			boardListAllCnt = this.boardDAO.getBoardListAllCnt(boardSearchDTO);
-			
-			System.out.println("===BoardController.getBoardList boardListAllCnt => " + boardListAllCnt);
-			
 		} catch(Exception ex) {
 			//----------------------------------------------------------------
 			// DB 연동 에러 발생 시 -1 저장
 			//----------------------------------------------------------------
 			// mav.addObject("boardList", -1);
+			System.out.println("BoardController.getBoardList boardList catch!! => " + ex);
 		}
-
 		
 		//----------------------------------------------------------------
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
 		// [ModelAndView 객체]에 [게시판 목록 검색 결과]를 저장하기
 		// [ModelAndView 객체]에 [게시판 목록의 총 개수]를 저장하기
+		// [ModelAndView 객체]에 [마지막 페이지 번호]를 저장하기
+		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최소 페이지 번호]를 저장하기
+		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최대 페이지 번호]를 저장하기
+		// [ModelAndView 객체]에 [선택한 페이지 번호]를 저장하기
+		// [ModelAndView 객체]에 [한 화면에 보여지는 행의 개수]를 저장하기
+		// [ModelAndView 객체]에 [한 화면에 보여지는 페이지 번호의 개수]를 저장하기
 		//----------------------------------------------------------------
+		mav.setViewName("boardList.jsp");
 		mav.addObject("boardList", boardList);
 		mav.addObject("boardListAllCnt", boardListAllCnt);
-		
-		
-		//----------------------------------------------------------------
-		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최소 페이지 번호]를 계산해서 저장하기
-		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최대 페이지 번호]를 계산해서 저장하기
-		//----------------------------------------------------------------
-		
-		
+		mav.addObject("last_pageNo", last_pageNo);
+		mav.addObject("min_pageNo", min_pageNo);
+		mav.addObject("max_pageNo", max_pageNo);
+		mav.addObject("selectPageNo", selectPageNo);
+		mav.addObject("rowCntPerPage", rowCntPerPage);
+		mav.addObject("pageNoCntPerPage", pageNoCntPerPage);
 		
 		System.out.println("===BoardController.getBoardList 종료===");
 		

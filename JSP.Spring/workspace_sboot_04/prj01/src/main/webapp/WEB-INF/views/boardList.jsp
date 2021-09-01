@@ -67,23 +67,21 @@
 		// 만약 키워드가 비어있거나 공백으로 구성되어 있으면 경고 후 비우고 함수 중단하기
 		//--------------------------------------------------------------
 		if( keyword1 == null || keyword1.split(" ").join("") == "" ){
-			alert("키워드를 입력해주세요.");
+			// alert("키워드를 입력해주세요.");
 			$(".keyword1").val("");
-			return;
+			// return;
 		}
 
 		//--------------------------------------------------------------
 		// 입력한 키워드의 앞 뒤 공백 제거하고 다시 넣어주기
 		//--------------------------------------------------------------
 		$(".keyword1").val($.trim(keyword1));
-
+		
 		//--------------------------------------------------------------
 		// 비동기 방식으로 웹서버에 접속하여 키워드를 만족하는 
 		// 검색 결과물을 응답받아 현 화면에 반영하기
 		//--------------------------------------------------------------
 		searchExe();
-
-		
 	}
 
 	//--------------------------------------------------------------
@@ -135,6 +133,13 @@
 				// 아래 현 화면의 html 소스 중에 class="boardListAllCnt" 를 가진 태그 내부에 덮어씌우기
 				//--------------------------------------------------------------
 				$(".boardListAllCnt").html($(responseHtml).find(".boardListAllCnt").text());
+
+				//--------------------------------------------------------------
+				// 매개변수 responseHtml로 들어온 검색 결과물 html 소스문자열에서 
+				// class="pageNo"를 가진 태그 내부의 [페이지 번호]를 얻어서
+				// 아래 현 화면의 html 소스 중에 class="pageNo" 를 가진 태그 내부에 덮어씌우기
+				//--------------------------------------------------------------
+				$(".pageNo").html($(responseHtml).find(".pageNo").html());
 				
 			}
 			//--------------------------------------------------------------
@@ -146,24 +151,53 @@
 		});
 
 	}
+
+	//--------------------------------------------------------------
+	// 페이지 번호를 클릭하면 호출되는 함수 선언
+	//--------------------------------------------------------------
+	function search_with_changePageNo(selectPageNo){
+		//--------------------------------------------------------------
+		// class="selectPageNo" 의 value값을 매개변수로 들어온 selectPageNo 으로 변경한다
+		//--------------------------------------------------------------
+		$(".selectPageNo").val(selectPageNo);
+		search();
+	}
 	
 </script>
 
 </head>
-<body>
+<!-- class="keyword1" 인풋 태그 포커스 아웃인 상태에서도 이벤트 실행하고 싶다면 태그 안에다 이벤트를 넣어주면 된다.  -->
+<body onKeydown="if(event.keyCode==13){search();}">
 
 <center>
 
+	<%
+		//--------------------------------------------------------------
+		// 자바 변수 선언하고 검색 화면 구현에 필요한 데이터 저장하기
+		//--------------------------------------------------------------
+		List<Map<String, String>> boardList = (List<Map<String, String>>)request.getAttribute("boardList");
+		int boardListAllCnt = (Integer)request.getAttribute("boardListAllCnt");
+		int last_pageNo = (Integer)request.getAttribute("last_pageNo");
+		int min_pageNo = (Integer)request.getAttribute("min_pageNo");
+		int max_pageNo = (Integer)request.getAttribute("max_pageNo");
+		int selectPageNo = (Integer)request.getAttribute("selectPageNo");
+		int rowCntPerPage= (Integer)request.getAttribute("rowCntPerPage");
+	%>
+
 	<!-- ************************************************************* -->
 	<!-- [게시판 검색 조건 입력 양식] 내포한 form 태그 선언 -->
+	<!-- form 태그 내에 input 태그가 1개인 경우 엔터 시 웹브라우저는 자동으로 웹서버에 접근을 시도한다.(동기방식, 웹브라우저의 오지랖...) -->
+	<!-- 위와 같은 기능을 막는 방법 -->
+	<!-- onSubmit = "return false;" : 웹서버로 접근을 시도하는 이벤트 발생 시 자스코딩을 실행하여 웹서버 접근 무력화 -->
+	<!-- true 라면 웹서버에 접근, false라면 웹서버 접근하지 못한다. -->
 	<!-- ************************************************************* -->
-	<form name="boardListForm">
-		[키워드] : <input type="text" name="keyword1" class="keyword1" onKeydown="if(event.keyCode==13){search();}">
+	<form name="boardListForm" onSubmit="return false;">
+		[키워드] : <input type="text" name="keyword1" class="keyword1">
 		<input type="button" value="검색" class="boardSearch" onClick="search();">&nbsp;
 		<input type="button" value="모두검색" class="boardSearchAll" onClick="searchAll();">&nbsp;	
 		
 		<!-- 선택한 페이지 번호 저장 -->
-		<input type="hidden" value="selectPageNo" class="selectPageNo" value="1">
+		<input type="hidden" name="selectPageNo" class="selectPageNo" value="1">
 		<!-- 한 화면에 보여줄 행의 개수 선택 -->
 		<select name="rowCntPerPage" class="rowCntPerPage" onChange="search();">
 			<option value="10">10</option>			
@@ -181,7 +215,7 @@
 	
 	<div style="height:10px"></div>
 	
-	<div class="boardListAllCnt">검색 개수 : <%=(int)request.getAttribute("boardListAllCnt")%>개</div>
+	<div class="boardListAllCnt">총 : <%=boardListAllCnt%>개</div>
 	<div class="searchResult">
 		<table border="1">
 			<tr>
@@ -194,17 +228,16 @@
 			
 			
 			<%
-				List<Map<String, String>> boardList = (List<Map<String, String>>)request.getAttribute("boardList");
-				
 				//--------------------------------------------------------------
 				// boardList가 null이 아니면
 				//--------------------------------------------------------------
 				if( boardList != null ) {
 					
 					//--------------------------------------------------------------
-					// 역순번호 넣어줄 변수 선언
+					// 정순번호, 역순번호 변수 선언
 					//--------------------------------------------------------------
-					int totCnt = boardList.size();
+					int serialNo = selectPageNo*rowCntPerPage-rowCntPerPage+1;
+					int reverseSerialNo = boardListAllCnt - serialNo + 1;
 					
 					for( int i = 0; i < boardList.size(); i++ ) {
 						
@@ -224,7 +257,6 @@
 						int print_level = Integer.parseInt(map.get("PRINT_LEVEL"), 10);
 						String xxx = "";
 						
-						
 						//--------------------------------------------------------------
 						// print_level 만큼 반복문 돌려서 공백 저장해주기
 						//--------------------------------------------------------------
@@ -240,7 +272,8 @@
 						//--------------------------------------------------------------
 						// 출력
 						//--------------------------------------------------------------
-						out.println( "<tr style='cursor:pointer' onClick='goBoardContentForm("+b_no+")'><td>"+(totCnt--)+"<td>"+xxx+subject
+						out.println( "<tr style='cursor:pointer' onClick='goBoardContentForm("+b_no+")'><td>"
+								+(reverseSerialNo--)+"<td>"+xxx+subject
 								+"<td>"+writer+"<td>"+readcount+"<td>"+reg_date );
 						
 					}
@@ -249,6 +282,65 @@
 			
 			
 		</table> 
+	</div>
+	
+	<div style="height:10px"></div>
+	
+	<!-- 페이지 번호 출력 -->
+	<div class="pageNo">	
+		<%	
+			if( boardListAllCnt > 0 ){
+				
+				/*
+				// 이전, 다음 선택 시 페이지 번호가 10단위로 변경
+				if(min_pageNo > 10){
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (min_pageNo-1) + ");'>[이전]</span> ");
+				}
+				
+				for(int i = min_pageNo; i <= max_pageNo; i++){
+					if(selectPageNo == i){
+						out.print( "<span>"+ i + "</span> ");
+					} else {
+						out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+i+");'>["+ i + "]</span> ");
+					}
+				}
+				
+				if(max_pageNo < last_pageNo){
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (max_pageNo+1) + ");'>[다음]</span> ");
+				}
+				*/
+				
+				// 이전, 다음 선택 시 페이지 번호가 1씩 변경
+				if(selectPageNo > 1){
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (1) + ");'>[처음]</span> ");
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (selectPageNo-1) + ");'>[이전]</span> ");
+					out.print( "&nbsp;&nbsp;");
+				} else {
+					// 처음, 이전을 항상 보여주도록 설정
+					out.print( "<span>[처음]</span> ");
+					out.print( "<span>[이전]</span> ");
+					out.print( "&nbsp;&nbsp;");
+				}
+				for(int i = min_pageNo; i <= max_pageNo; i++){
+					if(selectPageNo == i){
+						out.print( "<span>"+ i + "</span> ");
+					} else {
+						out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+i+");'>["+ i + "]</span> ");
+					}
+				}
+				if(selectPageNo < last_pageNo){
+					out.print( "&nbsp;&nbsp;");
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (selectPageNo+1) + ");'>[다음]</span> ");
+					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (last_pageNo) + ");'>[마지막]</span> ");
+				} else {
+					// 다음, 마지막을 항상 보여주도록 설정
+					out.print( "<span>[다음]</span> ");
+					out.print( "<span>[마지막]</span> ");
+					out.print( "&nbsp;&nbsp;");
+				}
+				
+			}
+		%>
 	</div>
 	
 	<!-- ************************************************************* -->
