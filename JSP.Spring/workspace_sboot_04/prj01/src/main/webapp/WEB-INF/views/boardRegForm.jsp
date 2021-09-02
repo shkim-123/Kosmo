@@ -14,8 +14,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!-- JQuery 삽입 -->
-<script src="/resources/jquery-1.11.0.min.js" type="text/javascript"></script>
+<!-- ************************************************************* -->
+<!-- JSP 기술의 한 종류인 [Include Directive]를 이용하여 common.jsp 파일 내의 소스를 삽입하기 -->
+<!-- ************************************************************* -->
+<%@include file="common.jsp" %>
 
 <script>
 

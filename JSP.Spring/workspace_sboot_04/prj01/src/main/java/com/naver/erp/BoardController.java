@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,10 +42,10 @@ public class BoardController {
 	
 	//----------------------------------------------------------------
 	// 가상주소 /boardList.do 로 접근하면 호출되는 메소드 선언
-	// @RequestMapping 내부에 method="RequestMethod.POST" 가 없으므로
+	// @RequestMapping 내부에 method=RequestMethod.POST 가 없으므로
 	// 가상주소 /boardList.do 접근 시 get 또는 post 방식 접근 모두 허용한다.
 	//----------------------------------------------------------------
-	@RequestMapping( value="/boardList.do" )
+	@RequestMapping( value="/boardList.do")
 	public ModelAndView getBoardList(
 			//----------------------------------------------------------------
 			// 파라미터값을 저장하고 있는 BoardSearchDTO 객체를 받아오는 매개변수 선언
@@ -60,12 +61,21 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		List<Map<String,String>> boardList = null;
 		int boardListAllCnt = 0;
+		//----------------------------------------------------------------
+		// 마지막 페이지 번호 구하기
+		// 현 화면에 보여줄 최소 페이지 번호 구하기
+		// 현 화면에 보여줄 최대 페이지 번호 구하기
+		// BoardSearchDTO 객체에 저장된 [선택 페이지 번호] 구하기
+		// BoardSearchDTO 객체에 저장된 [한 화면에 보여줄 행의 개수] 구하기
+		// 한 화면에 보여줄 페이지 번호의 개수 구하기
+		//----------------------------------------------------------------
 		int last_pageNo = 0;
 		int min_pageNo = 0;
 		int max_pageNo = 0;
-		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
 		int selectPageNo = boardSearchDTO.getSelectPageNo();
+		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
 		int pageNoCntPerPage = 10;
+		// Paging paging = new Paging();
 		
 		try {
 			//----------------------------------------------------------------
@@ -78,30 +88,37 @@ public class BoardController {
 			System.out.println("BoardController.getBoardList boardListAllCnt catch!! => " + ex);
 		}
 		
+		//Map<String,Integer> pagingMap = paging.getPaging(boardListAllCnt, 10, boardSearchDTO);
+		
+		
 		//----------------------------------------------------------------
-		// 마지막 페이지 번호 구하기
-		// 현 화면에 보여줄 최소 페이지 번호 구하기
-		// 현 화면에 보여줄 최대 페이지 번호 구하기
+		// 만약, 검색된 결과물의 개수가 0보다 크면, 즉, 검색 결과물이 있으면
 		//----------------------------------------------------------------
 		if(boardListAllCnt > 0) {
+			// 마지막 페이지 번호 구하기
 			last_pageNo = boardListAllCnt/rowCntPerPage;
 				if( boardListAllCnt%rowCntPerPage > 0 ) { last_pageNo++; }
+			//----------------------------------------------------------------
+			// 만약, 선택한 페이지 번호가 마지막 페이지 번호보다 크면
+			//----------------------------------------------------------------
+			if( selectPageNo > last_pageNo ) {
+				// selectPageNo 변수에 1 저장하기
+				selectPageNo = 1;
 				//----------------------------------------------------------------
-				// 만약 선택 페이지 번호가 마지막 페이지번호보다 크다면
-				// 선택 페이지 번호를 1로 변경한다
+				// boardSearchDTO 객체의 selectPageNo 속성 변수에 1 저장하기
+				// 완전 조심!!! boardSearchDTO에 setter 메소드 호출하여 데이터를 저장해야 한다. (DB 에서 사용하니까)
 				//----------------------------------------------------------------
-				if( selectPageNo > last_pageNo ) {
-					selectPageNo = 1;
-					//----------------------------------------------------------------
-					// 완전 조심!!! boardSearchDTO에 setter 메소드 호출하여 데이터를 저장해야 한다.
-					//----------------------------------------------------------------
-					boardSearchDTO.setSelectPageNo(selectPageNo);	
-				}
+				boardSearchDTO.setSelectPageNo(selectPageNo);	
+			}
 				
+			// 한 화면에 보일 최소 페이지 번호 구하기
 			min_pageNo = (selectPageNo - 1)/pageNoCntPerPage * pageNoCntPerPage + 1;
+			// 한 화면에 보일 최대 페이지 번호 구하기
 			max_pageNo = min_pageNo + pageNoCntPerPage - 1;
 				if(max_pageNo > last_pageNo) { max_pageNo = last_pageNo; }
 		}
+		
+		
 		
 		try {
 			//----------------------------------------------------------------
@@ -109,7 +126,7 @@ public class BoardController {
 			// 즉, 검색 조건에 맞는 [게시판 목록] 얻기
 			//----------------------------------------------------------------
 			boardList = this.boardDAO.getBoardList(boardSearchDTO);
-			System.out.println("===BoardController.getBoardList boardList => " + boardList);
+			
 		} catch(Exception ex) {
 			//----------------------------------------------------------------
 			// DB 연동 에러 발생 시 -1 저장
@@ -126,8 +143,8 @@ public class BoardController {
 		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최소 페이지 번호]를 저장하기
 		// [ModelAndView 객체]에 [현재 화면에 보여지는 페이지 번호의 최대 페이지 번호]를 저장하기
 		// [ModelAndView 객체]에 [선택한 페이지 번호]를 저장하기
-		// [ModelAndView 객체]에 [한 화면에 보여지는 행의 개수]를 저장하기
-		// [ModelAndView 객체]에 [한 화면에 보여지는 페이지 번호의 개수]를 저장하기
+		// [ModelAndView 객체]에 [한 화면에 보여줄 행의 개수]를 저장하기
+		// [ModelAndView 객체]에 [한 화면에 보여줄 페이지 번호의 개수]를 저장하기
 		//----------------------------------------------------------------
 		mav.setViewName("boardList.jsp");
 		mav.addObject("boardList", boardList);
@@ -135,6 +152,9 @@ public class BoardController {
 		mav.addObject("last_pageNo", last_pageNo);
 		mav.addObject("min_pageNo", min_pageNo);
 		mav.addObject("max_pageNo", max_pageNo);
+//		mav.addObject("last_pageNo", pagingMap.get("last_pageNo"));
+//		mav.addObject("min_pageNo", pagingMap.get("min_pageNo"));
+//		mav.addObject("max_pageNo", pagingMap.get("max_pageNo"));
 		mav.addObject("selectPageNo", selectPageNo);
 		mav.addObject("rowCntPerPage", rowCntPerPage);
 		mav.addObject("pageNoCntPerPage", pageNoCntPerPage);

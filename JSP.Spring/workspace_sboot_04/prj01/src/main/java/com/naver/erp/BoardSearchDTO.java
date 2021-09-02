@@ -1,5 +1,7 @@
 package com.naver.erp;
 
+import java.util.List;
+
 //----------------------------------------------------------------
 // DTO 객체의 관용적 명명 규칙
 //----------------------------------------------------------------
@@ -15,9 +17,12 @@ public class BoardSearchDTO {
 	// 한 화면에 보여줄 [행의 개수]를 저장하는 속성변수 선언
 	//----------------------------------------------------------------
 	private String keyword1;
+	private String keyword2;
+	private String orAnd;
 	private int selectPageNo = 1;
-	private int rowCntPerPage = 10;
-	
+	private int rowCntPerPage = 20;
+	private List<String> day;
+
 	//----------------------------------------------------------------
 	// getter, setter 메소드 선언
 	//----------------------------------------------------------------
@@ -26,6 +31,18 @@ public class BoardSearchDTO {
 	}
 	public void setKeyword1(String keyword1) {
 		this.keyword1 = keyword1;
+	}
+	public String getKeyword2() {
+		return keyword2;
+	}
+	public void setKeyword2(String keyword2) {
+		this.keyword2 = keyword2;
+	}
+	public String getOrAnd() {
+		return orAnd;
+	}
+	public void setOrAnd(String orAnd) {
+		this.orAnd = orAnd;
 	}
 	public int getSelectPageNo() {
 		return selectPageNo;
@@ -39,6 +56,12 @@ public class BoardSearchDTO {
 	public void setRowCntPerPage(int rowCntPerPage) {
 		this.rowCntPerPage = rowCntPerPage;
 	}
-	
+	public List<String> getDay() {
+		return day;
+	}
+	public void setDay(List<String> day) {
+		this.day = day;
+	}
+
 	
 }
