@@ -554,23 +554,44 @@ select * from (select rownum as "RNUM", zxc.* from(
 select * from employee order by decode(jikup,'사장',1,'부장',2,'과장',3,'대리',4,'주임',5,6)
 ) zxc where rownum <= 5) where rnum >=2
 --
+
+-- 21.09.02 목
 --141. 오늘부터 10일 이후까지 날짜 중에 토요일, 일요일, 월요일을 제외한 날의 개수를 구하면?
+select count(*) from (
+    select sysdate "TODAY" from dual
+    union select sysdate+1 from dual union select sysdate+2 from dual union select sysdate+3 from dual
+    union select sysdate+4 from dual union select sysdate+5 from dual union select sysdate+6 from dual
+    union select sysdate+7 from dual union select sysdate+8 from dual union select sysdate+9 from dual
+    union select sysdate+10 from dual
+) where to_char(today, 'day', 'nls_date_language=korean') not in('토요일', '일요일', '월요일')
 
 --
 --142. 이번달 중에 토요일, 일요일을 제외한 날의 개수를 구하면? = 이번달 평일 수 구하기
 --
 --146. employee 테이블로부터 salary 컬럼만 제외하고 다 볼 수 있는 뷰 employee_vw1를 생성하면?
+create view employee_vw1 as select emp_no, emp_name, dep_no, jikup, hire_date,jumin_num,phone,mgr_emp_no from employee
 
 --
 --147. 뷰 employee_vw1에 데이터 '이승엽', 40, '과장', '1990-09-01', '7811231452719', '01090056376', 1 를 입력하면?
+insert into employee_vw1(emp_no, emp_name, dep_no, jikup, hire_date,jumin_num,phone,mgr_emp_no )
+    values((select nvl(max(emp_no, 0)+1 from employee)
+        , '이승엽', 40, '과장', to_date('1990-09-01', 'yyyy-mm-dd'), '7811231452719', '01090056376', 1 )
 --
 --148. 뷰 employee_vw1에서 주민번호 '7811231452719', 직원명 '이승엽'의 직급을 부장으로 수정하면?
+update employee_vw1 set jikup='부장' where jumin_num='7811231452719' and emp_name='이승엽'
 --
 --149. 뷰 employee_vw1에서 주민번호 '7811231452719' 인 직원을 제거하면?
+delete from employee_vw1 where jumin_num='7811231452719'
 --
 --150. 뷰 employee_vw1 를 제거하면?
+drop view employee_vw1
 --
 --150-1. 부서별, 직급별 부서번호, 부서명, 직급, 평균연봉을 출력하는 뷰 employee_vw3를 생성하면?
+create view employee_vw3 where
+select d.dep_no, d.dep_name, e.jikup, avg(e.salary) as "AVG_SALARY"
+    from dept d, employee e
+    where d.dep_no = e.dep_no
+    group by d.dep_no, d.dep_name, e.jikup
 --
 --151. 다음 뷰에 대한 질문에 대답하면?
 --CREATE VIEW employee_vw4 AS
@@ -588,23 +609,39 @@ select * from employee order by decode(jikup,'사장',1,'부장',2,'과장',3,'대리',4
 --UPDATE dept_vw1 SET dep_no = 70 WHERE dep_no = 60; 을 실행하면?
 --
 --156. employee 테이블에 '장보고', 40, '대리', 3500, '2012-05-28', '8311091109310', '01092499215', 3 데이터를 입력하면?
+insert into employee(emp_no, emp_name, dep_no, jikup, salary, hire_date, jumin_num, phone, mgr_emp_no)
+    values((select nvl(max(emp_no),0)+1 from employee)
+            ,'장보고', 40, '대리', 3500, to_date('2012-05-28', 'yyyy-mm-dd'), '8311091109310', '01092499215', 3  )
 --
 --157. employee 테이블에서 직원 번호가 18번 이고, 주민번호 '8203121977315'인 '강감찬' 직원의 직급을 '주임'으로 수정하려면?
+update employee set jikup='주임' where emp_no=18
 --
 --158. 여성 직원의 월급을 500만원 인상하는 UPDATE 문은?
+update employee set salary=salary+500 where substr(jumin_num,7,1) in('2','4')
 --
 --159. employee 테이블에서 평균 연봉 이상의 직원 연봉을 2% 삭감하면?
+update employee set salary=salary*0.98 where salary >= (select avg(salary) from employee)
 --
 --160. employee 테이블에서 평균 연봉 보다 작은 연봉자의 연봉을 50만원 인상하면?
+update employee set salary=salary+50 where salary < (select avg(salary) from employee)
 --
 --161. 담당 고객이 있는 직원의 급여를 5% 인상하면?
+update employee set salary=salary*1.05 where emp_no in(select distinct emp_no from customer where emp_no is not null)
 --
 --162. 연봉 서열 2~5위까지 5명의 연봉을 10% 인하하면?
 --정렬 기준 → 연봉높은 순서 > 직급 높은 순서 > 입사일 빠른 순서 > 나이 높은 순서
+update employee set salary=salary*0.9 where emp_no in(
+    select emp_no from (select rownum "RNUM",zxc.* from (
+        select emp_no from employee order by salary desc, decode(jikup,'사장',1,'부장',2,'과장',3,'대리',4,'주임',5,6), hire_date,
+            extract(year from sysdate)-to_number(case when substr(jumin_num,7,1) in('1','2') then '19' else '20' end||substr(jumin_num,1,4)) + 1
+    ) zxc where rownum <= 5 ) where rnum >=2
+)
 --
 --163. employee와 똑같은 구조와 똑같은 데이터를 가진 쌍둥이 테이블 employee2 만들면?
+create table employee2 as select * from employee
 --
 --164. employee와 똑같은 구조를 가진 쌍둥이 테이블 employee3를 만들되 데이터는 복사해 오지 않으려면?
+create table employee3 as select * from employee where 1=2
 --
 --
 --
