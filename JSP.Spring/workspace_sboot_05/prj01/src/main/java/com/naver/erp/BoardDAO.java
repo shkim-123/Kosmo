@@ -9,7 +9,7 @@ public interface BoardDAO {
 	int insertBoard(BoardDTO boardDTO);
 	
 	// 목록 가져오기
-	List<Map<String,String>> getBoardList();
+	List<Map<String,String>> getBoardList(BoardSearchDTO boardSearchDTO);
 	
 	// 조회수 업데이트
 	int updateReadcount(int b_no);
@@ -41,5 +41,7 @@ public interface BoardDAO {
 	// 댓글 등록
 	int insertReply(BoardDTO boardDTO);
 	
+	// 게시글 개수 리턴
+	int getBoardListAllCnt(BoardSearchDTO boardSearchDTO);
 	
 }

@@ -24,19 +24,26 @@ public class BoardController {
 	
 	// 게시판 목록으로 이동
 	@RequestMapping( value="/boardList.do" )
-	public ModelAndView getBoardList() {
+	public ModelAndView getBoardList(BoardSearchDTO boardSearchDTO) {
 		ModelAndView mav = new ModelAndView();
 		
 		List<Map<String,String>> boardList = null;
+		int boardListAllCnt=0;
 		
 		try {
+			// 게시판 글 개수 가져오기
+			boardListAllCnt = this.boardDAO.getBoardListAllCnt(boardSearchDTO);
+			
+			System.out.println("getBoardList boardListAllCnt => " + boardListAllCnt);
+			
 			// 게시판 목록 가져오기
-			boardList = this.boardDAO.getBoardList();
+			boardList = this.boardDAO.getBoardList(boardSearchDTO);
 		} catch(Exception ex) {
 			System.out.println("getBoardList catch!!! => " + ex);
 		}
 		
 		mav.setViewName("boardList.jsp");
+		mav.addObject("boardListAllCnt", boardListAllCnt);
 		mav.addObject("boardList", boardList);
 		
 		return mav;
@@ -162,7 +169,6 @@ public class BoardController {
 	public ModelAndView goBoardReplyForm(@RequestParam(value="b_no") int b_no) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("boardReplyForm.jsp");
-		mav.addObject("b_no", b_no);
 		return mav;
 	}
 	

@@ -91,7 +91,7 @@ public class BoardServiceImpl implements BoardService {
 		if(boardCnt == 0) {return -1;}
 		
 		// 게시글 출력순서번호 +1씩 업데이트
-		int upPringNoCnt = this.boardDAO.upPrintNo(boardDTO);
+		int upPrintNo = this.boardDAO.upPrintNo(boardDTO);
 		
 		// 댓글 등록
 		int insertReply = this.boardDAO.insertReply(boardDTO);

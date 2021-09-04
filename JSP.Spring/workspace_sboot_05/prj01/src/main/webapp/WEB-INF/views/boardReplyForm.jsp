@@ -22,7 +22,30 @@
 			,type:"post"
 			,data:$("[name='boardReplyForm']").serialize()
 			,success:function(responseHTML){
-				alert("하이~~");
+
+				console.log(responseHTML);
+
+				var insertReplyCnt = $(responseHTML).filter(".insertReplyCnt").text();
+				var msg = $(responseHTML).filter(".msg").text();
+
+				msg = $.trim(msg);
+
+				// 유효성 체크 통과 못함
+				if(msg != ""){
+					alert(msg);
+					return;
+				}
+
+				if(insertReplyCnt == 1){
+					alert("댓글 등록 성공!");
+					goBoardList();
+				} else if(insertReplyCnt == -1){
+					alert("이미 삭제된 게시글입니다.");
+					goBoardList();
+				} else {
+					alert("에러 발생! 관리자에게 문의해주세요.");
+				}
+				
 			}
 			,error:function(){
 				alert("서버 통신 에러!");
@@ -85,7 +108,7 @@
 		
 		<br>
 		
-		<input type="hidden" name="b_no" value="<%out.print((int)request.getAttribute("b_no"));%>">
+		<input type="hidden" name="b_no" value="<%out.print(request.getParameter("b_no"));%>">
 		
 		<input type="button" value="저장하기" onClick="goBoardReplyProc();">
 		<input type="reset" value="다시쓰기">

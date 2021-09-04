@@ -24,9 +24,11 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 목록 가져오기
 	@Override
-	public List<Map<String, String>> getBoardList() {
+	public List<Map<String, String>> getBoardList(BoardSearchDTO boardSearchDTO) {
 		
-		List<Map<String,String>> boardList = this.sqlSession.selectList("com.naver.erp.BoardDAO.getBoardList");
+		List<Map<String,String>> boardList = this.sqlSession.selectList(
+				"com.naver.erp.BoardDAO.getBoardList", boardSearchDTO
+		);
 		
 		return boardList;
 	}
@@ -120,4 +122,16 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return insertReply;
 	}
+	
+	// 게시글 개수 리턴
+	@Override
+	public int getBoardListAllCnt(BoardSearchDTO boardSearchDTO) {
+		
+		int boardListAllCnt = this.sqlSession.selectOne(
+				"com.naver.erp.BoardDAO.getBoardListAllCnt", boardSearchDTO
+		);
+		
+		return boardListAllCnt;
+	}
+	
 }
