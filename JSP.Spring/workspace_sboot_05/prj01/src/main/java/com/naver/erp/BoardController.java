@@ -29,22 +29,51 @@ public class BoardController {
 		
 		List<Map<String,String>> boardList = null;
 		int boardListAllCnt=0;
+		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
+		int selectPageNo = boardSearchDTO.getSelectPageNo();
+		int pageNoCntPerPage = 10;
+		int last_pageNo = 0;
+		int min_pageNo = 0;
+		int max_pageNo = 0;
 		
 		try {
 			// 게시판 글 개수 가져오기
 			boardListAllCnt = this.boardDAO.getBoardListAllCnt(boardSearchDTO);
-			
 			System.out.println("getBoardList boardListAllCnt => " + boardListAllCnt);
-			
+		} catch(Exception ex) {
+			System.out.println("getBoardList boardListAllCnt catch!!! => " + ex);
+		}
+		
+		// 페이징 처리
+		if(boardListAllCnt > 0) {
+			last_pageNo = boardListAllCnt/rowCntPerPage;
+				if(boardListAllCnt%rowCntPerPage > 0) { last_pageNo++; }
+				if(selectPageNo > last_pageNo) {
+					selectPageNo = 1;
+					boardSearchDTO.setSelectPageNo(selectPageNo);
+				}
+				
+			min_pageNo = (selectPageNo-1)/pageNoCntPerPage*pageNoCntPerPage+1;
+			max_pageNo = min_pageNo+pageNoCntPerPage-1;
+				if(max_pageNo > last_pageNo) { max_pageNo = last_pageNo; }
+		}
+		
+		
+		try {
 			// 게시판 목록 가져오기
 			boardList = this.boardDAO.getBoardList(boardSearchDTO);
 		} catch(Exception ex) {
-			System.out.println("getBoardList catch!!! => " + ex);
+			System.out.println("getBoardList boardList catch!!! => " + ex);
 		}
 		
 		mav.setViewName("boardList.jsp");
 		mav.addObject("boardListAllCnt", boardListAllCnt);
 		mav.addObject("boardList", boardList);
+		mav.addObject("rowCntPerPage",rowCntPerPage);
+		mav.addObject("selectPageNo",selectPageNo);
+		mav.addObject("last_pageNo",last_pageNo);
+		mav.addObject("min_pageNo",min_pageNo);
+		mav.addObject("max_pageNo",max_pageNo);
 		
 		return mav;
 	}
