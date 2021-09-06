@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,8 +46,6 @@ public class LoginController {
 	@RequestMapping( value="/loginForm.do" )
 	public ModelAndView loginForm() {
 		
-		//System.out.println("하잉~");
-		
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 생성하기
 		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
@@ -69,6 +68,10 @@ public class LoginController {
 			//----------------------------------------------------------------
 			@RequestParam(value="login_id") String login_id
 			, @RequestParam(value="pwd") String pwd
+			//----------------------------------------------------------------
+			// HttpSession 객체의 메위주를 저장하는 매개변수 session 선언하기
+			//----------------------------------------------------------------
+			, HttpSession session
 	) {
 		
 		//----------------------------------------------------------------
@@ -85,6 +88,23 @@ public class LoginController {
 		//----------------------------------------------------------------
 		System.out.println("LoginController.loginProc => " + 1);
 		int login_idCnt = loginDAO.getLogin_idCnt(id_pwd_map);
+		
+		//----------------------------------------------------------------
+		// 만약, login_idCnt 변수 안의 데이터가 1이면
+		// 즉, 만약 입력한 아이디, 암호가 DB에 존재하면
+		// 즉, 만약 로그인이 성공했으면
+		//----------------------------------------------------------------
+		if(login_idCnt == 1) {
+			//----------------------------------------------------------------
+			// HttpSession 객체에 로그인 아이디 저장하기
+			// HttpSession 객체에 아이디를 저장하면 재 접속했을 때 다시 꺼낼 수 있다
+			// <참고> HttpSession 객체는 접속한 이후에도 제거되지 않고 지정된 기간 동안 살아 있는 객체이다.
+			// <참고> HttpServletRequest, HttpServletResponse 객체는 접속할 때 생성되고 응답 이후 삭제되는 객체이다.
+			//----------------------------------------------------------------
+			session.setAttribute("login_id", login_id);
+			
+		}
+		
 		System.out.println("LoginController.loginProc => " + 2);
 				
 		//----------------------------------------------------------------
@@ -157,5 +177,47 @@ public class LoginController {
 		return mav;
 	}
 	
+	
+	//----------------------------------------------------------------
+	// 가상주소 /logout.do 로 접근하면 호출되는 메소드 선언
+	//----------------------------------------------------------------
+	@RequestMapping( value="/logout.do" )
+	public ModelAndView logout(HttpSession session) {
+		
+		//----------------------------------------------------------------
+		// HttpSession 객체에 "login_id" 라는 키값으로 저장된 데이터 삭제하기
+		// 즉, HttpSession 객체에 저장된 로그인 성공 후 저장된 아이디값을 지우기
+		// 즉, HttpSession 객체에 저장된 로그인 정보를 삭제하기
+		//----------------------------------------------------------------
+		session.removeAttribute("login_id");
+
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("logout.jsp");
+		
+		return mav;
+		
+	}
+	
+	//----------------------------------------------------------------
+	// 가상주소 /login_alert.do 로 접근하면 호출되는 메소드 선언
+	//----------------------------------------------------------------
+	@RequestMapping( value="/login_alert.do" )
+	public ModelAndView login_alert() {
+		
+		//----------------------------------------------------------------
+		// [ModelAndView 객체] 생성하기
+		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
+		// [ModelAndView 객체] 리턴하기
+		//----------------------------------------------------------------
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login_alert.jsp");
+		
+		return mav;
+	}
 	
 }

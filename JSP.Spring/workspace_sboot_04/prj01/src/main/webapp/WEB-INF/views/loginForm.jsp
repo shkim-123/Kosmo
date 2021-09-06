@@ -35,6 +35,9 @@
 			checkLoginForm();
 
 		});
+
+		$(".login_id").val("abc");
+		$(".pwd").val("123");
 		
 	});
 
@@ -112,7 +115,7 @@
 				// <2> 그렇지 않으면, 즉, 아이디, 암호가 존재하지 않으면
 				//--------------------------------------------------------------
 				if(idCnt == 1) {							// <1>
-					alert("로그인 성공!");
+					//alert("로그인 성공!");
 					location.replace("/boardList.do");
 				} else {									// <2>
 					alert("로그인 실패!");
@@ -184,6 +187,11 @@
 		<!-- /form -->
 	
 	</center>
+	
+	localhost:8081/boardList.do <br>
+	localhost:8081/boardRegForm.do <br>
+	localhost:8081/boardContentForm.do <br>
+	localhost:8081/boardUpDelForm.do <br>
 
 </body>
 </html>

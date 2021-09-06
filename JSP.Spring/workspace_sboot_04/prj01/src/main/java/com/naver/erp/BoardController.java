@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +43,50 @@ public class BoardController {
 	@Autowired
 	private BoardDAO boardDAO;
 	
+	
+	
+	/*
+	//----------------------------------------------------------------
+	// @RequestMapping이 붙은 메소드가 호출되기 전에 호출되는 메소드 선언
+	// @ModelAttribute가 붙은 메소드는 @RequestMapping 이 붙은 메소드가 호출되기 전에 호출되는 메소드이다.
+	//----------------------------------------------------------------
+	@ModelAttribute
+	public void checkLogin(HttpSession session) throws Exception {
+		//----------------------------------------------------------------
+		// 로그인 성공 여부 확인
+		//----------------------------------------------------------------
+		// HttpSession 객체에 저장된 로그인 아이디를 꺼내기
+		//----------------------------------------------------------------
+		String login_id = (String)session.getAttribute("login_id");
+		ModelAndView mav = new ModelAndView();
+		
+		//----------------------------------------------------------------
+		// 만약 login_id 변수안에 null 이 저장되어 있으면
+		// 즉, 로그인에 성공한 적이 없으면
+		//----------------------------------------------------------------
+		if(login_id == null) {
+			//----------------------------------------------------------------
+			// 코딩으로 예외를 발생시키기
+			// 예외를 관리하는 Exception 객체를 생성함으로써 예외가 발생했음을 자바에게 알린다.
+			//----------------------------------------------------------------
+			throw new Exception();
+		}
+	}
+	
+	//----------------------------------------------------------------
+	// 현재 이 [컨트롤러 클래스] 내의 메소드에서 예외 발생하면 호출되는 메소드 선언하기
+	// @ExceptionHandler(Exception.class)를 붙여야 한다.
+	// @ExceptionHandler(Exception.class) 어노테이션이 붙은 메소드의 리턴되는 문자열은 호출 JSP 페이지명이다. 
+	//----------------------------------------------------------------
+	@ExceptionHandler(Exception.class)
+	public String handlerException() {
+		System.out.println("handlerException !!");
+		return "logout.jsp";
+	}
+	*/
+	
+	
+	
 	//----------------------------------------------------------------
 	// 가상주소 /boardList.do 로 접근하면 호출되는 메소드 선언
 	// @RequestMapping 내부에 method=RequestMethod.POST 가 없으므로
@@ -51,6 +98,7 @@ public class BoardController {
 			// 파라미터값을 저장하고 있는 BoardSearchDTO 객체를 받아오는 매개변수 선언
 			//----------------------------------------------------------------
 			BoardSearchDTO boardSearchDTO
+			// , HttpSession session
 	) {
 		
 		System.out.println("===BoardController.getBoardList 시작===");
@@ -76,6 +124,24 @@ public class BoardController {
 		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
 		int pageNoCntPerPage = 10;
 		// Paging paging = new Paging();
+		
+		
+		
+		/*
+		//----------------------------------------------------------------
+		// 로그인 성공 여부 확인
+		//----------------------------------------------------------------
+		// HttpSession 객체에 저장된 로그인 아이디를 꺼내기
+		String login_id = (String)session.getAttribute("login_id");
+		// 만약 login_id 변수안에 null 이 저장되어 있으면
+		// 즉, 만약 로그인에 성공한 적이 없으면
+		if(login_id == null) {
+			mav.setViewName("logout.jsp");
+			return mav;
+		}
+		*/
+		
+		
 		
 		try {
 			//----------------------------------------------------------------
@@ -146,7 +212,7 @@ public class BoardController {
 		// [ModelAndView 객체]에 [한 화면에 보여줄 행의 개수]를 저장하기
 		// [ModelAndView 객체]에 [한 화면에 보여줄 페이지 번호의 개수]를 저장하기
 		//----------------------------------------------------------------
-		mav.setViewName("boardList.jsp");
+		mav.setViewName("boardList2.jsp");
 		mav.addObject("boardList", boardList);
 		mav.addObject("boardListAllCnt", boardListAllCnt);
 		mav.addObject("last_pageNo", last_pageNo);
