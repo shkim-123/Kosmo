@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ************************************************************* -->
+<!-- mapper 태그 선언 -->
+<!-- ************************************************************* -->
+<mapper namespace="com.naver.erp.EmployeeDAO">
+	
+	<sql id="employeeWhere">
+		<if test="keyword != null and keyword.length() > 0">
+			and (
+				emp_no like '%${keyword}%'
+				or upper(emp_name) like upper('%${keyword}%')
+				or upper(jikup) like upper('%${keyword}%')
+				or to_char(hire_date, 'yyyy-mm-dd') like '%${keyword}%'
+				or upper(dep_name) like upper('%${keyword}%')
+			)
+		</if>
+		
+		<if test="jikup != null and jikup.size() > 0">
+			and 
+			<foreach collection="jikup" item="jikup" open="(" close=")" separator=" or ">
+				<if test="jikup.equals('사장')">
+					jikup = '사장'
+				</if>
+				
+				<if test="jikup.equals('부장')">
+				 	jikup = '부장'
+				</if>
+				
+				<if test="jikup.equals('과장')">
+				 	jikup = '과장'
+				</if>
+				
+				<if test="jikup.equals('대리')">
+				 	jikup = '대리'
+				</if>
+				
+				<if test="jikup.equals('주임')">
+				 	jikup = '주임'
+				</if>
+				
+				<if test="jikup.equals('사원')">
+				 	jikup = '사원'
+				</if>
+			</foreach>
+		</if>
+		
+		<if test="hire_date_year_start != null">
+			and (
+				hire_date between to_date('${hire_date_year_start}-${hire_date_month_start}-01', 'yyyy-mm-dd') 
+						and add_months(to_date('${hire_date_year_end}-${hire_date_month_end}-01', 'yyyy-mm-dd'),1)-1 
+			)
+		</if>
+		
+	</sql>
+	
+	
+	<!-- 게시판 총 개수 가져오기 -->
+	<select id="getEmployeeListCnt" parameterType="com.naver.erp.EmployeeSearchDTO" resultType="int">
+		select count(*) 
+		from employee
+		where 1=1
+			<include refid="employeeWhere"/>
+	</select>
+	
+	<!-- 게시판 리스트 가져오기 -->
+	<select id="getEmployeeList" parameterType="com.naver.erp.EmployeeSearchDTO" resultType="com.naver.erp.EmployeeDTO">
+		select 
+			emp_no as "emp_no"
+			,emp_name as "emp_name"
+			,jikup as "jikup"
+			,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
+			,dep_name as "dep_name"
+		from 
+			employee e, dept d
+		where 
+			e.dep_no = d.dep_no
+			<include refid="employeeWhere"/>
+	</select>
+	
+	<!-- 게시글 있는지 확인하기 -->
+	<select id="getEmployeeCnt" parameterType="int" resultType="int" >
+		select count(*) from employee where emp_no = ${emp_no}
+	</select>
+	
+	<!-- 게시글 하나 가져오기 -->
+	<select id="getEmployeeContent" parameterType="int" resultType="com.naver.erp.EmployeeDTO">
+		select 
+		    emp_no as "emp_no" 
+		    ,emp_name as "emp_name"
+		    ,e.dep_no as "dep_no"
+		    ,d.dep_name as "dep_name"
+		    ,jikup as "jikup"
+		    ,salary as "salary"
+		    ,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
+		    ,jumin_num as "jumin_num"
+		    ,phone as "phone"
+		    ,mgr_emp_no as "mgr_emp_no"
+		    ,(select emp_name  from employee e2 where e.mgr_emp_no = e2.emp_no) as "mgr_emp_name"
+		from 
+			employee e, dept d
+		where 
+			e.dep_no = d.dep_no 
+			and emp_no = ${emp_no}
+	</select>
+	
+</mapper>

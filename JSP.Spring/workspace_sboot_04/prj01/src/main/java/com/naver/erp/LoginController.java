@@ -115,7 +115,7 @@ public class LoginController {
 		// [ModelAndView 객체] 리턴하기
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("loginProc.jsp");
+		mav.setViewName("loginProc2.jsp");
 		mav.addObject( "idCnt", login_idCnt );		// "idCnt"는 키값, DB 연동 결과물 저장
 			// 위 addObject 메소드로 저장된 DB 연동 결과물은 HttpServletRequest 객체에 setAttribute 메소드로 저장된다.
 		System.out.println("====LoginController.loginProc 메소드 호출 종료====");

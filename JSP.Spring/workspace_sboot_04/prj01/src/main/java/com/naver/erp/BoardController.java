@@ -260,7 +260,7 @@ public class BoardController {
 		//----------------------------------------------------------------
 		// [ModelAndView 객체] 에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------
-		mav.setViewName("boardRegForm.jsp");		
+		mav.setViewName("boardRegForm2.jsp");		
 		
 		System.out.println("===BoardController.goBoardRegForm 종료===");
 		
@@ -303,7 +303,7 @@ public class BoardController {
 		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardRegProc.jsp");	
+		mav.setViewName("boardRegProc2.jsp");	
 		
 		// try-catch 구문으로 예외 처리
 		try {
@@ -390,7 +390,7 @@ public class BoardController {
 		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardContentForm.jsp");
+		mav.setViewName("boardContentForm2.jsp");
 		
 		try {
 			
@@ -442,7 +442,7 @@ public class BoardController {
 		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------			
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardUpDelForm.jsp");
+		mav.setViewName("boardUpDelForm2.jsp");
 		
 		try {
 			//----------------------------------------------------------------			
@@ -497,7 +497,7 @@ public class BoardController {
 		// [ModelAndView 객체]에 [호출 JSP 페이지명]을 저장하기
 		//----------------------------------------------------------------			
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("boardUpDelProc.jsp");
+		mav.setViewName("boardUpDelProc2.jsp");
 		
 		//----------------------------------------------------------------			
 		// 만약 [게시판 수정] 모드이면 수정 실행하고 수정 적용행의 개수얻기

@@ -319,9 +319,12 @@
 	<!-- ------------------------------------------------------------- -->
 	<div class="boardListAllCnt">총 : ${requestScope.boardListAllCnt}개</div>
 	
+	<!-- ------------------------------------------------------------- -->
+	<!-- 검색된 목록 출력하기 -->
+	<!-- ------------------------------------------------------------- -->
 	<div class="searchResult">
-		<table border="1">
-			<tr>
+		<table border="1" class="tbcss0" cellpadding="3">
+			<tr bgcolor="gray">
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
@@ -329,192 +332,118 @@
 				<th>등록일</th>
 			</tr>
 			
-			
-			<%
-				/*
-				// 주석 작성 시 코딩적 주석과 기능적 주석을 구분하면 좋음
-				//--------------------------------------------------------------
-				// 코딩적 주석: boardList가 null이 아니면, 기능적 주석: 검색결과물이 있으면
-				//--------------------------------------------------------------
-				if( boardList != null ) {
-					
-					//--------------------------------------------------------------
-					// 선택한 페이지 번호에 맞는 검색 결과물의 시작 정순번호 구하기
-					// 선택한 페이지 번호에 맞는 검색 결과물의 시작 역순번호 구하기
-					//--------------------------------------------------------------
-					int serialNo_asc = selectPageNo*rowCntPerPage-rowCntPerPage+1;
-					int serialNo_desc = boardListAllCnt - (selectPageNo*rowCntPerPage-rowCntPerPage+1) + 1;
-					
-					//--------------------------------------------------------------
-					// 기능적 주석: 검색결과물을 HTML 태그로 출력하기
-					// 코딩적 주석: boardList 안의 ArrayList 객체에 들어 있는 다량의 HashMap 객체를 꺼내어 
-					// HashMap 객체 안의 키값에 대응하는 문자를 꺼내어 HTML 태그로 출력하기
-					//--------------------------------------------------------------
-					for( int i = 0; i < boardList.size(); i++ ) {
-						
-						//--------------------------------------------------------------
-						// i번째 HashMap 객체를 꺼내기 
-						//--------------------------------------------------------------
-						Map<String,String> map = boardList.get(i);
-						
-						//--------------------------------------------------------------
-						// i번째 HashMap 객체에 키값 B_NO 에 대응하는 저장 문자열 꺼내기 
-						// i번째 HashMap 객체에 키값 SUBJECT 에 대응하는 저장 문자열 꺼내기 
-						// i번째 HashMap 객체에 키값 WRITER 에 대응하는 저장 문자열 꺼내기 
-						// i번째 HashMap 객체에 키값 READCOUNT 에 대응하는 저장 문자열 꺼내기 
-						// i번째 HashMap 객체에 키값 REG_DATE 에 대응하는 저장 문자열 꺼내기 
-						// i번째 HashMap 객체에 키값 PRINT_LEVEL 에 대응하는 저장 문자열 꺼내기 
-						//--------------------------------------------------------------
-						int b_no = Integer.parseInt(map.get("B_NO"), 10);
-						String subject = map.get("SUBJECT");
-						String writer = map.get("WRITER");
-						String readcount = map.get("READCOUNT");
-						String reg_date = map.get("REG_DATE");
-						int print_level = Integer.parseInt(map.get("PRINT_LEVEL"), 10);
-						
-						//--------------------------------------------------------------
-						// 들여쓰기 단계 번호에 맞게 공백을 누적하고 들여쓰기 단계가 1 이상이면 ㄴ자 붙이기
-						//--------------------------------------------------------------
-						String blank = "";
-						for(int j=0; j < print_level; j++){
-							blank += "&nbsp&nbsp&nbsp";
-						}
-						if(print_level > 0) { blank = blank + "ㄴ"; }
-						
-						//--------------------------------------------------------------
-						// HTML 또는 문자열로 표현하기
-						//--------------------------------------------------------------
-						out.println( "<tr style='cursor:pointer' onClick='goBoardContentForm("+b_no+")'><td>"
-							//	+(serialNo_asc++)
-								+(serialNo_desc--)
-								+"<td>"+blank+subject
-								+"<td>"+writer+"<td>"+readcount+"<td>"+reg_date );
-						
-					}
-				}
-			*/
-			%>
-			
+			<c:forEach var="board" items="${requestScope.boardList}" varStatus="loogTagStatus">
+				<!--EL의 삼항 연산자 -->
+				<tr bgcolor="${loogTagStatus.index%2==0?'white':'lightgray'}" style="cursor:pointer" onClick="goBoardContentForm(${board.B_NO});">
+					<td>
+						<!-- 역순번호 출력 -->
+						${requestScope.boardListAllCnt-(requestScope.selectPageNo*requestScope.rowCntPerPage-requestScope.rowCntPerPage+1)+1-loogTagStatus.index}
+						<!-- 정순번호 출력 -->
+						<%-- ${requestScope.selectPageNo*requestScope.rowCntPerPage-requestScope.rowCntPerPage+1+loogTagStatus.index} --%>
+					</td>
+					<!-- ㄴ 으로 표현되는 들여쓰기 -->
+					<td>
+						<c:if test="${board.PRINT_LEVEL>0}">
+							<c:forEach begin="1" end="${board.PRINT_LEVEL}">
+								&nbsp;&nbsp;&nbsp;
+							</c:forEach>
+							ㄴ
+						</c:if>
+						${board.SUBJECT}
+					</td>
+					<td>${board.WRITER}</td>
+					<td>${board.READCOUNT}</td>
+					<td>${board.REG_DATE}</td>
+				</tr>
+			</c:forEach>
 			
 		</table> 
 	</div>
 	
 	<div style="height:10px"></div>
 	
+	<!-- ------------------------------------------------------------- -->
 	<!-- 페이지 번호 출력 -->
+	<!-- ------------------------------------------------------------- -->
 	<div class="pageNo">	
-		<%		
-		/*
-			//--------------------------------------------------------------
-			// 만약 검색 결과물이 0보다 크면, 즉, 검색 결과물이 있으면
-			//--------------------------------------------------------------
-			if( boardListAllCnt > 0 ){
-				
-				
-				// 이전, 다음 선택 시 페이지 번호가 10단위로 변경
-				if(min_pageNo > 10){
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (min_pageNo-1) + ");'>[이전]</span> ");
-				}
-				
-				for(int i = min_pageNo; i <= max_pageNo; i++){
-					if(selectPageNo == i){
-						out.print( "<span>"+ i + "</span> ");
-					} else {
-						out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+i+");'>["+ i + "]</span> ");
-					}
-				}
-				
-				if(max_pageNo < last_pageNo){
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (max_pageNo+1) + ");'>[다음]</span> ");
-				}
-				
-				
-				//--------------------------------------------------------------
-				// 이전, 다음 선택 시 페이지 번호가 1씩 변경
-				// 선택한 페이지 번호가 1보다 크면 [처음], [이전] 글씨 보이기. 단, 클릭하면 함수 호출하도록 클릭이벤트 걸기
-				//--------------------------------------------------------------
-				if(selectPageNo > 1){
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (1) + ");'>[처음]</span> ");
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (selectPageNo-1) + ");'>[이전]</span> ");
-					out.print( "&nbsp;&nbsp;");
-				} 
-				//--------------------------------------------------------------
-				// 선택한 페이지 번호가 1이면 [처음] [이전] 글씨 보이기. 단, 클릭하면 함수 호출하는 이벤트 걸지 말기
-				//--------------------------------------------------------------
-				else {
-					// 처음, 이전을 항상 보여주도록 설정
-					out.print( "<span>[처음]</span> ");
-					out.print( "<span>[이전]</span> ");
-					out.print( "&nbsp;&nbsp;");
-				}
-				//--------------------------------------------------------------
-				// 선택한 페이지 번호에 맞는 페이지 번호들을 출력하기
-				//--------------------------------------------------------------
-				for(int i = min_pageNo; i <= max_pageNo; i++){
-					// 만약 출력되는 페이지 번호와 선택한 페이지 번호가 일치하면 그냥 번호만 표현하기
-					if(selectPageNo == i){
-						out.print( "<span>"+ i + "</span> ");
-					} 
-					// 만약, 출력되는 페이지 번호와 선택한 페이지 번호가 일치하지 않으면 클릭하면 함수 호출하도록 클릭이벤트 걸기
-					else {
-						out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+i+");'>["+ i + "]</span> ");
-					}
-				}
-				//--------------------------------------------------------------
-				// 선택한 페이지 번호가 마지막 페이지 번호보다 작으면 [다음] [마지막] 문자 표현하기
-				// 단, 클릭하면 함수 호출하도록 클릭 이벤트 걸기
-				//--------------------------------------------------------------
-				if(selectPageNo < last_pageNo){
-					out.print( "&nbsp;&nbsp;");
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (selectPageNo+1) + ");'>[다음]</span> ");
-					out.print( "<span style='cursor:pointer' onClick='search_with_changePageNo("+ (last_pageNo) + ");'>[마지막]</span> ");
-				} 
-				//--------------------------------------------------------------
-				// 선택한 페이지 번호가 마지막 페이지 번호보다 같으면 [다음] [마지막] 문자만 표현하기
-				// 단, 클릭하면 함수 호출하는 이벤트는 걸지 말기
-				//--------------------------------------------------------------
-				else {
-					// 다음, 마지막을 항상 보여주도록 설정
-					out.print( "<span>[다음]</span> ");
-					out.print( "<span>[마지막]</span> ");
-					out.print( "&nbsp;&nbsp;");
-				}
-				
-			}
-			*/
-		%>
-		
+	
+		<%--************************************************************** 	
+			JSTL 이란 커스텀 태그 중에 C코어 태그 중에 if 조건문을 사용하여
+			만약에 게시판 검색 개수가 0보다 크면
+			--------------------------------------------------------------
+				C코어 태그 중에서 if 조건문 형식
+			--------------------------------------------------------------
+				<c:if test="${EL조건식}">
+					html 코딩
+				</c:if>
+			************************************************************** --%>
 		<c:if test="${requestScope.boardListAllCnt>0}">
-		
+			<!-- ------------------------------------------------------------- -->
+			<!-- 선택한 페이지 번호가 1보다 크면 [처음], [이전] 글씨 보이기. 단, 클릭하면 함수 호출하도록 클릭이벤트 걸기 -->
+			<!-- ------------------------------------------------------------- -->
 			<c:if test="${requestScope.selectPageNo>1}">
 				<span style='cursor:pointer' onClick='search_with_changePageNo(1);'>[처음]</span>
 				<span style='cursor:pointer' onClick='search_with_changePageNo(${requestScope.selectPageNo}-1);'>[이전]</span>
 				&nbsp;&nbsp;
 			</c:if>
 			
+			<!-- ------------------------------------------------------------- -->
+			<!-- 선택한 페이지 번호가 1이면 [처음] [이전] 글씨 보이기. 단, 클릭하면 함수 호출하는 이벤트 걸지 말기 -->
+			<!-- ------------------------------------------------------------- -->
 			<c:if test="${requestScope.selectPageNo<=1}">
 				<span>[처음]</span>
 				<span>[이전]</span>
 				&nbsp;&nbsp;
 			</c:if>
 			
+			
+			<%--************************************************************** 	
+				JSTL 이란 커스텀 태그 중에 C코어 태그 중에 forEach 반복문을 사용하여
+				[최소 페이지 번호]부터 [최대 페이지 번호]를 표현하기
+				--------------------------------------------------------------
+					C코어 태그 중에서 forEach 반복문 형식1
+				--------------------------------------------------------------
+					<c:forEach var="반복문안에서사용할지역변수" begin="시작번호" end="끝번호" step="증감정수">
+						html 코딩
+					</c:forEach>
+				--------------------------------------------------------------
+					C코어 태그 중에서 forEach 반복문 형식2
+				--------------------------------------------------------------
+					<c:forEach var="반복문안에서사용할지역변수" items="EL로표현되는ArrayList객체" varStatus="LoopTagStatus객체저장변수명">
+						html 코딩
+					</c:forEach>
+				************************************************************** --%>
 			<c:forEach var="no" begin="${requestScope.min_pageNo}" end="${requestScope.max_pageNo}" step="1">
+				<!-- ------------------------------------------------------------- -->
+				<!-- 만약 출력되는 페이지 번호와 선택한 페이지 번호가 일치하면 그냥 번호만 표현하기 -->
+				<!-- ------------------------------------------------------------- -->
 				<c:if test="${no==requestScope.selectPageNo}">
 					<span>${no}</span>
 				</c:if>
 				
+				<!-- ------------------------------------------------------------- -->
+				<!-- 만약, 출력되는 페이지 번호와 선택한 페이지 번호가 일치하지 않으면 클릭하면 함수 호출하도록 클릭이벤트 걸기 -->
+				<!-- ------------------------------------------------------------- -->
 				<c:if test="${no!=requestScope.selectPageNo}">
 					<span style="cursor:pointer" onClick="search_with_changePageNo(${no});">[${no}]</span>
 				</c:if>
 				
 			</c:forEach>
 			
+			<!-- ------------------------------------------------------------- -->
+			<!-- 선택한 페이지 번호가 마지막 페이지 번호보다 작으면 [다음] [마지막] 문자 표현하기 -->
+			<!-- 단, 클릭하면 함수 호출하도록 클릭 이벤트 걸기 -->
+			<!-- ------------------------------------------------------------- -->
 			<c:if test="${requestScope.selectPageNo<requestScope.last_pageNo}">
 				&nbsp;&nbsp;
 				<span style='cursor:pointer' onClick='search_with_changePageNo(${requestScope.selectPageNo}+1);'>[다음]</span>
 				<span style='cursor:pointer' onClick='search_with_changePageNo(${requestScope.last_pageNo});'>[마지막]</span>
 			</c:if>
 			
+			<!-- ------------------------------------------------------------- -->
+			<!-- 선택한 페이지 번호가 마지막 페이지 번호보다 크거나 같으면 [다음] [마지막] 문자만 표현하기 -->
+			<!-- 단, 클릭하면 함수 호출하는 이벤트는 걸지 말기 -->
+			<!-- ------------------------------------------------------------- -->
 			<c:if test="${requestScope.selectPageNo>=requestScope.last_pageNo}">
 				&nbsp;&nbsp;
 				<span>[다음]</span>
