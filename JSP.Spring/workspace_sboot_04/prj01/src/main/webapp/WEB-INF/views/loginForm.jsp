@@ -18,6 +18,11 @@
 <!-- JQuery 삽입 -->
 <script src="/resources/jquery-1.11.0.min.js" type="text/javascript"></script>
 
+<!-- ************************************************************* -->
+<!-- css 파일 수입하기 -->
+<!-- ************************************************************* -->
+<link href="/resources/common.css" rel="stylesheet" type="text/css">
+
 <script>
 	
 	//--------------------------------------------------------------
@@ -35,10 +40,6 @@
 			checkLoginForm();
 
 		});
-
-		$(".login_id").val("abc");
-		$(".pwd").val("123");
-		
 	});
 
 	//--------------------------------------------------------------
@@ -144,13 +145,14 @@
 		<!-- ************************************************************* -->
 		<form name="loginForm" method="post">
 			
-			<table cellpadding="5" border="1">
+			<table cellpadding="5" border="1" class="tbcss2">
 				<caption><b>[로그인]</b></caption>
 				<tr>
 					<th bgcolor="lightgray" align="center">아이디</th>
 					<td>
+						<!-- EL로 쿠키값 꺼내기, EL은 null이라면 표현하지 않는다 -->
 						<!-- ************************************************************* -->
-						<input type="text" name="login_id" class="login_id" size="20">
+						<input type="text" name="login_id" class="login_id" size="20" value="${cookie.login_id.value}">
 						<!-- ************************************************************* -->
 					</td>
 				</tr>
@@ -158,11 +160,12 @@
 					<th bgcolor="lightgray" align="center">암호</th>
 					<td>
 						<!-- ************************************************************* -->
-						<input type="password" name="pwd" class="pwd" size="20">
+						<input type="password" name="pwd" class="pwd" size="20" value="${cookie.pwd.value}">
 						<!-- ************************************************************* -->
 					</td>
 				</tr>
 			</table>
+			
 			
 			<br>
 			
@@ -171,6 +174,9 @@
 					<td>
 						<!-- ************************************************************* -->
 						<input type="button" value="로그인" class="login">
+						<!-- EL에서 checked 라는 문자를 표현하려면 '(싱글쿼터)를 붙여야 한다. -->
+						<!-- 싱글쿼터가 없다면 sessionScope.checked, requestScope.checked를 찾으러 간다 -->
+						<input type="checkbox" name="is_login" class="is_login" value="yes" ${empty cookie.login_id.value?'':'checked'}>아이디/암호 기억
 						<!-- ************************************************************* -->
 					</td>
 				</tr>
@@ -188,10 +194,10 @@
 	
 	</center>
 	
-	localhost:8081/boardList.do <br>
-	localhost:8081/boardRegForm.do <br>
-	localhost:8081/boardContentForm.do <br>
-	localhost:8081/boardUpDelForm.do <br>
+	<span style="cursor:pointer" onClick="location.replace('/boardList.do')">localhost:8081/boardList.do</span><br>
+	<span style="cursor:pointer" onClick="location.replace('/boardRegForm.do')">localhost:8081/boardRegForm.do</span><br>
+	<span style="cursor:pointer" onClick="location.replace('/boardContentForm.do')">localhost:8081/boardContentForm.do</span><br>
+	<span style="cursor:pointer" onClick="location.replace('/boardUpDelForm.do')">localhost:8081/boardUpDelForm.do</span><br>
 
 </body>
 </html>

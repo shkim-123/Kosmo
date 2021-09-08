@@ -76,7 +76,7 @@
 	<!-- empty : EL의 연산자, 오른쪽에 나온 데이터가 null값이면 true를 리턴 -->
 	<!-- ------------------------------------------------------------- -->
 	<c:if test="${!empty requestScope.board}">
-		<table border="1">
+		<table border="1" class="tbcss2" cellpadding="5">
 			<caption><b>[글 상세 보기]</b></caption>
 			<tr>
 				<th>글번호</th>

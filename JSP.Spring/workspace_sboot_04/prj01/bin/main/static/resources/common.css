@@ -17,9 +17,9 @@ body,form,td,th,pre {
 } 
 
 /*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
-/* input 태그 설정. */ 
+/* input, select 태그 설정. */ 
 /*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
-input { 
+input,select { 
 	font-size: 9pt; 
 	color:black; 
 	font-family: 굴림,tahoma,돋움,verdana; 
@@ -29,7 +29,11 @@ a:link {text-decoration:none;color:#696969}
 a:hover{text-decoration:none;color:#66ccff} 
 a:visited {text-decoration:none;color:#330066} 
 
-
+textarea{
+	font-size: 9pt;
+	color: black;
+	font-family: 굴림,tahoma,돋움,verdana; 
+}
 
 /*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
 /* <table class="tbcss0"> ~</table>안의 테이블에 가로,세로 선이 모두 없게 보이기. */

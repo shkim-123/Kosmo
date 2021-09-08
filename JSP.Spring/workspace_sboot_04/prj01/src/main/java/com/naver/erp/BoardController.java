@@ -124,7 +124,10 @@ public class BoardController {
 		int rowCntPerPage = boardSearchDTO.getRowCntPerPage();
 		int pageNoCntPerPage = 10;
 		// Paging paging = new Paging();
+		String reg_date_sort = boardSearchDTO.getReg_date_sort();
 		
+		
+		System.out.println("서치서치 => " + reg_date_sort);
 		
 		
 		/*

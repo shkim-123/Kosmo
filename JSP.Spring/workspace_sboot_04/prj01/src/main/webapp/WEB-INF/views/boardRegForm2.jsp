@@ -129,7 +129,7 @@
 	<!-- [게시판 글쓰기] 화면을 출력하는 form 태그 선언 -->	
 	<!-- ************************************************************* -->
 	<form name="boardRegForm" method="post" action="/boardRegProc.do">
-		<table border="1">
+		<table border="1" class="tbcss2" cellpadding="5">
 		<%-- 		
 			<c:if test="${empty param.b_no}">
 				<caption><b>[새글쓰기]</b></caption>

@@ -40,9 +40,14 @@
 			location.replace("/employeeList.do");
 		});
 
-		$(".goUpDelFormBtn").click(function(){
-			document.goUpDelForm.submit();
+		$(".goUpFormBtn").click(function(){
+			
 		});
+		
+		$(".goDelFormBtn").click(function(){
+
+		});
+		
 	});
 
 	
@@ -140,7 +145,8 @@
 				
 		<br>
 		
-		<input type="button" value="수정/삭제" class="goUpDelFormBtn">&nbsp;
+		<input type="button" value="수정하기" class="goUpFormBtn">&nbsp;
+		<input type="button" value="삭제하기" class="goDelFormBtn">&nbsp;
 		<input type="button" value="목록보기" class="goListBtn">
 	</c:if>
 	

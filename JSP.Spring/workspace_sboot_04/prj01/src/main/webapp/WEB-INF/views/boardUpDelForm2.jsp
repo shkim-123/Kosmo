@@ -202,7 +202,7 @@
 			<input type="hidden" name="upDel">
 			<!-- ************************************************************* -->
 		
-			<table border="1">
+			<table border="1" class="tbcss2" cellpadding="5">
 				<caption><b>[게시글 수정/삭제]</b></caption>
 				<tr>
 					<th>이름</th>

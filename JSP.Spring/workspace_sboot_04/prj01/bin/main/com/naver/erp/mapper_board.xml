@@ -82,10 +82,8 @@
 			</foreach>
 			
 		</if>
-		
 	</sql>
 	
-
 
 	<!-- ************************************************************* -->
 	<!-- 게시판 글 입력하는 insert 문을 내포한 insert 태그 선언 -->
@@ -157,8 +155,16 @@
 				<!-- <sql id="boardWhere"> 태그 안에 삽입된 SQL 구문 삽입하기 -->
 				<!-- ************************************************************* -->
 				<include refid="boardWhere"/>
+			
 				
-			order by group_no desc, print_no
+			<if test="!(reg_date_sort != null and reg_date_sort.length() > 0)">
+				order by group_no desc, print_no
+			</if>		
+	
+			<if test="reg_date_sort != null and reg_date_sort.length() > 0">
+				order by reg_date ${reg_date_sort}
+			</if>
+			
 		) zxc
 		
 		<!-- 아래 태그 사이에 들어간 부등호를 부등호로 인정한다. --> 

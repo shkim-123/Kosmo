@@ -26,12 +26,20 @@
 
 <script>
 
+	//--------------------------------------------------------------
+	// body 태그 안의 내용을 모두 읽어들인 이후 실행할 자스 코드 설정하기
+	//--------------------------------------------------------------
 	$(document).ready(function(){
+
+		changeBgColor();
+
 		$(".day").click(function(){
 			var checked = $(".day").filter(":checked").val();
 			searchExe();
 		});
+
 	});
+
 
 	//--------------------------------------------------------------
 	// [페이지 번호]를 클릭하면 호출되는 함수 선언
@@ -173,6 +181,8 @@
 			//--------------------------------------------------------------
 			,success: function(responseHtml){
 
+				console.log(responseHtml);
+
 				//--------------------------------------------------------------
 				// 매개변수 responseHtml로 들어온 검색 결과물 html 소스문자열에서 
 				// class="searchResult"를 가진 태그 내부의 [검색 결과물 html 소스]를 얻어서
@@ -193,7 +203,27 @@
 				// 아래 현 화면의 html 소스 중에 class="pageNo" 를 가진 태그 내부에 덮어씌우기
 				//--------------------------------------------------------------
 				$(".pageNo").html($(responseHtml).find(".pageNo").html());
+
 				
+				var regDageSort = $(".reg_date_sort").val();
+				var regDateTrObj = $(".searchResult").find("th").last();
+
+				if(regDageSort == 'desc'){
+					
+					regDateTrObj.text("등록일▼");
+					
+				} else if(regDageSort == 'asc'){
+					
+					regDateTrObj.text("등록일▲");
+					
+				} else if(regDageSort == null) {
+					
+					regDateTrObj.text("등록일");
+					
+				}
+				
+				changeBgColor();
+								
 			}
 			//--------------------------------------------------------------
 			// 서버의 응답을 못 받았을 경우 실행할 익명함수 설정
@@ -205,6 +235,32 @@
 
 	}
 
+
+
+	// 등록일 행 클릭 시 정렬
+	function searchRegDate(){
+
+		var regDateTr = $(".searchResult").find("th").last().text();
+			regDateTr = $.trim(regDateTr);
+
+		if(regDateTr.indexOf("▼") < 0 && regDateTr.indexOf("▲") < 0){
+			
+			$(".reg_date_sort").val("desc");
+			
+		} else if(regDateTr.indexOf("▼") >= 0){
+			
+			$(".reg_date_sort").val("asc");
+			
+		} else if(regDateTr.indexOf("▲") >= 0) {
+			
+			$(".reg_date_sort").val("");
+			
+		}
+
+		search();
+	}
+
+	
 </script>
 
 </head>
@@ -217,38 +273,6 @@
 <body onKeydown="if(event.keyCode==13){search();}">
 
 <center>
-
-		
-	<!-- ************************************************************* -->
-	<!-- 자바 변수 선언하고 검색 화면 구현에 필요한 데이터 꺼내서 저장하기 -->
-	<!-- 검색 결과물, 검색된 총 개수, 페이지 번호에 관련된 데이터이다. -->
-	<!-- ************************************************************* -->
-	<%
-		/*
-		//--------------------------------------------------------------
-		// HttpServletRequest 객체의 setAttribute 메소드 "boardList" 라는 키값으로 저장된 데이터 꺼내기
-		//--------------------------------------------------------------
-		// "/boardList.do" 로 접속하면 호출되는 메소드 안에서 ModelAndView 객체의 addObject로 저장된 데이터는
-		// HttpServletRequest 객체의 setAttribute 메소드로도 저장된 효과를 본다.
-		// getAttribute() 의 리턴형은 Object 이므로 형 변환을 꼭 해야 한다.
-		//--------------------------------------------------------------
-		List<Map<String, String>> boardList = (List<Map<String, String>>)request.getAttribute("boardList");
-		//--------------------------------------------------------------
-		// HttpServletRequest 객체의 setAttribute 메소드 "boardListAllCnt" 라는 키값으로 저장된 데이터 꺼내기 
-		// HttpServletRequest 객체의 setAttribute 메소드 "selectPageNo" 라는 키값으로 저장된 데이터 꺼내기 
-		// HttpServletRequest 객체의 setAttribute 메소드 "rowCntPerPage" 라는 키값으로 저장된 데이터 꺼내기 
-		// HttpServletRequest 객체의 setAttribute 메소드 "last_pageNo" 라는 키값으로 저장된 데이터 꺼내기 
-		// HttpServletRequest 객체의 setAttribute 메소드 "min_pageNo" 라는 키값으로 저장된 데이터 꺼내기 
-		// HttpServletRequest 객체의 setAttribute 메소드 "max_pageNo" 라는 키값으로 저장된 데이터 꺼내기 
-		//--------------------------------------------------------------
-		int boardListAllCnt = (Integer)request.getAttribute("boardListAllCnt");
-		int selectPageNo = (Integer)request.getAttribute("selectPageNo");
-		int rowCntPerPage= (Integer)request.getAttribute("rowCntPerPage");
-		int last_pageNo = (Integer)request.getAttribute("last_pageNo");
-		int min_pageNo = (Integer)request.getAttribute("min_pageNo");
-		int max_pageNo = (Integer)request.getAttribute("max_pageNo");
-		*/
-	%>
 
 	<!-- ************************************************************* -->
 	<!-- [게시판 검색 조건 입력 양식] 내포한 form 태그 선언 -->
@@ -301,6 +325,11 @@
 		<!-- href="javascript:자바스크립트코드" 클릭 시 코딩한 자바스크립트코드를 실행한다. -->
 		<!-- ------------------------------------------------------------- -->
 		<a href="javascript:goBoardRegForm();">새글쓰기</a>
+		
+		
+		<input type="hidden" name="reg_date_sort" class="reg_date_sort">
+		
+		
 	</form>
 	
 	<!-- ------------------------------------------------------------- -->
@@ -324,17 +353,18 @@
 	<!-- ------------------------------------------------------------- -->
 	<div class="searchResult">
 		<table border="1" class="tbcss0" cellpadding="3">
-			<tr bgcolor="gray">
+			<tr>
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
 				<th>조회수</th>
-				<th>등록일</th>
+				<th style="cursor:pointer" onClick="searchRegDate();">등록일</th>
 			</tr>
 			
 			<c:forEach var="board" items="${requestScope.boardList}" varStatus="loogTagStatus">
 				<!--EL의 삼항 연산자 -->
-				<tr bgcolor="${loogTagStatus.index%2==0?'white':'lightgray'}" style="cursor:pointer" onClick="goBoardContentForm(${board.B_NO});">
+<%-- 				<tr bgcolor="${loogTagStatus.index%2==0?'white':'lightgray'}" style="cursor:pointer" onClick="goBoardContentForm(${board.B_NO});"> --%>
+				<tr style="cursor:pointer" onClick="goBoardContentForm(${board.B_NO});">
 					<td>
 						<!-- 역순번호 출력 -->
 						${requestScope.boardListAllCnt-(requestScope.selectPageNo*requestScope.rowCntPerPage-requestScope.rowCntPerPage+1)+1-loogTagStatus.index}
@@ -465,7 +495,8 @@
 		<!-- ************************************************************* -->
 		<input type="hidden" name="b_no">
 	</form>
-		
+
+	
 </center>
 
 
