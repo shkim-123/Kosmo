@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 // @Service : [서비스 클래스] 임을 지정하고 bean 태그로 자동 등록된다.
 // @Transactional : [서비스 클래스]의 메소드 내부에서 일어나는 모든 작업에는 [트랜잭션]이 걸린다.
 //----------------------------------------------------------------
-@Service 
+@Service
 @Transactional
 public class BoardServiceImpl implements BoardService {
 	

@@ -11,10 +11,17 @@
 	<!-- ************************************************************* -->
 	<sql id="boardWhere">
 		<!-- ************************************************************* -->
-		<!-- 만약 키워드가 null이 아니고 길이가 0보다 크면 where절에 참여하기 -->
+		<!-- 만약, BoardSearchDTO 객체의 속성변수 keyword1에 문자열이 있거나 속성변수 keyword2에 문자열이 있으면 -->
+		<!-- ************************************************************* -->
+		<if test="keyword1!=null and keyword1.length()>0 or keyword2!=null and keyword2.length()>0">
+			and (
+		</if>
+		
+		<!-- ************************************************************* -->
+		<!-- 만약, BoardSearchDTO 객체의 속성변수 keyword1에 문자열이 있으면 -->
 		<!-- ************************************************************* -->
 		<if test="keyword1!=null and keyword1.length()>0">
-			and (
+			 (
 				upper(subject) like upper('%${keyword1}%')
 				or upper(content) like upper('%${keyword1}%')
 				or upper(writer) like upper('%${keyword1}%')
@@ -23,15 +30,34 @@
 			)
 		</if>
 		
+		<!-- ************************************************************* -->
+		<!-- 만약, BoardSearchDTO 객체의 속성변수 keyword1에 문자열이 있고, 속성변수 keyword2에 문자열이 있으면 -->
+		<!-- BoardSearchDTO 객체의 속성변수 orAnd에 문자열을 싱글쿼터 안붙이고 그대로 표현하기 -->
+		<!-- ************************************************************* -->
+		<if test="keyword1!=null and keyword1.length()>0 and keyword2!=null and keyword2.length()>0">
+			${orAnd} 
+		</if>
+		
+		<!-- ************************************************************* -->
+		<!-- 만약, BoardSearchDTO 객체의 속성변수 keyword2에 문자열이 있으면 -->
+		<!-- ************************************************************* -->
 		<if test="keyword2!=null and keyword2.length()>0">
-			${orAnd} (
+			 (
 				upper(subject) like upper('%${keyword2}%')
 				or upper(content) like upper('%${keyword2}%')
 				or upper(writer) like upper('%${keyword2}%')
 				or upper(email) like upper('%${keyword2}%')
-				or to_char(reg_date, 'yyyy-mm-dd') like '%${keyword2}%' 				
+				or to_char(reg_date, 'yyyy-mm-dd') like '%${keyword2}%' 	
 			)
 		</if>
+		
+		<!-- ************************************************************* -->
+		<!-- 만약, BoardSearchDTO 객체의 속성변수 keyword1에 문자열이 있거나 속성변수 keyword2에 문자열이 있으면 -->
+		<!-- ************************************************************* -->
+		<if test="keyword1!=null and keyword1.length()>0 or keyword2!=null and keyword2.length()>0">
+			)
+		</if>
+		
 		
 		<!-- ************************************************************* -->
 		<!-- 만약 BoardSearchDTO 객체의 속성변수 day가 null이 아니고 저장된 개수가 0보다 크면 -->
@@ -156,15 +182,14 @@
 				<!-- ************************************************************* -->
 				<include refid="boardWhere"/>
 			
-				
-			<if test="!(reg_date_sort != null and reg_date_sort.length() > 0)">
-				order by group_no desc, print_no
-			</if>		
+			order by 	
+				<if test="sort == null or sort.length() == 0">
+					group_no desc, print_no
+				</if>		
 	
-			<if test="reg_date_sort != null and reg_date_sort.length() > 0">
-				order by reg_date ${reg_date_sort}
-			</if>
-			
+				<if test="sort != null and sort.length() > 0">
+					${sort}
+				</if>
 		) zxc
 		
 		<!-- 아래 태그 사이에 들어간 부등호를 부등호로 인정한다. --> 

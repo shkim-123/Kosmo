@@ -26,6 +26,17 @@
 -->
 
 <!-- ************************************************************* -->
+<!-- JSTL이란 커스텀 태그의 C코어 태그를 사용하여 HttpServletRequest 객체 키값-데이터 저장하기 -->
+<!-- ************************************************************* -->
+<c:set var="thBgcolor" value="#aebfbe" scope="request"/>
+	<!-- 위 코드는 아래 자바 코드와 동일한 기능을 가진다. -->
+	<%
+		// request.setAttribute("thBgcolor", "#aebfbe") ;
+	%>
+	
+<c:set var="bodycolor" value="#f5f5f5" scope="request"/>
+
+<!-- ************************************************************* -->
 <!-- JQuery 라이브러리 수입하기 -->
 <!-- ************************************************************* -->
 <script src="/resources/jquery-1.11.0.min.js"></script>
@@ -48,6 +59,8 @@ $(document).ready(function() {
 		+"<div><span style='cursor:pointer' onClick='location.replace(\"/logout.do\");'>[로그아웃]</span></div>"
 		+"</center>"
 	);
+
+	$("body").attr("bgcolor", "${bodycolor}");
 	
 });
 
@@ -65,3 +78,4 @@ function changeBgColor(){
 	);
 }
 </script>
+

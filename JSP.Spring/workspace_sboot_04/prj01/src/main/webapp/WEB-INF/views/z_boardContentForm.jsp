@@ -25,7 +25,7 @@
 
 <style>
 	th {
-		background-color: ${thBgcolor};
+		background-color: lightgray;
 	}
 </style>
 
@@ -72,64 +72,82 @@
 
 <center>
 
-	<!-- ------------------------------------------------------------- -->
-	<!-- empty : EL의 연산자, 오른쪽에 나온 데이터가 null값이면 true를 리턴 -->
-	<!-- ------------------------------------------------------------- -->
-	<c:if test="${!empty requestScope.board}">
-		<table border="1" class="tbcss2" cellpadding="5">
-			<caption><b>[글 상세 보기]</b></caption>
-			<tr>
-				<th>글번호</th>
-				<td>${requestScope.board.b_no}</td>
-				<th>조회수</th>
-				<td>${requestScope.board.readcount}</td>
-			</tr>
+		<% 
+			BoardDTO boardDTO = (BoardDTO)request.getAttribute("board"); 
 			
-			<tr>
-				<th>작성자</th>
-				<td>${requestScope.board.writer}</td>
-				<th>작성일</th>
-				<td>${requestScope.board.reg_date}</td>
-			</tr>
-			
-			<tr>
-				<th>이메일</th>
-				<td colspan="3">${requestScope.board.email}</td>
-			</tr>
-			
-			<tr>
-				<th>제목</th>
-				<td colspan="3">${requestScope.board.subject}</td>
-			</tr>
-			
-			<tr>
-				<th>내용</th>
-				<td colspan="3"><textarea name="content" rows="13" cols="45" style="border:0" readonly>${requestScope.board.content}</textarea></td>
-			</tr>
-		</table>
-				
-		<br>
+			int b_no = 0;
 		
-		<input type="button" value="댓글쓰기" onClick="goBoardRegForm()">&nbsp;
-		<input type="button" value="수정/삭제" onClick="goBoardUpDelForm()">&nbsp;
-		<input type="button" value="목록보기" onClick="goBoardList()">
-	</c:if>
+		
+			//----------------------------------------------------------------
+			// boardDTO가 null이 아닐때 
+			//----------------------------------------------------------------
+			if(boardDTO != null) {
+				b_no = boardDTO.getB_no();
+				String subject = boardDTO.getSubject();
+				String content = boardDTO.getContent();
+				String writer = boardDTO.getWriter();
+				String reg_date = boardDTO.getReg_date();
+				int readcount = boardDTO.getReadcount();
+				String email = boardDTO.getEmail();
+			
+		%>
+		
+	<table border="1">
+		<caption><b>[글 상세 보기]</b></caption>
+		<tr>
+			<th>글번호</th>
+			<td><%out.print(b_no);%></td>
+			<th>조회수</th>
+			<td><%out.print(readcount);%></td>
+		</tr>
+		
+		<tr>
+			<th>작성자</th>
+			<td><%out.print(writer);%></td>
+			<th>작성일</th>
+			<td><%out.print(reg_date);%></td>
+		</tr>
+		
+		<tr>
+			<th>이메일</th>
+			<td colspan="3"><%out.print(email);%></td>
+		</tr>
+		
+		<tr>
+			<th>제목</th>
+			<td colspan="3"><%out.print(subject);%></td>
+		</tr>
+		
+
+		
+		<tr>
+			<th>내용</th>
+			<td colspan="3"><textarea name="content" rows="13" cols="45" style="border:0" readonly><%out.print(content);%></textarea></td>
+		</tr>
+		
+		<% 
+			// if문 블록 닫기 
+			} 
+			// boardDTO 가 null 일 때
+			else {
+				out.print("<script>alert('삭제된 글입니다.'); goBoardList();</script>");
+			}
+		%>
+		
+	</table>
 	
+	<br>
 	
-	<c:if test="${empty requestScope.board}">
-		<script>
-			alert('삭제된 글입니다.'); 
-			goBoardList();
-		</script>
-	</c:if>
-	
+	<input type="button" value="댓글쓰기" onClick="goBoardRegForm()">&nbsp;
+	<input type="button" value="수정/삭제" onClick="goBoardUpDelForm()">&nbsp;
+	<input type="button" value="목록보기" onClick="goBoardList()">
 	
 	<!-- ************************************************************* -->
 	<!-- [게시판 수정/삭제] 화면으로 이동하는 form 태그 선언 -->
 	<!-- 페이지 이동을 하는데 post 방식으로 데이터를 전달하고 싶으면 form 태그를 사용하는 수 밖에 없다. -->
 	<!-- ************************************************************* -->
 	<form name="boardUpDelForm" method="post" action="/boardUpDelForm.do">
-		<input type="hidden" name="b_no" value="${requestScope.board.b_no}">
+		<input type="hidden" name="b_no" value="<%=b_no%>">
 	</form>
 	
 	<!-- ************************************************************* -->
@@ -137,7 +155,7 @@
 	<!-- 페이지 이동을 하는데 post 방식으로 데이터를 전달하고 싶으면 form 태그를 사용하는 수 밖에 없다. -->
 	<!-- ************************************************************* -->
 	<form name="boardRegForm" method="post" action="/boardRegForm.do">
-		<input type="hidden" name="b_no" value="${requestScope.board.b_no}">
+		<input type="hidden" name="b_no" value="<%=b_no%>">
 	</form>	
 	
 	

@@ -22,9 +22,7 @@ public class BoardSearchDTO {
 	private int selectPageNo = 1;
 	private int rowCntPerPage = 20;
 	private List<String> day;
-	private String reg_date_sort;
-
-	
+	private String sort;
 	//----------------------------------------------------------------
 	// getter, setter 메소드 선언
 	//----------------------------------------------------------------
@@ -64,12 +62,11 @@ public class BoardSearchDTO {
 	public void setDay(List<String> day) {
 		this.day = day;
 	}
-	public String getReg_date_sort() {
-		return reg_date_sort;
+	public String getSort() {
+		return sort;
 	}
-	public void setReg_date_sort(String reg_date_sort) {
-		this.reg_date_sort = reg_date_sort;
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 
-	
 }
