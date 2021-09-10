@@ -32,29 +32,39 @@ public class EmployeeController {
 		ModelAndView mav = new ModelAndView();
 		int employeeListCnt = 0;
 		List<EmployeeDTO> employeeList = null;
+		List<String> jikupList = null;
+		List<String> depNameList = null;
 		
+		
+		// 직급 리스트 가져오기
+		// 부서명 리스트 가져오기
+		try {
+			jikupList = this.employeeDAO.getJikupList();
+			depNameList = this.employeeDAO.getDepNameList();
+		} catch(Exception ex) {
+			System.out.println("getEmployeeList jikup catch!! => " + ex.getMessage());
+		}
 		
 		// 검색 결과 개수 가져오기
 		try {
 			employeeListCnt = this.employeeDAO.getEmployeeListCnt(empSearchDTO);
 		} catch(Exception ex) {
-			System.out.println("getEmployeeList employeeListCnt catch!! => " + ex);
+			System.out.println("getEmployeeList employeeListCnt catch!! => " + ex.getMessage());
 		}
-		
-		
 		
 		// 리스트 가져오기
 		try {
 			employeeList = this.employeeDAO.getEmployeeList(empSearchDTO);
 			
 		} catch(Exception ex) {
-			System.out.println("getEmployeeList employeeList catch!!! => " + ex);
+			System.out.println("getEmployeeList employeeList catch!!! => " + ex.getMessage());
 		}
-
 		
 		mav.setViewName("employeeList.jsp");
 		mav.addObject("employeeListCnt", employeeListCnt);
 		mav.addObject("employeeList", employeeList);
+		mav.addObject("jikupList", jikupList);
+		mav.addObject("depNameList", depNameList);
 		
 		return mav;
 	}
@@ -69,7 +79,7 @@ public class EmployeeController {
 			// 게시물 가져오기
 			employeeContent = this.employeeService.getEmployeeContent(emp_no);
 		} catch(Exception ex) {
-			System.out.println("goEmpContentForm catch!! => " + ex);
+			System.out.println("goEmpContentForm catch!! => " + ex.getMessage());
 		}
 		
 		mav.setViewName("empContentForm.jsp");
@@ -87,7 +97,7 @@ public class EmployeeController {
 			// 게시물 가져오기
 			employeeContent = this.employeeService.getEmployeeContent(emp_no);
 		} catch(Exception ex) {
-			System.out.println("goEmpUpDelForm catch!! =>" + ex);
+			System.out.println("goEmpUpDelForm catch!! =>" + ex.getMessage());
 		}
 		
 		mav.setViewName("empUpDelForm.jsp");

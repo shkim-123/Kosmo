@@ -13,11 +13,11 @@ public class EmployeeSearchDTO {
 
 	private String keyword;
 	private List<String> jikup;
+	private List<String> dep_name;
 	private String hire_date_year_start;
 	private String hire_date_month_start;
 	private String hire_date_year_end;
 	private String hire_date_month_end;
-	
 	
 	public String getKeyword() {
 		return keyword;
@@ -30,6 +30,12 @@ public class EmployeeSearchDTO {
 	}
 	public void setJikup(List<String> jikup) {
 		this.jikup = jikup;
+	}
+	public List<String> getDep_name() {
+		return dep_name;
+	}
+	public void setDep_name(List<String> dep_name) {
+		this.dep_name = dep_name;
 	}
 	public String getHire_date_year_start() {
 		return hire_date_year_start;
@@ -55,5 +61,6 @@ public class EmployeeSearchDTO {
 	public void setHire_date_month_end(String hire_date_month_end) {
 		this.hire_date_month_end = hire_date_month_end;
 	}
+	
 	
 }

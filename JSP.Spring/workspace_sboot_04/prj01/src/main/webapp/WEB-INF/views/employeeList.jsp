@@ -61,6 +61,7 @@
 		$(".empSearchAllBtn").click(function(){
 			$(".keyword").val("");
 			$(".jikup").prop("checked", false);
+			$(".dep_name").prop("checked", false);
 			$(".hire_date_year_start").val("1980").prop("selected", true);
 			$(".hire_date_month_start").val("01").prop("selected", true);
 			$(".hire_date_year_end").val("2010").prop("selected", true);
@@ -83,7 +84,7 @@
 			,type: "post"
 			,data: $("[name='empSearchForm']").serialize()
 			,success:function(responseHtml){
-
+				console.log(responseHtml);
 				// 검색 결과 반영
 				$(".searchResult").html($(responseHtml).find(".searchResult").html());
 				
@@ -112,7 +113,7 @@
 
 <center>
 	
-	<form name="empSearchForm">
+	<form name="empSearchForm" onSubmit="return false;">
 	
 		<!-- 검색 영역 -->
 		<table border="1" cellpadding="5">
@@ -126,12 +127,20 @@
 			<tr>
 				<th>직급</th>
 				<td>
-					<input type="checkbox" name="jikup" class="jikup" value="사장">사장
-					<input type="checkbox" name="jikup" class="jikup" value="부장">부장
-					<input type="checkbox" name="jikup" class="jikup" value="과장">과장
-					<input type="checkbox" name="jikup" class="jikup" value="대리">대리
-					<input type="checkbox" name="jikup" class="jikup" value="주임">주임
-					<input type="checkbox" name="jikup" class="jikup" value="사원">사원
+					<!-- 직급 리스트 가져오기 -->
+					<c:forEach var="jikup" items="${jikupList}">
+						<input type="checkbox" name="jikup" class="jikup" value="${jikup}">${jikup}
+					</c:forEach>
+				</td>
+			</tr>
+			<tr>
+				<th>부서</th>
+				<td>
+					<!-- 부서 리스트 가져오기 -->
+					<c:forEach var="dep_name" items="${depNameList}">
+						<input type="checkbox" name="dep_name" class="dep_name" value="${dep_name}">${dep_name}
+					</c:forEach>
+					
 				</td>
 			</tr>
 			<tr>

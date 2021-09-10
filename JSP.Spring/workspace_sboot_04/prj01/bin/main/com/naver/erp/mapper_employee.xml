@@ -46,6 +46,24 @@
 			</foreach>
 		</if>
 		
+		<if test="dep_name != null and dep_name.size() > 0">
+			and 
+			<foreach collection="dep_name" item="dep_name" open="(" close=")" separator=" or ">
+				<if test="dep_name.equals('총무부')">
+					dep_name = '총무부'
+				</if>
+				<if test="dep_name.equals('영업부')">
+					dep_name = '영업부'
+				</if>
+				<if test="dep_name.equals('전산부')">
+					dep_name = '전산부'
+				</if>
+				<if test="dep_name.equals('자재부')">
+					dep_name = '자재부'
+				</if>
+			</foreach> 
+		</if>
+		
 		<if test="hire_date_year_start != null">
 			and (
 				hire_date between to_date('${hire_date_year_start}-${hire_date_month_start}-01', 'yyyy-mm-dd') 
@@ -59,8 +77,8 @@
 	<!-- 게시판 총 개수 가져오기 -->
 	<select id="getEmployeeListCnt" parameterType="com.naver.erp.EmployeeSearchDTO" resultType="int">
 		select count(*) 
-		from employee
-		where 1=1
+		from employee e, dept d
+		where e.dep_no = d.dep_no
 			<include refid="employeeWhere"/>
 	</select>
 	
@@ -77,6 +95,17 @@
 		where 
 			e.dep_no = d.dep_no
 			<include refid="employeeWhere"/>
+	</select>
+	
+	<!-- 직급 리스트 가져오기 -->
+	<select id="getJikupList" resultType="String">
+		select distinct jikup as "jikup" from employee 
+		order by decode(jikup, '사장',1,'부장',2,'과장',3,'대리',4,'주임',5,6)
+	</select>
+	
+	<!-- 부서명 리스트 가져오기 -->
+	<select id="getDepNameList" resultType="String">
+		select dep_name as "dep_name" from dept order by dep_no
 	</select>
 	
 	<!-- 게시글 있는지 확인하기 -->

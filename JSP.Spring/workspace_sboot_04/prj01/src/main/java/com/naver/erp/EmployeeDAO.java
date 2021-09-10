@@ -17,4 +17,10 @@ public interface EmployeeDAO {
 	// 게시글 하나 가져오기
 	EmployeeDTO getEmployeeContent(int emp_no);
 	
+	// 직급 리스트 가져오기
+	List<String> getJikupList();
+	
+	// 부서명 리스트 가져오기
+	List<String> getDepNameList();
+	
 }
