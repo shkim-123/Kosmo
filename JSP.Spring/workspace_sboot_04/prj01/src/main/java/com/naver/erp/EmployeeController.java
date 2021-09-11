@@ -27,44 +27,34 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 	
+	// 직원 목록
 	@RequestMapping(value="/employeeList.do")
 	public ModelAndView getEmployeeList(EmployeeSearchDTO empSearchDTO) {
 		ModelAndView mav = new ModelAndView();
 		int employeeListCnt = 0;
 		List<EmployeeDTO> employeeList = null;
 		List<String> jikupList = null;
-		List<String> depNameList = null;
+		List<DeptDTO> deptList=  null;
 		
 		
-		// 직급 리스트 가져오기
-		// 부서명 리스트 가져오기
 		try {
+			// 직급 리스트 가져오기
 			jikupList = this.employeeDAO.getJikupList();
-			depNameList = this.employeeDAO.getDepNameList();
-		} catch(Exception ex) {
-			System.out.println("getEmployeeList jikup catch!! => " + ex.getMessage());
-		}
-		
-		// 검색 결과 개수 가져오기
-		try {
+			// 부서명 리스트 가져오기
+			deptList = this.employeeDAO.getDeptList();
+			// 검색 결과 개수 가져오기
 			employeeListCnt = this.employeeDAO.getEmployeeListCnt(empSearchDTO);
-		} catch(Exception ex) {
-			System.out.println("getEmployeeList employeeListCnt catch!! => " + ex.getMessage());
-		}
-		
-		// 리스트 가져오기
-		try {
+			// 리스트 가져오기
 			employeeList = this.employeeDAO.getEmployeeList(empSearchDTO);
-			
 		} catch(Exception ex) {
-			System.out.println("getEmployeeList employeeList catch!!! => " + ex.getMessage());
+			System.out.println("getEmployeeList catch!! => " + ex.getMessage());
 		}
 		
 		mav.setViewName("employeeList.jsp");
 		mav.addObject("employeeListCnt", employeeListCnt);
 		mav.addObject("employeeList", employeeList);
 		mav.addObject("jikupList", jikupList);
-		mav.addObject("depNameList", depNameList);
+		mav.addObject("deptList", deptList);
 		
 		return mav;
 	}
@@ -92,19 +82,56 @@ public class EmployeeController {
 	public ModelAndView goEmpUpDelForm(@RequestParam(value="emp_no") int emp_no) {
 		ModelAndView mav = new ModelAndView();
 		EmployeeDTO employeeContent = null;
+		List<DeptDTO> deptList=  null;
+		List<String> jikupList = null;
+		List<EmployeeDTO> empNoNameList = null;
 		
 		try {
 			// 게시물 가져오기
 			employeeContent = this.employeeService.getEmployeeContent(emp_no);
+			// 부서 리스트 가져오기
+			deptList = this.employeeDAO.getDeptList();
+			// 직급 리스트 가져오기
+			jikupList = this.employeeDAO.getJikupList();
+			// 직원번호, 직원명 리스트 가져오기
+			empNoNameList = this.employeeDAO.getEmpNoNameList();
 		} catch(Exception ex) {
 			System.out.println("goEmpUpDelForm catch!! =>" + ex.getMessage());
 		}
 		
 		mav.setViewName("empUpDelForm.jsp");
 		mav.addObject("empContent", employeeContent);
+		mav.addObject("deptList", deptList);
+		mav.addObject("jikupList", jikupList);
+		mav.addObject("empNoNameList", empNoNameList);
 		
 		return mav;
 	}
 
+	@RequestMapping(value="/empRegForm.do")
+	public ModelAndView goEmpRegForm() {
+		ModelAndView mav = new ModelAndView();
+		List<DeptDTO> deptList=  null;
+		List<String> jikupList = null;
+		List<EmployeeDTO> empNoNameList = null;
+		
+		try {
+			// 부서 리스트 가져오기
+			deptList = this.employeeDAO.getDeptList();
+			// 직급 리스트 가져오기
+			jikupList = this.employeeDAO.getJikupList();
+			// 직원번호, 직원명 리스트 가져오기
+			empNoNameList = this.employeeDAO.getEmpNoNameList();
+		} catch(Exception ex) {
+			System.out.println("goEmpRegForm catch!! => " + ex.getMessage());
+		}
+		
+		mav.addObject("deptList", deptList);
+		mav.addObject("jikupList", jikupList);
+		mav.addObject("empNoNameList", empNoNameList);
+		mav.setViewName("empRegForm.jsp");
+		
+		return mav;
+	}
 	
 }

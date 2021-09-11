@@ -24,9 +24,9 @@
 <%@include file="common.jsp" %>
 
 <style>
-	th {
-		background-color: lightgray;
-	}
+th {
+	background-color: ${thBgcolor};
+}
 </style>
 
 <script>
@@ -54,7 +54,7 @@
 	<!-- empty : EL의 연산자, 오른쪽에 나온 데이터가 null값이면 true를 리턴 -->
 	<!-- ------------------------------------------------------------- -->
 	<c:if test="${!empty requestScope.empContent}">
-		<table border="1" cellpadding="3" width="450">
+		<table border="1" cellpadding="3" width="450" class="tbcss2">
 			<caption><b>[글 상세 보기]</b></caption>
 			
 			<tr>

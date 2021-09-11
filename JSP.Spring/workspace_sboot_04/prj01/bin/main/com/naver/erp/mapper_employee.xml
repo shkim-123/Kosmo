@@ -103,11 +103,6 @@
 		order by decode(jikup, '사장',1,'부장',2,'과장',3,'대리',4,'주임',5,6)
 	</select>
 	
-	<!-- 부서명 리스트 가져오기 -->
-	<select id="getDepNameList" resultType="String">
-		select dep_name as "dep_name" from dept order by dep_no
-	</select>
-	
 	<!-- 게시글 있는지 확인하기 -->
 	<select id="getEmployeeCnt" parameterType="int" resultType="int" >
 		select count(*) from employee where emp_no = ${emp_no}
@@ -133,5 +128,19 @@
 			e.dep_no = d.dep_no 
 			and emp_no = ${emp_no}
 	</select>
+	
+	
+	<!-- 부서 리스트 가져오기 -->
+	<select id="getDeptList" resultType="com.naver.erp.DeptDTO">
+		select dep_no as "dep_no", dep_name as "dep_name", loc as "loc"
+		from dept
+	</select>	
+	
+	
+	<!-- 직원번호, 직원명 리스트 가져오기 -->
+	<select id="getEmpNoNameList" resultType="com.naver.erp.EmployeeDTO">
+		select emp_no as "emp_no", emp_name as "emp_name" from employee
+	</select>
+	
 	
 </mapper>

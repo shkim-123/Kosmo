@@ -69,13 +69,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return jikupList;
 	}
 	
-	// 부서명 리스트 가져오기
+	// 부서 리스트 가져오기
 	@Override
-	public List<String> getDepNameList() {
+	public List<DeptDTO> getDeptList() {
 		
-		List<String> depNameList = this.sqlSession.selectList("com.naver.erp.EmployeeDAO.getDepNameList");
+		List<DeptDTO> deptList = this.sqlSession.selectList("com.naver.erp.EmployeeDAO.getDeptList");
 		
-		return depNameList;
+		return deptList;
+	}
+	
+	// 직원번호, 직원명 리스트 가져오기
+	@Override
+	public List<EmployeeDTO> getEmpNoNameList() {
+		
+		List<EmployeeDTO> empNoNameList = this.sqlSession.selectList("com.naver.erp.EmployeeDAO.getEmpNoNameList");
+		
+		return empNoNameList;
 	}
 
 	

@@ -24,9 +24,9 @@
 <%@include file="common.jsp" %>
 
 <style>
-	th {
-		background-color: lightgray;
-	}
+th {
+	background-color: ${thBgcolor};
+}
 </style>
 
 <script>
@@ -35,7 +35,35 @@
 
 		$(".dep_no").val("${empContent.dep_no}").prop("selected", true);
 		$(".jikup").val("${empContent.jikup}").prop("selected", true);
+		$(".mgr_emp_no").val("${empContent.mgr_emp_no}").prop("selected", true);
+		
 
+
+		// 부서번호 변경 시 부서명 변경되도록
+		$(".dep_no").change(function(){
+			var dep_no = $(this).val();
+
+ 			<c:forEach var ="dept" items="${deptList}">
+				if(${dept.dep_no} == dep_no){
+					$(".dep_name").text("${dept.dep_name}");
+				}
+			</c:forEach>		 
+
+		});
+
+		// 상사번호 변경 시 상사이름 변경되도록
+		$(".mgr_emp_no").change(function(){
+			var mgr_emp_no = $(this).val();
+
+			<c:forEach var="empNoName" items="${empNoNameList}">
+				if(${empNoName.emp_no} == mgr_emp_no){
+					$(".mgr_emp_name").text("${empNoName.emp_name}");
+				}
+			</c:forEach>
+			
+		});
+
+		
 		$(".goListBtn").click(function(){
 			location.replace("/employeeList.do");
 		});
@@ -63,14 +91,14 @@
 	<!-- empty : EL의 연산자, 오른쪽에 나온 데이터가 null값이면 true를 리턴 -->
 	<!-- ------------------------------------------------------------- -->
 	<c:if test="${!empty requestScope.empContent}">
-		<table border="1" cellpadding="3" width="500">
+		<table border="1" cellpadding="3" class="tbcss2">
 			<caption><b>[글 상세 보기]</b></caption>
 			
 			<tr>
-				<th width="70">직원번호</th>
-				<td width="130">${empContent.emp_no}</td>
-				<th width="70">직원명</th>
-				<td width="130">
+				<th>직원번호</th>
+				<td>${empContent.emp_no}</td>
+				<th>직원명</th>
+				<td>
 					<input type="text" name="emp_name" value="${empContent.emp_name}">
 				</td>
 			</tr>
@@ -78,25 +106,23 @@
 				<th>부서번호</th>
 				<td>
 					<select name="dep_no" class="dep_no">
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="30">30</option>
-						<option value="40">40</option>
+						<!-- 부서번호 꺼내기 -->
+						<c:forEach var ="dept" items="${deptList}">
+							<option value="${dept.dep_no}">${dept.dep_no}</option>
+						</c:forEach>	
 					</select>
 				</td>
 				<th>부서명</th>
-				<td>${empContent.dep_name}</td>
+				<td><span class="dep_name">${empContent.dep_name}</span></td>
 			</tr>
 			<tr>	
 				<th>직급</th>
 				<td>
 					<select name="jikup" class="jikup">
-						<option value="사장">사장</option>
-						<option value="부장">부장</option>
-						<option value="과장">과장</option>
-						<option value="대리">대리</option>
-						<option value="주임">주임</option>
-						<option value="사원">사원</option>
+						<!-- 직급 꺼내기 -->
+						<c:forEach var="jikup" items="${jikupList}">
+							<option value="${jikup}">${jikup}</option>
+						</c:forEach>
 					</select>
 				</td>
 				<th>연봉</th>
@@ -120,26 +146,17 @@
 			</tr>
 			<tr>
 				<th>상사번호</th>
-				<c:if test="${empContent.mgr_emp_no==0}">
-					<td>
-						<input type="text" name="phone" value="없음">
-					</td>
-				</c:if>
-				<c:if test="${empContent.mgr_emp_no!=0}">
-					<td>
-						<input type="text" name="phone" value="${empContent.mgr_emp_no}">
-					</td>
-				</c:if>
+				<td>
+					<select name="mgr_emp_no" class="mgr_emp_no">
+						<!-- 직원번호 꺼내기 -->
+						<c:forEach var="empNoName" items="${empNoNameList}">
+							<option value="${empNoName.emp_no}">${empNoName.emp_no}</option>
+						</c:forEach>
+					</select>
+				</td>
 				<th>상사이름</th>
-				<c:if test="${empContent.mgr_emp_no==0}">
-					<td>-</td>
-				</c:if>
-				<c:if test="${empContent.mgr_emp_no!=0}">
-					<td>${empContent.mgr_emp_name}</td>
-				</c:if>
+				<td><span class="mgr_emp_name">${empContent.mgr_emp_name}</span></td>
 			</tr>
-			
-			
 			
 		</table>
 				
@@ -161,7 +178,6 @@
 	<form name="goUpDelForm" method="post" action="/empUpDelForm.do">
 		<input type="hidden" name="emp_no" value="${empContent.emp_no}">
 	</form>
-	
 	
 	
 	

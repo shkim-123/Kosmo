@@ -25,9 +25,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <style>
-	.searchResult tr td{
-		cursor: pointer;
-	}
+.searchResult tr td{
+	cursor: pointer;
+}
+
+th {
+	background-color: ${thBgcolor};
+}
 </style>
 
 <script>
@@ -36,6 +40,8 @@
 
 		$(".hire_date_year_end option").last().attr("selected", true);
 		$(".hire_date_month_end option").last().attr("selected", true);
+
+		changeBgColor();
 		
 		
 		// 검색 버튼 클릭 시
@@ -63,12 +69,17 @@
 			$(".jikup").prop("checked", false);
 			$(".dep_name").prop("checked", false);
 			$(".hire_date_year_start").val("1980").prop("selected", true);
-			$(".hire_date_month_start").val("01").prop("selected", true);
-			$(".hire_date_year_end").val("2010").prop("selected", true);
+			$(".hire_date_month_start").val("1").prop("selected", true);
+			$(".hire_date_year_end").val("2020").prop("selected", true);
 			$(".hire_date_month_end").val("12").prop("selected", true);
 
 			search();
 			
+		});
+
+		// 직원 등록 버튼 클릭 시
+		$(".empRegFormBtn").click(function(){
+			location.replace("/empRegForm.do");
 		});
 		
 	});
@@ -87,6 +98,8 @@
 				console.log(responseHtml);
 				// 검색 결과 반영
 				$(".searchResult").html($(responseHtml).find(".searchResult").html());
+
+				changeBgColor();
 				
 			}
 			,error:function(){
@@ -98,9 +111,13 @@
 	// 글 선택 시
 	function goContentForm(emp_no){
 
-		$("[name='goEmpContentForm']").find(".emp_no").val(emp_no);
+		// 상세 화면으로 이동
+		//$("[name='goEmpContentForm']").find(".emp_no").val(emp_no);
+		//document.goEmpContentForm.submit();
 
-		document.goEmpContentForm.submit();
+		// 수정/삭제 화면으로 이동
+		$("[name='goEmpUpDelForm']").find(".emp_no").val(emp_no);
+		document.goEmpUpDelForm.submit();
 	}
 
 	
@@ -116,7 +133,7 @@
 	<form name="empSearchForm" onSubmit="return false;">
 	
 		<!-- 검색 영역 -->
-		<table border="1" cellpadding="5">
+		<table border="1" cellpadding="5" class="tbcss2">
 			<caption><b>직원검색</b></caption>
 			<tr>
 				<th>키워드</th>
@@ -137,8 +154,8 @@
 				<th>부서</th>
 				<td>
 					<!-- 부서 리스트 가져오기 -->
-					<c:forEach var="dep_name" items="${depNameList}">
-						<input type="checkbox" name="dep_name" class="dep_name" value="${dep_name}">${dep_name}
+					<c:forEach var="dep_name" items="${deptList}">
+						<input type="checkbox" name="dep_name" class="dep_name" value="${dep_name.dep_name}">${dep_name.dep_name}
 					</c:forEach>
 					
 				</td>
@@ -147,50 +164,24 @@
 				<th>입사일</th>
 				<td>
 					<select name="hire_date_year_start" class="hire_date_year_start">
-						<option value="1980">1980</option>
-						<option value="1985">1985</option>
-						<option value="1990">1990</option>
-						<option value="1995">1995</option>
-						<option value="2000">2000</option>
-						<option value="2005">2005</option>
-						<option value="2010">2010</option>
+						<c:forEach var="num" begin="1980" end="2020" step="5">
+							<option value="${num}">${num}</option>
+						</c:forEach> 
 					</select>년
 					<select name="hire_date_month_start" class="hire_date_month_start">
-						<option value="01">1</option>
-						<option value="02">2</option>
-						<option value="03">3</option>
-						<option value="04">4</option>
-						<option value="05">5</option>
-						<option value="06">6</option>
-						<option value="07">7</option>
-						<option value="08">8</option>
-						<option value="09">9</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<c:forEach var="num" begin="1" end="12" step="1">
+							<option value="${num}">${num}</option>
+						</c:forEach>
 					</select>월 ~ 
 					<select name="hire_date_year_end" class="hire_date_year_end">
-						<option value="1980">1980</option>
-						<option value="1985">1985</option>
-						<option value="1990">1990</option>
-						<option value="1995">1995</option>
-						<option value="2000">2000</option>
-						<option value="2005">2005</option>
-						<option value="2010">2010</option>
+						<c:forEach var="num" begin="1980" end="2020" step="5">
+							<option value="${num}">${num}</option>
+						</c:forEach> 
 					</select>년
 					<select name="hire_date_month_end" class="hire_date_month_end">
-						<option value="01">1</option>
-						<option value="02">2</option>
-						<option value="03">3</option>
-						<option value="04">4</option>
-						<option value="05">5</option>
-						<option value="06">6</option>
-						<option value="07">7</option>
-						<option value="08">8</option>
-						<option value="09">9</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<c:forEach var="num" begin="1" end="12" step="1">
+							<option value="${num}">${num}</option>
+						</c:forEach>
 					</select>월
 				</td>
 			</tr>
@@ -200,13 +191,14 @@
 		
 		<input type="button" class="empSearchBtn" value="검색">
 		<input type="button" class="empSearchAllBtn" value="모두검색">
-	
+		
+		<input type="button" class="empRegFormBtn" value="직원등록">
 	</form>
 	
 	<!-- 검색 결과 노출 -->
 	<div class="searchResult">
 		<div>총 : ${employeeListCnt}</div>
-		<table border="1" cellpadding="3">
+		<table border="1" cellpadding="3" class="tbcss0">
 			<tr>
 				<th>번호</th>
 				<th>직원번호</th>
@@ -233,7 +225,13 @@
 		</table>
 	</div>
 	
+	<!-- 상세 화면으로 이동 -->
 	<form name="goEmpContentForm" method="post" action="/empContentForm.do">
+		<input type="hidden" name="emp_no" class="emp_no">
+	</form>
+	
+	<!-- 수정/삭제 화면으로 이동 -->
+	<form name="goEmpUpDelForm" method="post" action="/empUpDelForm.do">
 		<input type="hidden" name="emp_no" class="emp_no">
 	</form>
 
