@@ -40,6 +40,10 @@
 
 		reg_date_sort();
 
+		$(".employeeListBtn").click(function(){
+			location.replace("/employeeList.do");
+		});
+
 	});
 
 
@@ -365,6 +369,9 @@
 		<!-- href="javascript:자바스크립트코드" 클릭 시 코딩한 자바스크립트코드를 실행한다. -->
 		<!-- ------------------------------------------------------------- -->
 		<a href="javascript:goBoardRegForm();">새글쓰기</a>
+		
+		<br><br>
+		<input type="button" value="직원목록보기" class="employeeListBtn">
 
 		<!-- ------------------------------------------------------------- -->
 		<!-- div 태그를 이용하여 위아래 콘텐츠 사이 여백 주기 -->
