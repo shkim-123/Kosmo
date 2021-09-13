@@ -26,4 +26,19 @@ public interface EmployeeDAO {
 	// 직원번호, 직원명 리스트 가져오기
 	List<EmployeeDTO> getEmpNoNameList();
 	
+	// 직원 등록하기
+	int insertEmployee(EmployeeDTO employeeDTO);
+	
+	// 부하직원 존재 개수 얻기
+	int getSubEmployeeCnt(EmployeeDTO employeeDTO);
+	
+	// 담당고객 존재 개수 얻기
+	int getStaffEmployeeCnt(EmployeeDTO employeeDTO);
+	
+	// 직원 삭제 적용 개수 얻기
+	int deleteEmployee(EmployeeDTO employeeDTO);
+	
+	// 직원 수정 적용 개수 얻기
+	int updateEmployee(EmployeeDTO employeeDTO);
+	
 }

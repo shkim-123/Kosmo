@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,6 +36,7 @@ public class EmployeeController {
 		List<EmployeeDTO> employeeList = null;
 		List<String> jikupList = null;
 		List<DeptDTO> deptList=  null;
+		List<EmployeeDTO> empNoNameList = null;
 		
 		
 		try {
@@ -46,6 +48,8 @@ public class EmployeeController {
 			employeeListCnt = this.employeeDAO.getEmployeeListCnt(empSearchDTO);
 			// 리스트 가져오기
 			employeeList = this.employeeDAO.getEmployeeList(empSearchDTO);
+			// 직원번호, 직원명 리스트 가져오기
+			empNoNameList = this.employeeDAO.getEmpNoNameList();
 		} catch(Exception ex) {
 			System.out.println("getEmployeeList catch!! => " + ex.getMessage());
 		}
@@ -55,6 +59,7 @@ public class EmployeeController {
 		mav.addObject("employeeList", employeeList);
 		mav.addObject("jikupList", jikupList);
 		mav.addObject("deptList", deptList);
+		mav.addObject("empNoNameList", empNoNameList);
 		
 		return mav;
 	}
@@ -78,6 +83,8 @@ public class EmployeeController {
 		return mav;
 	}
 	
+
+	// employeeList.jsp 에서 비동기(AJAX) 방식으로 불러올 경우
 	@RequestMapping(value="/empUpDelForm.do")
 	public ModelAndView goEmpUpDelForm(@RequestParam(value="emp_no") int emp_no) {
 		ModelAndView mav = new ModelAndView();
@@ -133,5 +140,74 @@ public class EmployeeController {
 		
 		return mav;
 	}
+	
+	// 직원 등록하기, ajax로 map 리턴
+	@RequestMapping(value="/empRegProc.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Map<String, String> insertEmployee(EmployeeDTO employeeDTO) {
+		Map<String, String> map = new HashMap<String, String>();
+		String msg = "";
+		int insertCnt = 0;
+		
+		//=========================================================
+		// 유효성 체크
+		//=========================================================
+		
+		
+		try {
+			if("".equals(msg)) {
+				// 등록
+				insertCnt = this.employeeService.insertEmployee(employeeDTO);
+			}
+		} catch(Exception ex) {
+			System.out.println("insertEmployee catch!! => " + ex.getMessage());
+		}
+		
+		// map에 넣기
+		map.put("msg", msg);
+		map.put("insertCnt", insertCnt+"");
+		
+		return map;
+	}
+	
+	
+	@RequestMapping(value="/empUpDelProc.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Map<String, String> empUpDelProc(
+			@RequestParam(value="upDel") String upDel
+			, EmployeeDTO employeeDTO
+	){
+		Map<String, String> map = new HashMap<String, String>();
+		String msg ="";
+		int upDelCnt = 0;
+		
+		try {
+			if("up".equals(upDel)) {
+				
+				//=========================================================
+				// 유효성 체크
+				//=========================================================
+				
+				
+				
+				
+				if("".equals(msg)) {
+					upDelCnt = this.employeeService.updateEmployee(employeeDTO);
+				}
+			} else if("del".equals(upDel)) {
+				upDelCnt = this.employeeService.deleteEmployee(employeeDTO);
+			}
+			
+		} catch(Exception ex) {
+			System.out.println("empUpDelProc catch!! => " + ex.getMessage());
+		}
+		
+		// map에 넣기
+		map.put("msg", msg);
+		map.put("upDelCnt", upDelCnt+"");
+		
+		return map;
+	}
+	
 	
 }

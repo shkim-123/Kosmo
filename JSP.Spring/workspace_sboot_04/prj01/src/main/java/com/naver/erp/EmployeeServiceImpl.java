@@ -40,4 +40,49 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	
+	// 직원 등록하기
+	@Override
+	public int insertEmployee(EmployeeDTO employeeDTO) {
+		
+		int insertCnt = this.employeeDAO.insertEmployee(employeeDTO);
+		
+		return insertCnt;
+	}
+	
+	// 직원 삭제하기
+	@Override
+	public int deleteEmployee(EmployeeDTO employeeDTO) {
+		
+		// 직원 존재 개수 얻기
+		int employeeCnt = this.employeeDAO.getEmployeeCnt(employeeDTO.getEmp_no());
+		if(employeeCnt < 1) {return -1;}
+		
+		// 부하직원이 존재 개수 얻기
+		int subEmployeeCnt = this.employeeDAO.getSubEmployeeCnt(employeeDTO);
+		if(subEmployeeCnt > 0) {return -2;}
+		
+		// 담당고객이 존재 개수 얻기
+		int staffEmployeeCnt = this.employeeDAO.getStaffEmployeeCnt(employeeDTO);
+		if(staffEmployeeCnt > 0) {return -3;}
+		
+		// 삭제 적용행의 개수 얻기
+		int deleteCnt = this.employeeDAO.deleteEmployee(employeeDTO);
+		
+		return deleteCnt;
+	}
+	
+	// 직원 수정하기
+	@Override
+	public int updateEmployee(EmployeeDTO employeeDTO) {
+		
+		// 직원 존재 개수 얻기
+		int employeeCnt = this.employeeDAO.getEmployeeCnt(employeeDTO.getEmp_no());
+		if(employeeCnt < 1) {return -1;}
+		
+		// 수정 적용행의 개수 얻기
+		int updateCnt = this.employeeDAO.updateEmployee(employeeDTO);
+		
+		return updateCnt;
+	}
+	
 }

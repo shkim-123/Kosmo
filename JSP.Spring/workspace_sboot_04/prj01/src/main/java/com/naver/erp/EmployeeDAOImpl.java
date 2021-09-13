@@ -86,6 +86,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		return empNoNameList;
 	}
+	
+	// 직원 등록하기
+	@Override
+	public int insertEmployee(EmployeeDTO employeeDTO) {
+		
+		int insertCnt = this.sqlSession.insert("com.naver.erp.EmployeeDAO.insertEmployee", employeeDTO);
+		
+		return insertCnt;
+	}
+	
+	// 부하직원 존재 개수 얻기
+	@Override
+	public int getSubEmployeeCnt(EmployeeDTO employeeDTO) {
+		
+		int subEmployeeCnt = this.sqlSession.selectOne("com.naver.erp.EmployeeDAO.getSubEmployeeCnt", employeeDTO);
+		
+		return subEmployeeCnt;
+	}
+	
+	// 담당고객 존재 개수 얻기
+	@Override
+	public int getStaffEmployeeCnt(EmployeeDTO employeeDTO) {
+		
+		int staffEmployeeCnt = this.sqlSession.selectOne("com.naver.erp.EmployeeDAO.getStaffEmployeeCnt", employeeDTO);
+		
+		return staffEmployeeCnt;
+	}
+	
+	// 직원 삭제 적용 개수 얻기
+	@Override
+	public int deleteEmployee(EmployeeDTO employeeDTO) {
+		
+		int deleteCnt = this.sqlSession.delete("com.naver.erp.EmployeeDAO.deleteEmployee", employeeDTO);
+		
+		return deleteCnt;
+	}
+	
+	// 직원 수정 적용 개수 얻기
+	@Override
+	public int updateEmployee(EmployeeDTO employeeDTO) {
+		
+		int updateCnt = this.sqlSession.update("com.naver.erp.EmployeeDAO.updateEmployee", employeeDTO);
+		
+		return updateCnt;
+	}
 
 	
 }

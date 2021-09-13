@@ -95,6 +95,7 @@
 		where 
 			e.dep_no = d.dep_no
 			<include refid="employeeWhere"/>
+		order by emp_no desc
 	</select>
 	
 	<!-- 직급 리스트 가져오기 -->
@@ -142,5 +143,62 @@
 		select emp_no as "emp_no", emp_name as "emp_name" from employee
 	</select>
 	
+	<!-- 직원 정보 등록하기 -->
+	<insert id="insertEmployee" parameterType="com.naver.erp.EmployeeDTO">
+		insert into employee
+		values(
+		    (select nvl(max(emp_no),0)+1 from employee)
+		    , #{emp_name}
+		    , ${dep_no}
+		    , #{jikup}
+		    , ${salary}
+		    , #{hire_date}
+		    , #{jumin_num}
+		    , #{phone}
+		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
+		    	, ${mgr_emp_no}
+		    </if>
+		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
+		    	, null
+		    </if>
+		)
+	</insert>
+	
+	<!-- 부하직원 존재 개수 얻기 -->
+	<select id="getSubEmployeeCnt" parameterType="com.naver.erp.EmployeeDTO" resultType="int">
+		select count(*) from employee e, employee e2 where e.emp_no = e2.mgr_emp_no and e.emp_no=${emp_no}
+	</select>
+	
+	<!-- 담당고객 존재 개수 얻기 -->
+	<select id="getStaffEmployeeCnt" parameterType="com.naver.erp.EmployeeDTO" resultType="int">
+		select count(*) from employee e, customer c where e.emp_no = c.emp_no and e.emp_no=${emp_no}
+	</select>
+	
+	<!-- 직원 삭제 적용 개수 얻기 -->
+	<delete id="deleteEmployee" parameterType="com.naver.erp.EmployeeDTO">
+		delete from employee where emp_no = ${emp_no}
+	</delete>
+	
+	<!-- 직원 수정 적용 개수 얻기 -->
+	<update id="updateEmployee" parameterType="com.naver.erp.EmployeeDTO">
+		update 
+			employee
+		set
+			emp_name = #{emp_name}
+		    , dep_no = ${dep_no}
+		    , jikup = #{jikup}
+		    , salary = ${salary}
+		    , hire_date = #{hire_date}
+		    , jumin_num = #{jumin_num}
+		    , phone = #{phone}
+		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
+		    	, mgr_emp_no = ${mgr_emp_no}
+		    </if>
+		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
+		    	, mgr_emp_no = null
+		    </if>
+		where 
+			emp_no = ${emp_no}
+	</update>
 	
 </mapper>
