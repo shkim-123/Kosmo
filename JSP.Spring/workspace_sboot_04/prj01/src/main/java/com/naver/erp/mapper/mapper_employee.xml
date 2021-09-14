@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ************************************************************* -->
+<!-- mapper 태그 선언 -->
+<!-- ************************************************************* -->
+<mapper namespace="com.naver.erp.dao.EmployeeDAO">
+	
+	<sql id="employeeWhere">
+		<if test="keyword != null and keyword.length() > 0">
+			and (
+				emp_no like '%${keyword}%'
+				or upper(emp_name) like upper('%${keyword}%')
+				or upper(jikup) like upper('%${keyword}%')
+				or to_char(hire_date, 'yyyy-mm-dd') like '%${keyword}%'
+				or upper(dep_name) like upper('%${keyword}%')
+			)
+		</if>
+		
+		<if test="jikup != null and jikup.size() > 0">
+			and 
+			<foreach collection="jikup" item="jikup" open="(" close=")" separator=" or ">
+				<if test="jikup.equals('사장')">
+					jikup = '사장'
+				</if>
+				
+				<if test="jikup.equals('부장')">
+				 	jikup = '부장'
+				</if>
+				
+				<if test="jikup.equals('과장')">
+				 	jikup = '과장'
+				</if>
+				
+				<if test="jikup.equals('대리')">
+				 	jikup = '대리'
+				</if>
+				
+				<if test="jikup.equals('주임')">
+				 	jikup = '주임'
+				</if>
+				
+				<if test="jikup.equals('사원')">
+				 	jikup = '사원'
+				</if>
+			</foreach>
+		</if>
+		
+		<if test="dep_name != null and dep_name.size() > 0">
+			and 
+			<foreach collection="dep_name" item="dep_name" open="(" close=")" separator=" or ">
+				<if test="dep_name.equals('총무부')">
+					dep_name = '총무부'
+				</if>
+				<if test="dep_name.equals('영업부')">
+					dep_name = '영업부'
+				</if>
+				<if test="dep_name.equals('전산부')">
+					dep_name = '전산부'
+				</if>
+				<if test="dep_name.equals('자재부')">
+					dep_name = '자재부'
+				</if>
+			</foreach> 
+		</if>
+		
+		<!-- 입사일 검색 select box -->
+		<if test="hire_date_year_start != null">
+			and (
+				hire_date between to_date('${hire_date_year_start}-${hire_date_month_start}-01', 'yyyy-mm-dd') 
+						and add_months(to_date('${hire_date_year_end}-${hire_date_month_end}-01', 'yyyy-mm-dd'),1)-1 
+			)
+		</if>
+		
+		<!-- 입사일 검색 flatpickr -->
+		<if test="hire_date_start != null and hire_date_start.length()>0 and hire_date_end != null and hire_date_end.length() > 0">
+			and (
+				hire_date between to_date(#{hire_date_start}, 'yyyy-mm-dd') and to_date(#{hire_date_end}, 'yyyy-mm-dd')
+			)
+		</if>
+		
+	</sql>
+	
+	
+	<!-- 게시판 총 개수 가져오기 -->
+	<select id="getEmployeeListCnt" parameterType="com.naver.erp.dto.EmployeeSearchDTO" resultType="int">
+		select count(*) 
+		from employee e, dept d
+		where e.dep_no = d.dep_no
+			<include refid="employeeWhere"/>
+	</select>
+	
+	<!-- 게시판 리스트 가져오기 -->
+	<select id="getEmployeeList" parameterType="com.naver.erp.dto.EmployeeSearchDTO" resultType="com.naver.erp.dto.EmployeeDTO">
+		select 
+			emp_no as "emp_no"
+			,emp_name as "emp_name"
+			,jikup as "jikup"
+			,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
+			,dep_name as "dep_name"
+		from 
+			employee e, dept d
+		where 
+			e.dep_no = d.dep_no
+			<include refid="employeeWhere"/>
+		order by emp_no desc
+	</select>
+	
+	<!-- 직급 리스트 가져오기 -->
+	<select id="getJikupList" resultType="String">
+		select distinct jikup as "jikup" from employee 
+		order by decode(jikup, '사장',1,'부장',2,'과장',3,'대리',4,'주임',5,6)
+	</select>
+	
+	<!-- 게시글 있는지 확인하기 -->
+	<select id="getEmployeeCnt" parameterType="int" resultType="int" >
+		select count(*) from employee where emp_no = ${emp_no}
+	</select>
+	
+	<!-- 게시글 하나 가져오기 -->
+	<select id="getEmployeeContent" parameterType="int" resultType="com.naver.erp.dto.EmployeeDTO">
+		select 
+		    emp_no as "emp_no" 
+		    ,emp_name as "emp_name"
+		    ,e.dep_no as "dep_no"
+		    ,d.dep_name as "dep_name"
+		    ,jikup as "jikup"
+		    ,salary as "salary"
+		    ,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
+		    ,jumin_num as "jumin_num"
+		    ,phone as "phone"
+		    ,mgr_emp_no as "mgr_emp_no"
+		    ,(select emp_name  from employee e2 where e.mgr_emp_no = e2.emp_no) as "mgr_emp_name"
+		from 
+			employee e, dept d
+		where 
+			e.dep_no = d.dep_no 
+			and emp_no = ${emp_no}
+	</select>
+	
+	
+	<!-- 부서 리스트 가져오기 -->
+	<select id="getDeptList" resultType="com.naver.erp.dto.DeptDTO">
+		select dep_no as "dep_no", dep_name as "dep_name", loc as "loc"
+		from dept
+	</select>	
+	
+	
+	<!-- 직원번호, 직원명 리스트 가져오기 -->
+	<select id="getEmpNoNameList" resultType="com.naver.erp.dto.EmployeeDTO">
+		select emp_no as "emp_no", emp_name as "emp_name" from employee
+	</select>
+	
+	<!-- 직원 정보 등록하기 -->
+	<insert id="insertEmployee" parameterType="com.naver.erp.dto.EmployeeDTO">
+		insert into employee
+		values(
+		    (select nvl(max(emp_no),0)+1 from employee)
+		    , #{emp_name}
+		    , ${dep_no}
+		    , #{jikup}
+		    , ${salary}
+		    , #{hire_date}
+		    , #{jumin_num}
+		    , #{phone}
+		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
+		    	, ${mgr_emp_no}
+		    </if>
+		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
+		    	, null
+		    </if>
+		)
+	</insert>
+	
+	<!-- 부하직원 존재 개수 얻기 -->
+	<select id="getSubEmployeeCnt" parameterType="com.naver.erp.dto.EmployeeDTO" resultType="int">
+		select count(*) from employee e, employee e2 where e.emp_no = e2.mgr_emp_no and e.emp_no=${emp_no}
+	</select>
+	
+	<!-- 담당고객 존재 개수 얻기 -->
+	<select id="getStaffEmployeeCnt" parameterType="com.naver.erp.dto.EmployeeDTO" resultType="int">
+		select count(*) from employee e, customer c where e.emp_no = c.emp_no and e.emp_no=${emp_no}
+	</select>
+	
+	<!-- 직원 삭제 적용 개수 얻기 -->
+	<delete id="deleteEmployee" parameterType="com.naver.erp.dto.EmployeeDTO">
+		delete from employee where emp_no = ${emp_no}
+	</delete>
+	
+	<!-- 직원 수정 적용 개수 얻기 -->
+	<update id="updateEmployee" parameterType="com.naver.erp.dto.EmployeeDTO">
+		update 
+			employee
+		set
+			emp_name = #{emp_name}
+		    , dep_no = ${dep_no}
+		    , jikup = #{jikup}
+		    , salary = ${salary}
+		    , hire_date = #{hire_date}
+		    , jumin_num = #{jumin_num}
+		    , phone = #{phone}
+		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
+		    	, mgr_emp_no = ${mgr_emp_no}
+		    </if>
+		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
+		    	, mgr_emp_no = null
+		    </if>
+		where 
+			emp_no = ${emp_no}
+	</update>
+	
+</mapper>

@@ -22,11 +22,11 @@ public class MvcConfiguration implements WebMvcConfigurer{
 		// excludePathPatterns 메소드를 호출하여 예외되는 URL 주소 패턴을 등록한다.
 		//----------------------------------------------------------------
 		registry.addInterceptor(new SessionInterceptor()).excludePathPatterns(
-			"/loginForm.do"
-			,"/loginProc.do"
-			,"/logout.do"
-			,"/login_alert.do"
-			,"/memRegForm.do"
+			"/"+Info.naverPath+"loginForm.do"
+			,"/"+Info.naverPath+"loginProc.do"
+			,"/"+Info.naverPath+"logout.do"
+			,"/"+Info.naverPath+"login_alert.do"
+			,"/"+Info.naverPath+"memRegForm.do"
 			,"/resources/**"
 		);
 		

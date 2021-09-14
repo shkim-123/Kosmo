@@ -3,6 +3,9 @@ package com.naver.erp;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.naver.erp.dto.BoardDTO;
+
 import java.util.regex.Pattern;
 
 
