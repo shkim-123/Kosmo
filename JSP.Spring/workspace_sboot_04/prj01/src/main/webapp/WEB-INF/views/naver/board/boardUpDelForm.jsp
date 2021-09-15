@@ -218,7 +218,7 @@
 			<input type="hidden" name="upDel">
 			<!-- ************************************************************* -->
 		
-			<table border="1" class="tbcss2" cellpadding="5">
+			<table border="1" class="tbcss2" cellpadding="${requestScope.cellpadding}">
 				<caption><b>[게시글 수정/삭제]</b></caption>
 				<tr>
 					<th>이름</th>
@@ -265,7 +265,7 @@
 						<!-- ************************************************************* -->
 						<c:if test="${!empty requestScope.board.pic}">
 							<div style="height:7px"></div>
-							<img src="/resources/img/${requestScope.board.pic}" width="300px">
+							<img src="/resources/img/${requestScope.board.pic}" width="${requestScope.boardImgRate1}">
 							<input type="checkbox" name="is_del" class="is_del" value="yes">삭제
 						</c:if>
 					</td>
@@ -302,6 +302,11 @@
 		</script>
 	</c:if>
 
+
+	<div style="padding: 10px;">[현재 게시판 총 개수 ${requestScope.totCnt}]</div>
+	
+	<div>${sessionScope.msg}</div>
+	
 </center>
 
 </body>

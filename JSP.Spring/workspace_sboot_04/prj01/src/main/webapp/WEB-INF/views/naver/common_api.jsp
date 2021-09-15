@@ -8,11 +8,15 @@
 <!-- 모든 JSP 페이지 상단에는 무조건 아래 설정이 들어간다. -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+
+
 <!-- ************************************************************* -->
-<!-- JSP 기술의 한 종류인 [Include Directive]를 이용하여 jsp 파일 내의 소스를 삽입하기 -->
-<!-- 삽입하는 순서를 유의해야 한다. 
-	예를 들어, common_js 전에 common_api를 삽입해야 common_js 에서 JQuery를 사용할 수 있다. -->
+<!-- JQuery 라이브러리 수입하기 -->
+<!-- 공용함수 수입하기 -->
+<!-- css 파일 수입하기 -->
 <!-- ************************************************************* -->
-<%@include file="common_key.jsp" %>
-<%@include file="common_api.jsp" %>
-<%@include file="common_js.jsp" %>
+<script src="/resources/jquery-1.11.0.min.js"></script>
+<script src="/resources/common.js"></script>
+<link href="/resources/common.css" rel="stylesheet" type="text/css">
+
+

@@ -57,7 +57,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 			// 클라이언트가 /loginForm.do 로 재접속하라고 설정하기
 			// 응답 메시지를 받은 클라이언트는 이 URL 주소로 강제로 재 접속을 한다.
 			//----------------------------------------------------------------
-			response.sendRedirect( "/"+Info.naverPath+"login/"+"login_alert.do" );
+			response.sendRedirect( "/"+Info.naverPath+"login_alert.do" );
 			
 			//----------------------------------------------------------------
 			// false 값을 리턴하기

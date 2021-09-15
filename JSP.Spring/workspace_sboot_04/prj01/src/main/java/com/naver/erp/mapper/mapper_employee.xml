@@ -114,7 +114,7 @@
 	
 	<!-- 게시글 있는지 확인하기 -->
 	<select id="getEmployeeCnt" parameterType="int" resultType="int" >
-		select count(*) from employee where emp_no = ${emp_no}
+		select count(*) from employee where emp_no = #{emp_no}
 	</select>
 	
 	<!-- 게시글 하나 가져오기 -->
@@ -131,11 +131,12 @@
 		    ,phone as "phone"
 		    ,mgr_emp_no as "mgr_emp_no"
 		    ,(select emp_name  from employee e2 where e.mgr_emp_no = e2.emp_no) as "mgr_emp_name"
+		    ,pic as "pic"
 		from 
 			employee e, dept d
 		where 
 			e.dep_no = d.dep_no 
-			and emp_no = ${emp_no}
+			and emp_no = #{emp_no}
 	</select>
 	
 	
@@ -157,34 +158,38 @@
 		values(
 		    (select nvl(max(emp_no),0)+1 from employee)
 		    , #{emp_name}
-		    , ${dep_no}
+		    , #{dep_no}
 		    , #{jikup}
-		    , ${salary}
+		    , #{salary}
 		    , #{hire_date}
 		    , #{jumin_num}
 		    , #{phone}
 		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
-		    	, ${mgr_emp_no}
+		    	, #{mgr_emp_no}
 		    </if>
 		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
 		    	, null
+		    </if>
+		    
+		    <if test="pic != null and pic.length() > 0">
+		    	, #{pic}
 		    </if>
 		)
 	</insert>
 	
 	<!-- 부하직원 존재 개수 얻기 -->
 	<select id="getSubEmployeeCnt" parameterType="com.naver.erp.dto.EmployeeDTO" resultType="int">
-		select count(*) from employee e, employee e2 where e.emp_no = e2.mgr_emp_no and e.emp_no=${emp_no}
+		select count(*) from employee e, employee e2 where e.emp_no = e2.mgr_emp_no and e.emp_no=#{emp_no}
 	</select>
 	
 	<!-- 담당고객 존재 개수 얻기 -->
 	<select id="getStaffEmployeeCnt" parameterType="com.naver.erp.dto.EmployeeDTO" resultType="int">
-		select count(*) from employee e, customer c where e.emp_no = c.emp_no and e.emp_no=${emp_no}
+		select count(*) from employee e, customer c where e.emp_no = c.emp_no and e.emp_no=#{emp_no}
 	</select>
 	
 	<!-- 직원 삭제 적용 개수 얻기 -->
 	<delete id="deleteEmployee" parameterType="com.naver.erp.dto.EmployeeDTO">
-		delete from employee where emp_no = ${emp_no}
+		delete from employee where emp_no = #{emp_no}
 	</delete>
 	
 	<!-- 직원 수정 적용 개수 얻기 -->
@@ -193,20 +198,28 @@
 			employee
 		set
 			emp_name = #{emp_name}
-		    , dep_no = ${dep_no}
+		    , dep_no = #{dep_no}
 		    , jikup = #{jikup}
-		    , salary = ${salary}
+		    , salary = #{salary}
 		    , hire_date = #{hire_date}
 		    , jumin_num = #{jumin_num}
 		    , phone = #{phone}
 		    <if test="mgr_emp_no != null and mgr_emp_no != 0">
-		    	, mgr_emp_no = ${mgr_emp_no}
+		    	, mgr_emp_no = #{mgr_emp_no}
 		    </if>
 		    <if test="mgr_emp_no == null or mgr_emp_no == 0">
 		    	, mgr_emp_no = null
 		    </if>
+		    
+		    <if test="pic != null and pic.length() > 0">
+		    	, pic = #{pic}
+		    </if>
 		where 
-			emp_no = ${emp_no}
+			emp_no = #{emp_no}
 	</update>
 	
+	<!-- 사진 파일명 가져오기 -->
+	<select id="getPic" parameterType="com.naver.erp.dto.EmployeeDTO" resultType="String">
+		select pic as "pic" from employee where emp_no = #{emp_no}
+	</select>
 </mapper>

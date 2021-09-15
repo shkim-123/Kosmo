@@ -50,7 +50,7 @@ th {
 				<tr>
 					<th>직원명</th>
 					<td>
-						<input type="text" name="emp_name" value="${empContent.emp_name}">
+						<input type="text" name="emp_name" class="emp_name" value="${empContent.emp_name}">
 					</td>
 				</tr>
 				<tr>	
@@ -62,12 +62,13 @@ th {
 								<option value="${dept.dep_no}" ${empContent.dep_no==dept.dep_no?'selected':''}>${dept.dep_no}</option>
 							</c:forEach>	
 						</select>
+						<span class="dep_name">${empContent.dep_name}</span>
 					</td>
 				</tr>
-				<tr>
+<%-- 				<tr>
 					<th>부서명</th>
 					<td><span class="dep_name">${empContent.dep_name}</span></td>
-				</tr>
+				</tr> --%>
 				<tr>	
 					<th>직급</th>
 					<td>
@@ -82,25 +83,25 @@ th {
 				<tr>	
 					<th>연봉</th>
 					<td>
-						<input type="text" name="salary" value="${empContent.salary}">
+						<input type="text" name="salary" class="salary" value="${empContent.salary}">
 					</td>
 				</tr>
 				<tr>	
 					<th>입사일</th>
 					<td>
-						<input type="text" name="hire_date" value="${empContent.hire_date}">
+						<input type="text" name="hire_date" class="hire_date" value="${empContent.hire_date}">
 					</td>
 				</tr>
 				<tr>
 					<th>주민번호</th>
 					<td>
-						<input type="text" name="jumin_num" value="${empContent.jumin_num}">
+						<input type="text" name="jumin_num" class="jumin_num" value="${empContent.jumin_num}">
 					</td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
 					<td>
-						<input type="text" name="phone" value="${empContent.phone}">
+						<input type="text" name="phone" class="phone" value="${empContent.phone}">
 					</td>
 				</tr>
 				<tr>
@@ -112,12 +113,25 @@ th {
 								<option value="${empNoName.emp_no}" ${empContent.mgr_emp_no==empNoName.emp_no?'selected':''}>${empNoName.emp_no}</option>
 							</c:forEach>
 						</select>
+						<span class="mgr_emp_name">${empContent.mgr_emp_no==0?'-':empContent.mgr_emp_name}</span>
 						<input type="checkbox" class="mgr_emp_no_chkbox" ${empContent.mgr_emp_no==0?'checked':''}>없음
 					</td>
 				</tr>
-				<tr>
+<%-- 				<tr>
 					<th>상사이름</th>
 					<td><span class="mgr_emp_name">${empContent.mgr_emp_no==0?'-':empContent.mgr_emp_name}</span></td>
+				</tr> --%>
+				<tr>
+					<th>이미지</th>
+					<td>	
+						<input type="file" name="img" class="img">
+						<c:if test="${!empty empContent.pic}">
+							<div>
+								<img src="/resources/img/${empContent.pic}" width="200px">
+								<!-- <input type="checkbox" name="is_del" class="is_del" value="yes">삭제 -->
+							</div>
+						</c:if>
+					</td>
 				</tr>
 				
 			</table>

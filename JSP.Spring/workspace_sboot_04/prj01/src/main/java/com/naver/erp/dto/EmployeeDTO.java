@@ -20,8 +20,8 @@ public class EmployeeDTO {
 	private int mgr_emp_no;
 	private String dep_name;
 	private String mgr_emp_name;
-	
-	
+	private String pic;
+//----------------------------------------------------------------
 	public int getEmp_no() {
 		return emp_no;
 	}
@@ -87,6 +87,12 @@ public class EmployeeDTO {
 	}
 	public void setMgr_emp_name(String mgr_emp_name) {
 		this.mgr_emp_name = mgr_emp_name;
+	}
+	public String getPic() {
+		return pic;
+	}
+	public void setPic(String pic) {
+		this.pic = pic;
 	}
 	
 	

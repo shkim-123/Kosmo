@@ -3,6 +3,8 @@ package com.naver.erp.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.naver.erp.dto.DeptDTO;
 import com.naver.erp.dto.EmployeeDTO;
 import com.naver.erp.dto.EmployeeSearchDTO;
@@ -44,5 +46,8 @@ public interface EmployeeDAO {
 	
 	// 직원 수정 적용 개수 얻기
 	int updateEmployee(EmployeeDTO employeeDTO);
+	
+	// 사진 파일명 가져오기
+	String getPic(EmployeeDTO employeeDTO);
 	
 }

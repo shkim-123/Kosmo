@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.naver.erp.dto.DeptDTO;
 import com.naver.erp.dto.EmployeeDTO;
@@ -134,6 +135,15 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		int updateCnt = this.sqlSession.update("com.naver.erp.dao.EmployeeDAO.updateEmployee", employeeDTO);
 		
 		return updateCnt;
+	}
+	
+	// 사진 파일명 가져오기
+	@Override
+	public String getPic(EmployeeDTO employeeDTO) {
+		
+		String pic = this.sqlSession.selectOne("com.naver.erp.dao.EmployeeDAO.getPic", employeeDTO);
+		
+		return pic;
 	}
 
 	

@@ -249,6 +249,10 @@
 		</c:if>
 		
 	</form>
+	
+	<div style="padding: 10px;">[현재 게시판 총 개수 ${requestScope.totCnt}]</div>
+	
+	<div>${sessionScope.msg}</div>
 		
 </center>
 

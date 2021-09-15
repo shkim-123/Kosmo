@@ -76,7 +76,7 @@
 	<!-- empty : EL의 연산자, 오른쪽에 나온 데이터가 null값이면 true를 리턴 -->
 	<!-- ------------------------------------------------------------- -->
 	<c:if test="${!empty requestScope.board}">
-		<table border="1" class="tbcss2" cellpadding="5">
+		<table border="1" class="tbcss2" cellpadding="${requestScope.cellpadding}">
 			<caption><b>[글 상세 보기]</b></caption>
 			<tr>
 				<th>글번호</th>
@@ -110,7 +110,7 @@
 					<th>이미지</th>
 					<td colspan="3">
 						<c:if test="${!empty requestScope.board.pic}">
-							<img src="/resources/img/${requestScope.board.pic}" width="300px">
+							<img src="/resources/img/${requestScope.board.pic}" width="${requestScope.boardImgRate1}">
 						</c:if>
 					</td>
 				</tr>
@@ -148,6 +148,10 @@
 		<input type="hidden" name="b_no" value="${requestScope.board.b_no}">
 	</form>	
 	
+	
+	<div style="padding: 10px;">[현재 게시판 총 개수 ${requestScope.totCnt}]</div>
+	
+	<div>${sessionScope.msg}</div>
 	
 </center>
 

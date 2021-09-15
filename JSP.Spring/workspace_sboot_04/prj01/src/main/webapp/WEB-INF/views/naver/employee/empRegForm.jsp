@@ -55,12 +55,13 @@ th {
 								<option value="${dept.dep_no}">${dept.dep_no}</option>
 							</c:forEach>	
 						</select>
+						<span class="dep_name">${deptList.get(0).dep_name}</span>
 					</td>
 				</tr>
-				<tr>
+<%-- 				<tr>
 					<th>부서명</th>
 					<td><span class="dep_name">${deptList.get(0).dep_name}</span></td>
-				</tr>
+				</tr> --%>
 				<tr>	
 					<th>직급</th>
 					<td>
@@ -103,12 +104,19 @@ th {
 								<option value="${empNoName.emp_no}">${empNoName.emp_no}</option>
 							</c:forEach>
 						</select>
+						<span class="mgr_emp_name">${empNoNameList.get(0).emp_name}</span>
 						<input type="checkbox" class="mgr_emp_no_chkbox">없음
 					</td>
 				</tr>
-				<tr>
+<%-- 				<tr>
 					<th>상사이름</th>
 					<td><span class="mgr_emp_name">${empNoNameList.get(0).emp_name}</span></td>
+				</tr> --%>
+				<tr>
+					<th>이미지</th>
+					<td>
+						<input type="file" name="img" class="img">
+					</td>
 				</tr>
 				
 			</table>

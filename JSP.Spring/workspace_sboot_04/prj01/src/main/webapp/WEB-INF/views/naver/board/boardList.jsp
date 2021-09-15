@@ -385,7 +385,7 @@
 		<!-- setAttribute 메소드로 저장된 키값 "boardListAllCnt"의 데이터를 꺼내서 표현하기 -->
 		<!-- <참고> EL은 JSP 페이지에서 사용 가능한 언어이다. 즉, EL은 JSP 기술의 한 종류이다. -->
 		<!-- ------------------------------------------------------------- -->
-		<span class="boardListAllCnt">총 : ${requestScope.boardListAllCnt}개</span>
+		검색 총 개수 : <span class="boardListAllCnt">${requestScope.boardListAllCnt}</span>/${requestScope.totCnt}개
 		
 		<!-- ------------------------------------------------------------- -->
 		<!-- 한 화면에 보여줄 검색 결과물 행의 개수 입력양식 선언 -->
@@ -549,7 +549,9 @@
 		<!-- ************************************************************* -->
 		<input type="hidden" name="b_no">
 	</form>
+	
 
+	<div>${sessionScope.msg}</div>
 	
 </center>
 

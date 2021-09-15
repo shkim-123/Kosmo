@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.erp.Info;
@@ -154,7 +155,7 @@ public class EmployeeController {
 	// 직원 등록하기, ajax로 map 리턴
 	@RequestMapping(value="/empRegProc.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> insertEmployee(EmployeeDTO employeeDTO) {
+	public Map<String, String> insertEmployee(EmployeeDTO employeeDTO, @RequestParam(value="img") MultipartFile multi) {
 		Map<String, String> map = new HashMap<String, String>();
 		String msg = "";
 		int insertCnt = 0;
@@ -167,7 +168,7 @@ public class EmployeeController {
 		try {
 			if("".equals(msg)) {
 				// 등록
-				insertCnt = this.employeeService.insertEmployee(employeeDTO);
+				insertCnt = this.employeeService.insertEmployee(employeeDTO, multi);
 			}
 		} catch(Exception ex) {
 			System.out.println("insertEmployee catch!! => " + ex.getMessage());
@@ -185,6 +186,7 @@ public class EmployeeController {
 	@ResponseBody
 	public Map<String, String> empUpDelProc(
 			@RequestParam(value="upDel") String upDel
+			, @RequestParam(value="img") MultipartFile multi
 			, EmployeeDTO employeeDTO
 	){
 		Map<String, String> map = new HashMap<String, String>();
@@ -202,9 +204,11 @@ public class EmployeeController {
 				
 				
 				if("".equals(msg)) {
-					upDelCnt = this.employeeService.updateEmployee(employeeDTO);
+					// 수정 행 적용 개수 얻기
+					upDelCnt = this.employeeService.updateEmployee(employeeDTO, multi);
 				}
 			} else if("del".equals(upDel)) {
+				// 삭제 행 적용 개수 얻기
 				upDelCnt = this.employeeService.deleteEmployee(employeeDTO);
 			}
 			
