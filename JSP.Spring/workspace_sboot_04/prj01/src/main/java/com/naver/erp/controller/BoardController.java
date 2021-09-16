@@ -127,6 +127,7 @@ public class BoardController {
 	public ModelAndView getBoardList(
 			//----------------------------------------------------------------
 			// 파라미터값을 저장하고 있는 BoardSearchDTO 객체를 받아오는 매개변수 선언
+			// 파라미터명과 동일한 이름을 가진 속성변수에 파라미터값이 저장된다.
 			//----------------------------------------------------------------
 			BoardSearchDTO boardSearchDTO
 			// , HttpSession session
@@ -185,7 +186,11 @@ public class BoardController {
 		
 	
 
+		//================================================================
 		// 공용 함수 Util 로 이동
+		// 아래 페이징 로직은 공식과도 같은 로직이므로 복사해서 쓰자.
+		// 아래 로직을 복사해서 사용 시 BoardSearchDTO 객체 이름만 바꾸면 된다.
+		//================================================================
 		
 		//----------------------------------------------------------------
 		// 만약, 검색된 결과물의 개수가 0보다 크면, 즉, 검색 결과물이 있으면
@@ -259,9 +264,11 @@ public class BoardController {
 		// [ModelAndView 객체]에 [한 화면에 보여줄 행의 개수]를 저장하기
 		// [ModelAndView 객체]에 [한 화면에 보여줄 페이지 번호의 개수]를 저장하기
 		//----------------------------------------------------------------
-//		mav.addObject("last_pageNo", last_pageNo);
-//		mav.addObject("min_pageNo", min_pageNo);
-//		mav.addObject("selectPageNo", selectPageNo);
+//		mav.addObject("last_pageNo", last_pageNo);			// JSP 페이지에서 페이징 번호 출력 시 사용할 데이터
+//		mav.addObject("min_pageNo", min_pageNo);			// JSP 페이지에서 페이징 번호 출력 시 사용할 데이터	
+//		mav.addObject("max_pageNo", max_pageNo);			// JSP 페이지에서 페이징 번호 출력 시 사용할 데이터	
+		//------------
+//		mav.addObject("selectPageNo", selectPageNo);		
 //		mav.addObject("rowCntPerPage", rowCntPerPage);
 //		mav.addObject("pageNoCntPerPage", pageNoCntPerPage);
 		

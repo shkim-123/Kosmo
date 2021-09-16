@@ -120,7 +120,8 @@
 				// 그렇지 않으면, 즉, 아이디, 암호가 존재하지 않으면
 				//--------------------------------------------------------------
 				if(idCnt == 1) {		
-					//alert("로그인 성공!");
+					// alert("로그인 성공!");
+					// url주소로 웹 서버에 접근(get 방식)
 					location.replace("/${requestScope.naverPath}boardList.do");
 				} else {				
 					alert("로그인 실패!");

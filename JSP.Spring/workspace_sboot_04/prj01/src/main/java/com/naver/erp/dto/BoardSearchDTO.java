@@ -12,17 +12,19 @@ import java.util.List;
 public class BoardSearchDTO {
 	
 	//----------------------------------------------------------------
-	// [검색 키워드] 저장하는 속성변수 선언
-	// 현재 [선택된 페이지 번호]를 저장하는 속성변수 선언
-	// 한 화면에 보여줄 [행의 개수]를 저장하는 속성변수 선언
+	// 속성변수 선언
 	//----------------------------------------------------------------
-	private String keyword1;
-	private String keyword2;
-	private String orAnd;
-	private int selectPageNo = 1;
-	private int rowCntPerPage = 20;
-	private List<String> day;
-	private String sort;
+	private String keyword1;			// 키워드가 저장될 속성변수
+	private String keyword2;			// 키워드가 저장될 속성변수
+	private String orAnd;				// 2개의 키워드 사이에 들어갈 or 또는 and가 저장되는 속성변수
+	private int selectPageNo = 1;		// 유저가 [선택한 페이지번호]가 저장되는 속성변수, 
+										// 		반드시 디폴트 값이 있어야 DB 연동 시 에러가 없다.
+	private int rowCntPerPage = 20;		// 한 화면에 보여줄 [행의 개수]를 저장하는 속성변수,
+										// 		반드시 디폴트 값이 있어야 DB 연동 시 에러가 없다.
+	private List<String> day;			// 어제 또는 오늘 또는 그제가 저장되는 속성변수
+										//		checkbox 입력양식 값이 들어올 때는 ArrayList가 받는다.
+	private String sort;				// 등록일 관련 정렬 데이터가 저장되는 속성변수. 
+										//		"reg_date desc" 또는 "reg_date asc"가 저장될 예정이다.
 	//----------------------------------------------------------------
 	// getter, setter 메소드 선언
 	//----------------------------------------------------------------
