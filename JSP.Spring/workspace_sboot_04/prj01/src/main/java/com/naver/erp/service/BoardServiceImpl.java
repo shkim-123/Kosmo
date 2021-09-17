@@ -147,7 +147,9 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println("===BoardServiceImpl.getBoard updateCnt => " + updateCnt);
 		
 		//----------------------------------------------------------------
-		// 수정된 개수가 0이라면 
+		// 수정된 행의 개수가 0이면 null 리턴하기
+		// 즉, 수정한 행의 개수가 0이면 대상 게시판 글이 누군가 삭제했다면 null 리턴하기
+		// update의 실행 결과가 0이라면 조건에 맞는 대상이 없는 것이다.
 		//----------------------------------------------------------------
 		if(updateCnt == 0) { return null; }
 		

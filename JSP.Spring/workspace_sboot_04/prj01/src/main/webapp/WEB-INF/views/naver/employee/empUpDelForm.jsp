@@ -128,7 +128,7 @@ th {
 						<c:if test="${!empty empContent.pic}">
 							<div>
 								<img src="/resources/img/${empContent.pic}" width="200px">
-								<!-- <input type="checkbox" name="is_del" class="is_del" value="yes">삭제 -->
+								<input type="checkbox" name="is_del" class="is_del" value="yes">삭제
 							</div>
 						</c:if>
 					</td>

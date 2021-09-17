@@ -385,10 +385,10 @@ img {
 		// 파일 업로드 form 설정값 추가
 		document.empUpDelForm.enctype="multipart/form-data";
 
-		console.log($("[name='empUpDelForm']").serialize());
+		console.log("serialize => " + $("[name='empUpDelForm']").serialize());
 
 		var upDel = $("[name='empUpDelForm'] .upDel").val();
-	
+
 		$.ajax({
 			url: "/${requestScope.naverPath}empUpDelProc.do"
 			,type: "post"
@@ -557,6 +557,16 @@ img {
 		
 		
 	<!-- 	<input type="button" class="xxxBtn" value="모달창 테스트"> -->
+		<input type="hidden" name="selectPageNo" class="selectPageNo" value="1">
+		
+		<select name="rowCntPerPage" class="rowCntPerPage">
+			<option value="10">10</option>
+			<option value="15">15</option>
+			<option value="20" selected>20</option>
+			<option value="25">25</option>
+			<option value="30">30</option>
+		</select>
+		
 	</form>
 	
 	<!-- 검색 결과 노출 -->
@@ -587,6 +597,27 @@ img {
 			</c:if>
 				
 		</table>
+	</div>
+	
+	
+	<!-- 페이징 -->
+	${pagingMap.last_pageNo}
+	${pagingMap.min_pageNo}
+	${pagingMap.max_pageNo}
+	${pagingMap.selectPageNo}
+	${pagingMap.rowCntPerPage}
+	${pagingMap.pageNoCntPerPage}
+	
+	<div class="pageNo">
+		<c:forEach var="no" begin="${pagingMap.min_pageNo}" end="${pagingMap.max_pageNo}" step="1">
+			<c:if test="${no==pagingMap.selectPageNo}">
+				<span>${no}</span>
+			</c:if>
+			
+			<c:if test="${no!=pagingMap.selectPageNo}">
+				<span style="cursor:pointer" onclick="search_select_pageNo(${no})">[${no}]</span>
+			</c:if>
+		</c:forEach>
 	</div>
 	
 	

@@ -263,6 +263,10 @@
 						<!-- ************************************************************* -->
 						<input type="file" name="img" class="img">
 						<!-- ************************************************************* -->
+						
+						<!-- ------------------------------------------------------------- -->
+						<!-- HttpServletRequest 객체에 "boardDTO" 라는 키값에 저장된 BoardDTO 객체의 속성변수 pic에 문자가 있으면 -->
+						<!-- ------------------------------------------------------------- -->
 						<c:if test="${!empty requestScope.board.pic}">
 							<div style="height:7px"></div>
 							<img src="/resources/img/${requestScope.board.pic}" width="${requestScope.boardImgRate1}">

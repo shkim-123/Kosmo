@@ -21,6 +21,7 @@ public class EmployeeDTO {
 	private String dep_name;
 	private String mgr_emp_name;
 	private String pic;
+	private String is_del;
 //----------------------------------------------------------------
 	public int getEmp_no() {
 		return emp_no;
@@ -94,7 +95,12 @@ public class EmployeeDTO {
 	public void setPic(String pic) {
 		this.pic = pic;
 	}
-	
+	public String getIs_del() {
+		return is_del;
+	}
+	public void setIs_del(String is_del) {
+		this.is_del = is_del;
+	}
 	
 	
 	

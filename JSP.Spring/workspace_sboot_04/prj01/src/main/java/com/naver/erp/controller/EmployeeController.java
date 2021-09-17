@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.erp.Info;
+import com.naver.erp.Util;
 import com.naver.erp.dao.EmployeeDAO;
 import com.naver.erp.dto.DeptDTO;
 import com.naver.erp.dto.EmployeeDTO;
@@ -48,15 +49,30 @@ public class EmployeeController {
 		List<String> jikupList = null;
 		List<DeptDTO> deptList=  null;
 		List<EmployeeDTO> empNoNameList = null;
+		//-----------
 		
+		
+		try {
+			// 검색 결과 개수 가져오기
+			employeeListCnt = this.employeeDAO.getEmployeeListCnt(empSearchDTO);
+		} catch(Exception ex) {
+			System.out.println("getEmployeeList catch!! => " + ex.getMessage());
+		}
+		
+		Map<String, Integer> pagingMap = Util.getPagingNos(
+				employeeListCnt						// 검색 결과물의 총 개수
+				,empSearchDTO.getSelectPageNo()		// 유저가 선택한 페이지 번호
+				,empSearchDTO.getRowCntPerPage()	// 한 화면에 보여줄 [행]의 개수
+				,10									// 한 화면에 보여줄 [페이지 번호]의 개수
+		);
+		
+		empSearchDTO.setSelectPageNo(pagingMap.get("selectPageNo"));
 		
 		try {
 			// 직급 리스트 가져오기
 			jikupList = this.employeeDAO.getJikupList();
 			// 부서명 리스트 가져오기
 			deptList = this.employeeDAO.getDeptList();
-			// 검색 결과 개수 가져오기
-			employeeListCnt = this.employeeDAO.getEmployeeListCnt(empSearchDTO);
 			// 리스트 가져오기
 			employeeList = this.employeeDAO.getEmployeeList(empSearchDTO);
 			// 직원번호, 직원명 리스트 가져오기
@@ -71,6 +87,7 @@ public class EmployeeController {
 		mav.addObject("jikupList", jikupList);
 		mav.addObject("deptList", deptList);
 		mav.addObject("empNoNameList", empNoNameList);
+		mav.addObject("pagingMap", pagingMap);
 		
 		return mav;
 	}

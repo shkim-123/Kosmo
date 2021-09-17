@@ -21,6 +21,9 @@ public class EmployeeSearchDTO {
 	
 	private String hire_date_start;  // 입사일 flatpickr
 	private String hire_date_end;	// 입사일 flatpickr
+	
+	private int selectPageNo = 1;
+	private int rowCntPerPage = 20;
 //----------------------------------------------------------------
 	public String getKeyword() {
 		return keyword;
@@ -76,6 +79,16 @@ public class EmployeeSearchDTO {
 	public void setHire_date_end(String hire_date_end) {
 		this.hire_date_end = hire_date_end;
 	}
-	
-	
+	public int getSelectPageNo() {
+		return selectPageNo;
+	}
+	public void setSelectPageNo(int selectPageNo) {
+		this.selectPageNo = selectPageNo;
+	}
+	public int getRowCntPerPage() {
+		return rowCntPerPage;
+	}
+	public void setRowCntPerPage(int rowCntPerPage) {
+		this.rowCntPerPage = rowCntPerPage;
+	}
 }

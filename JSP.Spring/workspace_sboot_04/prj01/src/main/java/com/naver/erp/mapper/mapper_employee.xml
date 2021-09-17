@@ -92,18 +92,24 @@
 	
 	<!-- 게시판 리스트 가져오기 -->
 	<select id="getEmployeeList" parameterType="com.naver.erp.dto.EmployeeSearchDTO" resultType="com.naver.erp.dto.EmployeeDTO">
-		select 
-			emp_no as "emp_no"
-			,emp_name as "emp_name"
-			,jikup as "jikup"
-			,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
-			,dep_name as "dep_name"
-		from 
-			employee e, dept d
-		where 
-			e.dep_no = d.dep_no
-			<include refid="employeeWhere"/>
-		order by emp_no desc
+		select * from (select rownum as "RNUM", zxc.* from (
+			select 
+				emp_no as "emp_no"
+				,emp_name as "emp_name"
+				,jikup as "jikup"
+				,to_char(hire_date, 'yyyy-mm-dd') as "hire_date"
+				,dep_name as "dep_name"
+			from 
+				employee e, dept d
+			where 
+				e.dep_no = d.dep_no
+				<include refid="employeeWhere"/>
+			order by emp_no desc
+		) zxc 
+		<![CDATA[
+			where rownum <= ${selectPageNo*rowCntPerPage} )
+			where rnum >= ${selectPageNo*rowCntPerPage-rowCntPerPage+1}
+		]]>
 	</select>
 	
 	<!-- 직급 리스트 가져오기 -->
@@ -213,6 +219,10 @@
 		    
 		    <if test="pic != null and pic.length() > 0">
 		    	, pic = #{pic}
+		    </if>
+		    
+		    <if test="is_del != null and is_del.length() > 0">
+		    	, pic = null
 		    </if>
 		where 
 			emp_no = #{emp_no}

@@ -103,14 +103,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		int employeeCnt = this.employeeDAO.getEmployeeCnt(employeeDTO.getEmp_no());
 		if(employeeCnt < 1) {return -1;}
 		
-		employeeDTO.setPic(fileUpLoad.getNewFileName());
+		String is_del = employeeDTO.getIs_del();
+		String newFileName = fileUpLoad.getNewFileName(is_del == null);
+		employeeDTO.setPic(newFileName);
+		
 		String pic = this.employeeDAO.getPic(employeeDTO);
 		
 		// 수정 적용행의 개수 얻기
 		int updateCnt = this.employeeDAO.updateEmployee(employeeDTO);
 		
-		fileUpLoad.delete(upLoadDir, pic != null && pic.length() > 0);
-		fileUpLoad.upLoadFile(upLoadDir);
+		if(is_del == null) {
+			fileUpLoad.delete(upLoadDir+pic, multi != null && !multi.isEmpty() && pic != null && pic.length() > 0);
+			fileUpLoad.upLoadFile(upLoadDir);
+		} else {
+			fileUpLoad.delete(upLoadDir+pic);
+		}
 		
 		return updateCnt;
 	}
