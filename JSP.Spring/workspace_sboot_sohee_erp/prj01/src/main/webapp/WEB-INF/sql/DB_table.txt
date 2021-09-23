@@ -1,0 +1,104 @@
+create table code_skill (
+    skill_code      number(3)
+    ,skill_name     varchar2(20)    not null unique
+    ,primary key(skill_code)
+);
+
+-- select * from code_skill
+
+create sequence code_skill_seq start with 1 increment by 1;
+
+
+create table code_religion (
+    religion_code   number(3)
+    ,religion_name  varchar2(20)    not null unique
+    ,primary key(religion_code)
+);
+
+-- select * from code_religion;
+
+create sequence code_religion_seq start with 1 increment by 1;
+
+
+create table code_school (
+    school_code     number(3)
+    ,school_name    varchar2(20)    not null unique
+    ,primary key(school_code)
+);
+
+--select * from code_school
+
+create sequence code_school_seq start with 1 increment by 1;
+
+
+create table staff (
+    staff_no        number(3)
+    ,staff_name     varchar2(14)    not null
+    ,jumin_num      char(14)        not null unique
+    ,school_code    number(3)       not null
+    ,religion_code  number(3)       not null
+    ,graduate_day   char(10)           not null
+    ,foreign key(religion_code) references code_religion(religion_code)
+    ,foreign key(school_code) references code_school(school_code)
+    ,primary key(staff_no)
+);
+
+-- select * from staff
+
+create sequence staff_seq start with 1 increment by 1;
+
+
+create table staff_skill (
+    staff_skill_no  number(3)
+    ,staff_no       number(3)       not null
+    ,skill_code     number(3)       not null
+    ,primary key(staff_skill_no)
+    ,foreign key(staff_no) references staff(staff_no)
+    ,foreign key(skill_code) references code_skill(skill_code)
+);
+
+-- select * from staff_skill
+
+create sequence staff_skill_seq start with 1 increment by 1;
+
+
+insert into code_skill values(code_skill_seq.nextval, 'Java');
+insert into code_skill values(code_skill_seq.nextval, 'JSP');
+insert into code_skill values(code_skill_seq.nextval, 'ASP');
+insert into code_skill values(code_skill_seq.nextval, 'PHP');
+insert into code_skill values(code_skill_seq.nextval, 'Delphi');
+
+
+insert into code_religion values(code_religion_seq.nextval, '기독교');
+insert into code_religion values(code_religion_seq.nextval, '천주교');
+insert into code_religion values(code_religion_seq.nextval, '불교');
+insert into code_religion values(code_religion_seq.nextval, '이슬람');
+insert into code_religion values(code_religion_seq.nextval, '무교');
+
+insert into code_school values(code_school_seq.nextval, '고졸');
+insert into code_school values(code_school_seq.nextval, '전문대졸');
+insert into code_school values(code_school_seq.nextval, '일반대졸');
+
+commit;
+
+/*
+select * from staff_skill;
+select * from staff;
+select * from code_school;
+select * from code_religion;
+select * from code_skill; 
+*/
+
+/*
+drop table staff_skill;
+drop table staff;
+drop table code_school;
+drop table code_religion;
+drop table code_skill;
+
+drop sequence staff_skill_seq;
+drop sequence staff_seq; 
+drop sequence code_school_seq;
+drop sequence code_religion_seq;
+drop sequence code_skill_seq;
+*/ 

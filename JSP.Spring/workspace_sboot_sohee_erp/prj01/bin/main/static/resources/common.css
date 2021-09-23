@@ -1,0 +1,381 @@
+@charset "UTF-8";
+	
+	
+:root {
+  --light-color: #ffffff;
+  --main-color: #fbe9e7;
+  --dark-color: #c8b7b5;
+  --point-color: #ffccbc;
+  --white-color: #ffffff;
+  --black-color: #000000;
+}
+
+
+*{
+	font-family: 'Nanum Gothic', sans-serif;
+}	
+
+
+h2 {
+  font-weight: 400;
+  line-height: 1.2;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+input,
+button,
+select,
+textarea {
+  margin: 0;
+}
+
+
+.input-radio,
+.input-checkbox {
+  display: inline-block;
+  margin-right: 0.625rem;
+   min-height: 1.00rem;
+  min-width: 1.00rem; 
+  margin-left: 10px;
+  margin-right: 3px;
+  vertical-align : middle;
+}
+
+input:first-child{
+  margin-left: 0px;
+}
+
+.form-control {
+/*   display: block; 
+  width: 100%; */
+  height: 2.0rem;
+  padding: 0.375rem 0.75rem;
+  color: #495057;
+  background-color: var(--white-color);
+  background-clip: padding-box;
+  border: 0.5px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.name_keyword {
+	width: 90%;
+/* 	margin: 10px 0; */
+}
+
+
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+/* body 태그, form 태그, td 태그, th 태그 , pre 태그 관련 설정. */ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+body,form,td,th,pre { 
+	font-size: 11pt;  
+	color: black; 
+	line-height: 160%; 
+} 
+
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+/* input, select 태그 설정. */ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+ input,select { 
+	font-size: 9pt; 
+/* 	 color:black; 
+	height: 20px;   */
+} 
+a:link {text-decoration:none;color:#696969} 
+a:hover{text-decoration:none;color:#66ccff} 
+a:visited {text-decoration:none;color:#330066} 
+ 
+ textarea{
+	font-size: 9pt;
+/* 	color: black; */
+} 
+
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+/* <table class="tbcss0"> ~</table>안의 테이블에 가로,세로 선이 모두 없게 보이기. */
+/* 경계선 색상은 직접 table 태그에 직접 설정. */ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+.tbcss0, .tbcss0 td, .tbcss0 th{ 
+	/*----------------------------------------------------------*/ 
+	border-collapse: collapse;              /* 경계선을 입체가 아닌 단일선으로 설정. */ 
+	/*----------------------------------------------------------*/ 
+	border-width:0px;                       /* 모든 경계선을 두께 설정. */ 
+	/*----------------------------------------------------------*/ 
+	font-size: 9pt;                         /* 글자 크기 설정. */ 
+	/*----------------------------------------------------------*/ 
+	padding : 5px 10px;
+	
+	
+ }
+ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+/* <table class="tbcss2"> ~</table>안의 가로선은 단일선으로 보이고 세로 선은 안 보이기. */
+/* 경계선 색상은 직접 table 테그에 직접 설정*/ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+.tbcss1, .tbcss1 td, .tbcss1 th{ 
+
+	border-collapse: collapse;              /* 경계선을 입체가 아닌 단일선으로 설정. */ 
+	
+	border-top-width:1px;                       /* 위 경계선을 두께 설정. */ 
+	border-top-style:solid;                     /* 위 경계선을 모양 설정. */ 
+	border-bottom-width:1px;                    /* 아래 경계선을 모양 설정. */ 
+	border-bottom-style:solid;                  /* 아래 경계선을 모양 설정. */ 
+
+	border-left-width:0px;                      /* 왼쪽 경계선을 모양 설정. */ 
+	border-right-width:0px;                     /* 오른쪽 경계선을 모양 설정. */ 
+	
+	border-color : var(--dark-color);
+
+	font-size: 9pt;                         /* 글자 크기 설정. */ 
+	/*----------------------------------------------------------*/ 
+	padding : 8px 10px;
+	
+	
+}
+
+.tbcss1 th {
+	padding-right :0px;
+	
+}
+ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+/* <table class="tbcss1"> ~</table>안의 테이블에 가로,세로 선이 모두 단일선으로 보이기. */
+/* 경계선 색상은 직접 table 태그에 직접 설정. */ 
+/*MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/ 
+.tbcss2, .tbcss2 td, .tbcss2 th{ 
+	/*----------------------------------------------------------*/ 
+	border-collapse: collapse;              /* 경계선을 입체가 아닌 단일선으로 설정. */ 
+	/*----------------------------------------------------------*/ 
+	border-width:1px;                       /* 모든 경계선을 두께 설정. */ 
+	border-style:solid;                     /* 모든 경계선을 모양 설정. */ 
+	/*----------------------------------------------------------*/ 
+	font-size: 9pt;                         /* 글자 크기 설정. */ 
+	/*----------------------------------------------------------*/ 
+	padding-left:10px;                       /* 왼쪽 여백*/ 
+	padding-right:10px;                      /* 오른쪽 여백*/ 
+	/*----------------------------------------------------------*/ 
+	 /*border-spacing:0;*/
+ }
+
+
+.container{
+	width:700px;
+}
+
+.inputContainer{
+	width: 430px;
+}
+
+.btn{
+  width:70px;
+  height:40px;
+  font-size:13px;
+  cursor:pointer;	
+	
+  font-weight:bold;
+  position:relative;
+  border:1px solid var(--main-color);
+  transition:.3s all;
+  color: var(--black-color);
+  background:var(--white-color);
+}
+
+.btn:hover{
+  background:var(--point-color);
+}
+.btn:hover:before{
+  width:100%;
+}
+
+.staffSearchBtn{
+	background:var(--main-color);
+	width : 200px;
+/* 	margin-left: 251px;
+	margin-right: 26px; */
+	margin: 0 auto;
+}
+
+.staffSearchBtn:hover {
+	background:var(--point-color);
+}
+
+.inputFormBtn
+,.upFormBtn{
+	background:var(--main-color);
+	width : 200px;
+	margin: 0 auto;
+}
+
+.inputFormBtn:hover
+,.upFormBtn:hover{
+	background:var(--point-color);
+}
+
+	
+.tbcss0,.tbcss1 {
+	width: 100%;
+}
+	
+.tbcss0 tr {
+	text-align: center;
+}
+
+.tbcss0 tr:nth-child(2n) {
+	background:var(--white-color);
+}
+.tbcss0 tr:nth-child(2n-1) {
+	background:var(--main-color);
+}	
+.tbcss0 tr:hover {
+	background:var(--point-color);
+}	
+
+.tbcss0 th {
+	color:var(--white-color);
+	background:var(--dark-color);
+}
+
+
+.searchTr
+,.pageNo span
+,.graduate_day_th
+,.staff_name_th
+,.religion_th
+,.gender_th 
+,.skill_th
+{
+	cursor: pointer;
+}
+
+.searchResult {
+	display: flex;
+	flex-direction : column;
+	justify-content:center;
+	align-items : center;
+	
+}
+
+.searchCnt { 
+	align-self : flex-end;
+	padding-bottom : 5px;
+}
+
+.pageNo {
+	padding: 10px;
+}
+
+.pageNo span {
+	padding: 2px;
+}
+.pageNo span:hover:not(.selectThisPage){
+ 	color: var(--point-color); 
+	text-decoration: underline;
+}
+
+.selectThisPage {
+	color: var(--dark-color);
+}
+
+.selectThisPage:hover {
+	cursor: text;
+}
+
+
+
+/*==========================================*/
+/* 모달 CSS */
+/*==========================================*/
+.modal {
+   opacity: 0; 
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: left;
+  background: rgba(0,0,0, .6);
+  transition: opacity .25s ease;
+}
+
+.modal__bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.modal-state {
+  display: none;
+}
+
+.modal-state:checked + .modal {
+  opacity: 1; 
+  visibility: visible;
+}
+
+.modal-state:checked + .modal .modal__inner {
+  top: 0;
+} 
+
+
+.modal__inner {
+  transition: top .25s ease;
+  position: absolute;
+  top: -20%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  margin: auto;
+  overflow: auto;
+  background: #fff;
+  border-radius: 5px;
+  padding: 1em 2em;
+  height: 60%;
+}
+
+.modal__close {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  width: 1.1em;
+  height: 1.1em;
+  cursor: pointer;
+}
+
+.modal__close:after,
+.modal__close:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 1.5em;
+  background: #ccc;
+  display: block;
+  transform: rotate(45deg);
+  left: 50%;
+  margin: -3px 0 0 -1px;
+  top: 0;
+}
+
+.modal__close:hover:after,
+.modal__close:hover:before {
+  background: #aaa;
+}
+
+.modal__close:before {
+  transform: rotate(-45deg);
+}
+/*==========================================*/
+
+
+.noSearch{
+	 text-align: center;
+	 height: 120px;
+	 
+}
+
+

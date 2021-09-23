@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sohee.erp.dao.StaffDAO">
+
+	<sql id="staffWhere">
+		<!-- 이름 검색값이 있으면 -->
+		<if test="name_keyword != null and name_keyword.length() > 0">
+			and (
+				upper(staff_name) like upper('%${name_keyword}%')
+				or upper(gender) like upper('%${name_keyword}%')
+				or upper(school_name) like upper('%${name_keyword}%')
+				or upper(skill_name) like upper('%${name_keyword}%') 
+				or upper(religion_name) like upper('%${name_keyword}%')
+				or to_char(to_date(graduate_day, 'yyyymmdd'), 'yyyy-mm-dd (dy)', 'nls_date_language=korean') like '%${name_keyword}%'
+			)
+		</if>
+			
+		<!-- 성별 체크박스 체크되어 있으면 -->
+		<if test="gender != null and gender.size() > 0">
+			and 
+			<foreach collection="gender" item="gender" open="(" separator=" or " close=")" index="idx">	
+				<if test='gender.equals("남")'>
+					substr(jumin_num,7,1) in('1','3')       
+				</if>
+				
+				<if test='gender.equals("여")'>
+					substr(jumin_num,7,1) in('2','4') 
+				</if>
+			</foreach>
+		</if>
+		
+		<!-- 종교 선택값이 있으면 -->
+		<if test="religion_code != null and religion_code > 0">
+			and (
+				religion_code = ${religion_code} 
+			)
+		</if>
+		
+		<!-- 학력 선택값이 있으면 -->
+		<if test="school_code != null and school_code.size() > 0">
+			and
+			<foreach collection="school_code" item="school_code" open="(" separator=" or " close=")" index="idx">	
+				school_code = ${school_code} 
+			</foreach>
+		</if>
+		
+		<!-- 기술 선택값이 있으면 -->
+		<if test="skill_code != null and skill_code.size() > 0">
+			and
+			<foreach collection="skill_code" item="skill_code" open="(" separator=" or " close=")" index="idx">	
+				 skill_code like '%${skill_code}%'
+			</foreach>			
+		</if>
+		
+		<!-- 졸업일이 있으면 -->
+		<if test="graduate_day_start != null and graduate_day_start.length() > 0 and graduate_day_end != null and graduate_day_end.length() > 0">
+			and(
+				to_date(graduate_day, 'yyyymmdd') between to_date(#{graduate_day_start}, 'yyyymmdd') 
+					and add_months(to_date(#{graduate_day_end}, 'yyyymmdd'),1)-1
+			)	
+		</if>
+	</sql>
+
+
+
+
+
+
+
+	<!-- 종교 리스트 가져오기 -->
+	<select id="getReligionList" resultType="java.util.HashMap">
+		select religion_code as "religion_code", religion_name as "religion_name" from code_religion
+	</select>
+	
+	<!-- 학력 리스트 가져오기 -->
+	<select id="getSchoolList" resultType="java.util.HashMap">
+		select school_code as "school_code", school_name as "school_name" from code_school
+	</select>
+	
+	<!-- 기술 리스트 가져오기 -->
+	<select id="getSkillList" resultType="java.util.HashMap">
+		select skill_code as "skill_code", skill_name as "skill_name" from code_skill
+	</select>
+	
+	<!-- 사원 정보 리스트 개수 가져오기 -->
+	<select id="getStaffListCnt" parameterType="com.sohee.erp.dto.StaffSearchDTO" resultType="int">
+		select count(*)
+		from (
+		    select s.staff_no as staff_no
+		            ,staff_name as staff_name
+		            ,jumin_num as jumin_num     
+		            ,case when substr(jumin_num,7,1) in('1','3') then '남' else '여' end as gender
+		            ,s.school_code as school_code    
+		            ,sc.school_name as school_name    
+		            ,listagg(skill_name, ', ') within group(order by skill_name) as skill_name
+		            ,listagg(sk.skill_code, ', ') within group(order by sk.skill_code) as skill_code
+		            ,s.religion_code as religion_code  
+		            ,r.religion_name as religion_name
+		            ,graduate_day
+		    from staff s, code_religion r, code_school sc, staff_skill sk, code_skill c
+		    where s.religion_code = r.religion_code(+) and s.school_code = sc.school_code(+) and s.staff_no = sk.staff_no(+)
+		        and sk.skill_code = c.skill_code(+)            
+		    group by s.staff_no, staff_name, jumin_num, s.school_code, sc.school_name, s.religion_code, r.religion_name
+		        , graduate_day          
+		) 
+		where 1=1
+			<include refid="staffWhere"/>
+	</select>
+	
+	<!-- 사원 정보 리스트 가져오기 -->
+	<select id="getStaffList" parameterType="com.sohee.erp.dto.StaffSearchDTO" resultType="com.sohee.erp.dto.StaffDTO">
+		select staff_no as "staff_no", staff_name as "staff_name", jumin_num as "jumin_num", gender as "gender"
+		    ,school_code as "school_code",school_name as "school_name", skill_name as "skill_name"    
+		    ,skill_code as "skill_code", religion_code as "religion_code", religion_name as "religion_name"
+		    ,to_char(to_date(graduate_day, 'yyyymmdd'), 'yyyy-mm-dd (dy)', 'nls_date_language=korean') as "graduate_day" 
+		from (select rownum as "RNUM", zxc.* 
+		from (
+		    select s.staff_no as staff_no
+		            ,staff_name as staff_name
+		            ,jumin_num as jumin_num     
+		            ,case when substr(jumin_num,7,1) in('1','3') then '남' else '여' end as gender
+		            ,s.school_code as school_code    
+		            ,sc.school_name as school_name    
+		            ,listagg(skill_name, ', ') within group(order by skill_name) as skill_name
+		            ,listagg(sk.skill_code, ', ') within group(order by sk.skill_code) as skill_code
+		            ,s.religion_code as religion_code  
+		            ,r.religion_name as religion_name
+		            ,graduate_day
+		    from staff s, code_religion r, code_school sc, staff_skill sk, code_skill c
+		    where s.religion_code = r.religion_code(+) and s.school_code = sc.school_code(+) and s.staff_no = sk.staff_no(+)
+		        and sk.skill_code = c.skill_code(+)            
+		    group by s.staff_no, staff_name, jumin_num, s.school_code, sc.school_name, s.religion_code, r.religion_name
+		        , graduate_day
+		        
+		   	<if test="sort == null or sort.length() == 0">
+		   		order by staff_no desc
+		   	</if>
+		        
+		    <if test="sort != null and sort.length() > 0">
+		    	order by ${sort}
+		    </if>        
+		) zxc   
+		<![CDATA[   
+			where rownum <= ${selectPageNo*rowCntPerPage} 
+		]]>
+			<include refid="staffWhere"/>
+			) 
+			
+		<![CDATA[   
+			where rnum >= ${selectPageNo*rowCntPerPage-rowCntPerPage+1}
+		
+		]]>
+	</select>
+	
+	<!-- 주민번호 중복 여부 확인 -->
+	<select id="getJuminNumCnt" parameterType="com.sohee.erp.dto.StaffDTO" resultType="int">
+		select count(*) from staff where jumin_num = '${jumin_num}'
+	</select>
+	
+	<!-- 사원 정보 등록하기 -->
+	<insert id="insertStaff" parameterType="com.sohee.erp.dto.StaffDTO">
+		insert into staff values(staff_seq.nextval, #{staff_name}, #{jumin_num}, #{school_code}, #{religion_code}, #{graduate_day})
+	</insert>
+	
+	<!-- 사원 정보 스킬 등록하기 -->
+	<insert id="insertStaffSkill" parameterType="int">
+		insert into staff_skill values(staff_skill_seq.nextval, staff_seq.currval, ${skill_code})
+	</insert>
+	
+	<!-- 사원 정보 가져오기 -->
+	<select id="getStaff" parameterType="int" resultType="com.sohee.erp.dto.StaffDTO">
+		select staff_no as "staff_no"
+		    , staff_name as "staff_name"
+		    , jumin_num as "jumin_num"
+		    , school_code as "school_code"
+		    , religion_code as "religion_code"
+		    , graduate_day as "graduate_day"
+		from staff where staff_no = #{staff_no}	
+	</select>
+	
+	<!-- 사원 스킬 정보 가져오기 -->
+	<select id="getStaffSkillList" parameterType="int" resultType="int">
+		select skill_code as "skill_code" from staff_skill where staff_no = #{staff_no}
+	</select>
+	
+	<!-- 사원 정보 존재 개수 확인 -->
+	<select id="getStaffCnt" parameterType="com.sohee.erp.dto.StaffDTO" resultType="int">
+		select count(*) from staff where staff_no = #{staff_no}
+	</select>
+	
+	<!-- 사원 스킬 정보 삭제 -->
+	<delete id="deleteStaffSkill" parameterType="com.sohee.erp.dto.StaffDTO">
+		delete from staff_skill where staff_no = #{staff_no}
+	</delete>
+	
+	<!-- 사원 정보 삭제 -->
+	<delete id="deleteStaff" parameterType="com.sohee.erp.dto.StaffDTO">
+		delete from staff where staff_no = #{staff_no}
+	</delete>
+	
+	<!-- 사원 정보 수정 -->
+	<update id="updateStaff" parameterType="com.sohee.erp.dto.StaffDTO">
+		update staff set 
+		    staff_name = #{staff_name}
+		    , jumin_num = #{jumin_num}
+		    , school_code = #{school_code}
+		    , religion_code = #{religion_code}
+		    , graduate_day = #{graduate_day}
+		where 
+		    staff_no = #{staff_no}		
+	</update>
+	
+	<!-- 사원 스킬 정보 수정 -->
+	<insert id="updateStaffSkill" parameterType="com.sohee.erp.dto.StaffSkillDTO">
+		insert into staff_skill values(staff_skill_seq.nextval, #{staff_no}, #{skill_code})
+	</insert>
+</mapper>
