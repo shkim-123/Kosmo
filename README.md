@@ -20,6 +20,6 @@
 :calendar: 9.18 ~ 9.22
 
 ## 6. React
-:calendar: 09.23 ~ 
+:calendar: 9.23 ~ 
 
 
