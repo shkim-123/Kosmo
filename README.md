@@ -14,7 +14,12 @@
 :calendar: 6.30 ~ 8.10
 
 ## 5. JSP / Spring
-:calendar: 8.10 ~ 
+:calendar: 8.10 ~ 9.17
 
+#### 사이드 프로젝트 : 직원정보 CRUD
+:calendar: 9.18 ~ 9.22
+
+## 6. React
+:calendar: 09.23 ~ 
 
 
