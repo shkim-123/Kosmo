@@ -11,7 +11,7 @@
 :calendar: 6.10 ~ 6.29
 
 ## 4. Frontend (HTML / CSS / JavaScript / JQuery)
-:calendar: 6.30 ~ 8.10
+:calendar: 6.30 ~ 8.09
 
 ## 5. JSP / Spring
 :calendar: 8.10 ~ 9.17
