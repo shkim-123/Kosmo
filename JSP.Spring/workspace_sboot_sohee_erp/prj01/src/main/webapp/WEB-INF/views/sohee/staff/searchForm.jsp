@@ -37,8 +37,12 @@
 		// 처음 화면
 /* 		$(".searchResult").html(""); */
 		// placeholder 넣어주기
-		$(".name_keyword").attr("placeholder", "검색어를 입력해 주세요");
-		// 상세검색 클릭 시
+		$(".keyword").attr("placeholder", "검색어를 입력해 주세요");
+
+		// 21.09.25 졸업일 검색 유효성 체크 함수 호출
+		graduateDaySearchCheck();
+		
+/* 		// 상세검색 클릭 시
 		$(".detailSearch").click(function(){
 
 			var thisObj = $(this);
@@ -52,9 +56,138 @@
 				thisObj.val("상세검색 ▼");
 			}
 			
-		});
+		}); */
+		
 		//$(".tbcss1").css("display", "none");
+
+		// 키워드 검색에서 엔터 시 검색 함수 호출 (21.09.25)
+		$(".keyword").keyup(function(){
+			if(event.keyCode==13){ search(); }
+		});
+
+		// 로그아웃 추가 (21.09.25)
+		$(".logoutBtn").click(function(){
+			if(!confirm("로그아웃 하시겠습니까?")){return;}
+			
+			location.replace("/logout.do")
+		});
 	});
+
+	//=================================================
+	// 졸업일 검색 시 유효성 체크 함수 호출
+	//=================================================
+	function graduateDaySearchCheck(){
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = today.getMonth()+1;
+		//-------------------
+		var searchFormObj = $("[name='staffSearchForm']");
+		//-------------------
+		var year_start = searchFormObj.find(".graduate_day_year_start");
+		var month_start = searchFormObj.find(".graduate_day_month_start");
+		var year_end = searchFormObj.find(".graduate_day_year_end");
+		var month_end = searchFormObj.find(".graduate_day_month_end");
+		//-------------------
+
+		//-------------------
+		year_start.append("<option disabled selected value=''>년</option>");
+		month_start.append("<option disabled selected value=''>월</option>");
+		year_end.append("<option disabled selected value=''>년</option>");
+		month_end.append("<option disabled selected value=''>월</option>");
+		
+		for(var i = 1960; i <= year; i++){
+			year_start.append("<option value="+i+">"+i+"</option>");
+			year_end.append("<option value="+i+">"+i+"</option>");
+		}
+		//-------------------
+
+		//-------------------
+		// 졸업 년 값 변경 시, 월 값 넣어주기
+		year_start.change(function(){
+			var thisObj = $(this);
+			var endNum = changeMonth(thisObj, month_start);
+			month_start.find("[value='1']").prop("selected", true);				
+			graduateDayRangeCheck(year_start, month_start);
+		});
+		
+		year_end.change(function(){
+			var thisObj = $(this);
+			var endNum = changeMonth(thisObj, month_end);
+			month_end.find("[value="+endNum+"]").prop("selected", true);				
+			graduateDayRangeCheck(year_end, month_end);
+		});
+		//-------------------
+		
+		//-------------------
+		// 월 선택 시 졸업일 유효 범위 체크 함수 호출
+		month_start.change(function(){ graduateDayRangeCheck(year_start, month_start); });
+		month_end.change(function(){ graduateDayRangeCheck(year_end, month_end); });
+		//-------------------
+
+		//-------------------
+		// 월 selectbox에 option 태그 넣어주고 마지막 월을 리턴하는 함수 선언
+		function changeMonth(yearObj, monthObj){
+			var thisValue = yearObj.val();
+			var endNum = 12;
+			//-------------------
+			selectEmptyAppend(monthObj, "월");
+			//-------------------
+			if( thisValue == year ){endNum = month;}
+			//-------------------
+			for(var j = 1; j <=endNum; j++){
+				monthObj.append("<option value="+j+">"+j+"</option>");
+			}
+			//-------------------
+			return endNum;
+		}
+		//-------------------
+		
+		//-------------------
+		// select 태그 자식(=option태그) 삭제하고 disable 태그 넣어주는 함수 선언
+		function selectEmptyAppend(obj, str){
+			obj.empty();
+			obj.append("<option disabled selected value=''>"+str+"</option>");
+		} 
+		//-------------------
+
+		//-------------------
+		// 미니멈 년, 월 맥시멈 년, 월 모두 선택되었을 때 미니멈 년월이 맥시멈 년월보다 크면 경고 후 비우기
+		function graduateDayRangeCheck(yearObj, monthObj){
+			var year_start_val = parseInt(year_start.val(),10);
+			var month_start_val = parseInt(month_start.val(),10);
+			var year_end_val = parseInt(year_end.val(),10);
+			var month_end_val = parseInt(month_end.val(),10);
+			var flag = true;
+			//-------------------
+			console.log("------------");
+			console.log(year_start_val);
+			console.log(month_start_val);
+			console.log(year_end_val);
+			console.log(month_end_val);
+			console.log("------------");
+			//-------------------
+			if(month_start_val == null || month_end_val == null) {return flag;}
+			//-------------------
+			// 시작 졸업연도가 끝 졸업연도보다 클 경우, 매개변수로 들어온 년도의 선택값을 지우기
+			if( year_start_val > year_end_val ){
+				alert("졸업일의 최소날짜가 최대날짜보다 큽니다. 다시 선택해 주세요.");
+				yearObj.find("[value='']").prop("selected", true);
+				selectEmptyAppend(monthObj, "월");	// 월 option 값 지우는 함수 호출
+				yearObj.focus();					// 매개변수로 들어온 년도에 포커스 넣기
+				flag = false;
+			} 
+			// 시작 졸업연도와 끝 졸업연도가 같고, 시작 월이 끝 월보다 클 경우, 매개변수로 들어온 년도에 change 이벤트 호출
+			else if( (year_start_val == year_end_val) && (month_start_val > month_end_val) ){
+				alert("졸업일의 최소날짜가 최대날짜보다 큽니다. 다시 선택해 주세요.");
+				yearObj.change();		// 매개변수로 들어온 년도에 change 이벤트 호출, 시작 월이면 1 선택, 끝 월이면 마지막 월이 선택되도록 하기 위해
+				flag = false;
+			}
+			//-------------------
+			return flag;
+		}
+		//-------------------
+		
+	}
 	
 	//=================================================
 	// 검색 버튼 클릭 시 호출되는 함수 선언
@@ -62,7 +195,7 @@
 	function search(){
 		var searchFormObj = $("[name='staffSearchForm']");
 		//-------------------
-		var name_keyword = searchFormObj.find(".name_keyword").val();
+		var keyword = searchFormObj.find(".keyword").val();
 		var year_start = searchFormObj.find(".graduate_day_year_start").val();
 		var month_start = searchFormObj.find(".graduate_day_month_start").val();
 		var year_end = searchFormObj.find(".graduate_day_year_end").val();
@@ -71,12 +204,14 @@
 		
 		//-------------------
 		// 이름 키워드 비었는지 확인
-		if( name_keyword == null || name_keyword.split(" ").join("") == "" ){
-			name_keyword = "";
+		if( keyword == null || keyword.split(" ").join("") == "" ){
+			keyword = "";
 		}
-		searchFormObj.find(".name_keyword").val($.trim(name_keyword));
+		searchFormObj.find(".keyword").val($.trim(keyword));
 		//-------------------
 
+		/*
+		// 21.09.25 졸업일 수정 (graduateDaySearchCheck() 함수로 분리)
 		//-------------------
 		// 졸업 연도 혹은 졸업 월을 선택 안했을 경우
 		if( (year_start == null && month_start != null) || (year_end == null && month_end != null) ){
@@ -107,6 +242,7 @@
 			return;
 		} 
 		//-------------------
+		*/
 
 		//-------------------
 		searchExe();
@@ -119,7 +255,7 @@
 	function searchAll(){
 		var searchFormObj = $("[name='staffSearchForm']");
 		//-------------------
-		searchFormObj.find(".name_keyword").val("");
+		searchFormObj.find(".keyword").val("");
 		searchFormObj.find(".gender").prop("checked", false);
 		searchFormObj.find(".religion_code").val("").prop("selected", true);
 		searchFormObj.find(".school_code").prop("checked", false);
@@ -264,7 +400,7 @@
 	//=================================================
 	function rowCntPerPageEvent(){
 		$(".rowCntPerPageNo").change(function(){
-			alert($(this).val())
+			//alert($(this).val());
 			$(".rowCntPerPage").val($(this).val());
 			search();
 		});
@@ -702,21 +838,26 @@
 
 <body>
 
+
 <center>
 
+
 <div class="container">
+	<button class="logoutBtn btn">로그아웃</button> 
+	
 	<h2>사원 정보 검색</h2>
 
 	<!-- 검색 영역 -->
 	<form name="staffSearchForm" onSubmit="return false;">
 		<!-- 21.09.23 키워드 수정으로 변경 -->
-		<!-- <span><input type="text" name="name_keyword" class="name_keyword form-control" style="height:2.5rem;"></span> -->
+		<!-- <span><input type="text" name="keyword" class="keyword form-control" style="height:2.5rem;"></span> -->
 	<!-- 	<input type="button" class="detailSearch btn" value="상세검색 ▼" style="width:80px;"> -->
 		<table class="tbcss1">
 			<tr>
 				<th>키워드</th>
 				<td colspan="3">
-					<input type="text" name="name_keyword" class="name_keyword form-control" > 
+					<!-- name_keyword -> keyword 로 변경, 21.09.25 수정 -->
+					<input type="text" name="keyword" class="keyword form-control" > 
 				</td>
 			
 			</tr> 
@@ -757,28 +898,12 @@
 				<th>졸업일</th>
 				<td colspan="5">
 					<select name="graduate_day_year_start" class="graduate_day_year_start form-control">
-						<option disabled selected value="">년</option>
-						<c:forEach var="no" begin="1960" end="2021" step="1">
-							<option value="${no}">${no}</option>
-						</c:forEach>
 					</select>
 					<select name="graduate_day_month_start" class="graduate_day_month_start form-control">
-						<option disabled selected value="">월</option>
-						<c:forEach var="no" begin="1" end="12" step="1">
-							<option value="${no}">${no}</option>
-						</c:forEach>
 					</select> ~ 
 					<select name="graduate_day_year_end" class="graduate_day_year_end form-control">
-						<option disabled selected value="">년</option>
-						<c:forEach var="no" begin="1960" end="2021" step="1">
-							<option value="${no}">${no}</option>
-						</c:forEach>
 					</select>
 					<select name="graduate_day_month_end" class="graduate_day_month_end form-control">
-						<option disabled selected value="">월</option>
-						<c:forEach var="no" begin="1" end="12" step="1">
-							<option value="${no}">${no}</option>
-						</c:forEach>
 					</select>
 				</td>
 			</tr>

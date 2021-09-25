@@ -6,14 +6,14 @@
 
 	<sql id="staffWhere">
 		<!-- 이름 검색값이 있으면 -->
-		<if test="name_keyword != null and name_keyword.length() > 0">
+		<if test="keyword != null and keyword.length() > 0">
 			and (
-				upper(staff_name) like upper('%${name_keyword}%')
-				or upper(gender) like upper('%${name_keyword}%')
-				or upper(school_name) like upper('%${name_keyword}%')
-				or upper(skill_name) like upper('%${name_keyword}%') 
-				or upper(religion_name) like upper('%${name_keyword}%')
-				or to_char(to_date(graduate_day, 'yyyymmdd'), 'yyyy-mm-dd (dy)', 'nls_date_language=korean') like '%${name_keyword}%'
+				upper(staff_name) like upper('%${keyword}%')
+				or upper(gender) like upper('%${keyword}%')
+				or upper(school_name) like upper('%${keyword}%')
+				or upper(skill_name) like upper('%${keyword}%') 
+				or upper(religion_name) like upper('%${keyword}%')
+				or to_char(to_date(graduate_day, 'yyyymmdd'), 'yyyy-mm-dd (dy)', 'nls_date_language=korean') like '%${keyword}%'
 			)
 		</if>
 			
@@ -54,13 +54,30 @@
 			</foreach>			
 		</if>
 		
-		<!-- 졸업일이 있으면 -->
+		<!-- 시작 졸업일, 끝 졸업일이 있을 경우 -->
 		<if test="graduate_day_start != null and graduate_day_start.length() > 0 and graduate_day_end != null and graduate_day_end.length() > 0">
 			and(
 				to_date(graduate_day, 'yyyymmdd') between to_date(#{graduate_day_start}, 'yyyymmdd') 
 					and add_months(to_date(#{graduate_day_end}, 'yyyymmdd'),1)-1
 			)	
 		</if>
+		
+		<!-- 시작 졸업일은 있고, 끝 졸업일은 없을 경우 21.09.25 추가-->
+ 		<if test="graduate_day_start != null and graduate_day_start.length() > 0 and graduate_day_end == null">
+			and(
+				to_date(graduate_day, 'yyyymmdd') >= to_date(#{graduate_day_start}, 'yyyymmdd') 
+			)	
+		</if>
+		
+		<!-- 시작 졸업일은 없고, 끝 졸업일은 있을 경우 21.09.25 추가-->
+  		<if test="graduate_day_start == null and graduate_day_end != null and graduate_day_end.length() > 0">
+			and(
+				to_date(graduate_day, 'yyyymmdd') 
+				<![CDATA[ 	<=  ]]>
+				add_months(to_date(#{graduate_day_end}, 'yyyymmdd'),1)-1
+			)	
+		</if> 
+		
 	</sql>
 
 

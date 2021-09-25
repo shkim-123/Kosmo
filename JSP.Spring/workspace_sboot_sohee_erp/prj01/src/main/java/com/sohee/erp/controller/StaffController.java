@@ -55,7 +55,7 @@ public class StaffController {
 		//------------------
 		
 		//==================================
-		// 졸업일 세팅
+		// 졸업일 세팅, 월 10 미만인 경우 0 넣어주기 ex) 1 -> 01, 년+월+01 을 DTO에 세팅
 		//==================================
 		if(graduate_day_year_start != null && graduate_day_month_start != null) {
 			if(Integer.parseInt(graduate_day_month_start) < 10) {

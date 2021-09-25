@@ -4,7 +4,7 @@ import java.util.List;
 
 public class StaffSearchDTO {
 
-	private String name_keyword;
+	private String keyword;
 	private List<String> gender;
 	private Integer religion_code;
 	private List<Integer> school_code;
@@ -21,11 +21,11 @@ public class StaffSearchDTO {
 	//-------------
 	private String sort;
 	//-------------
-	public String getName_keyword() {
-		return name_keyword;
+	public String getkeyword() {
+		return keyword;
 	}
-	public void setName_keyword(String name_keyword) {
-		this.name_keyword = name_keyword;
+	public void setkeyword(String keyword) {
+		this.keyword = keyword;
 	}
 	public List<String> getGender() {
 		return gender;
