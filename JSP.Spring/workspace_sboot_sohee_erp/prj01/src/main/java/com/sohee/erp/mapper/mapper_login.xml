@@ -6,6 +6,10 @@
 	<select id="getLogin_idCnt" parameterType="hashmap" resultType="int">
 		select count(*) from login where login_id=#{login_id} and pwd=#{pwd}
 	</select>
+	
+	<select id="getLogin_idCnt2" parameterType="com.sohee.erp.dto.LoginDTO" resultType="int">
+		select count(*) from login where login_id=#{login_id}
+	</select>
 
 
 </mapper>

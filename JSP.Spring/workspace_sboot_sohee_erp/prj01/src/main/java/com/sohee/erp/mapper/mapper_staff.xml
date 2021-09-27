@@ -5,7 +5,7 @@
 <mapper namespace="com.sohee.erp.dao.StaffDAO">
 
 	<sql id="staffWhere">
-		<!-- 이름 검색값이 있으면 -->
+		<!-- 키워드 검색값이 있으면 -->
 		<if test="keyword != null and keyword.length() > 0">
 			and (
 				upper(staff_name) like upper('%${keyword}%')

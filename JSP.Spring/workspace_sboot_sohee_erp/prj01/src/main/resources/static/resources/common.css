@@ -16,7 +16,7 @@
 }	
 
 
-h2 {
+.container h2 {
   font-weight: 400;
   line-height: 1.2;
   margin-top: 30px;
@@ -405,11 +405,18 @@ a:visited {text-decoration:none;color:#330066}
 	padding: 15px;
 }
 .loginForm .form-control
-,.loginForm .loginBtn {
+,.loginForm .loginBtn 
+,.goJoinBtn
+,.joinForm input
+,.joinForm button 
+{
 	display: block;
 	width: 100%;
 }
-.loginForm .form-control {
+
+
+.loginForm .form-control
+,.joinForm input {
 	height: 3.0rem;
 	margin-top: 4px;
 }
@@ -424,4 +431,18 @@ a:visited {text-decoration:none;color:#330066}
 	
 }
 
+.joinContainer {
+	width: 300px;
+	margin-top: 200px;
+}
+
+.joinForm h3{
+	float: left;
+	text-align: left;
+	font-weight : unset;
+}
+
+.joinForm button{
+	margin-top : 30px;
+}
 

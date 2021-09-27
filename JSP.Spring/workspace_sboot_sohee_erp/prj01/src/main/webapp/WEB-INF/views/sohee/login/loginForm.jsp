@@ -28,6 +28,10 @@
 		$(".loginBtn").click(function(){
 			checkLoginForm();
 		});
+
+		$(".goJoinBtn").click(function(){
+			location.replace("/join_form.do");
+		});
 	});
 
 	function checkLoginForm(){
@@ -85,8 +89,11 @@
 		<div class="rememberChkWrap">
 			<input type="checkbox" name="is_login" class="rememberChk input-checkbox" value="true" ${empty cookie.login_id.value?'':'checked'}/> 아이디/비밀번호 저장
 		</div>
-		<input type="button" class="loginBtn btn" value="로그인" />
+		<input type="button" class="loginBtn btn" value="로그인" /> <br>
+		<input type="button" class="naverLoginBtn btn" value="NAVER" />
 	</form>
+	
+	<button class="goJoinBtn btn" >아직 아이디가 없으시다면? 회원가입하기</button>
 	
 </div>
 </center>

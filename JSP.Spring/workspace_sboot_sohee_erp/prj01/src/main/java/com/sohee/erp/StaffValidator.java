@@ -90,7 +90,7 @@ public class StaffValidator implements Validator {
 			}
 			
 		}catch(Exception ex) {
-			System.out.println( "BoardValidator.validate 메소드 실행 시 예외발생!" );
+			System.out.println( "StaffValidator.validate 메소드 실행 시 예외발생!" + ex.getMessage() );
 		}
 	}
     

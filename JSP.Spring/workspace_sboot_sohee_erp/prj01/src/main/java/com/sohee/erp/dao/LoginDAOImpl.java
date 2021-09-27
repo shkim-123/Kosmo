@@ -5,6 +5,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sohee.erp.dto.LoginDTO;
+
 //----------------------------------------------------------------
 // [DAO 클래스]인 [LoginDAOImpl 클래스] 선언
 //----------------------------------------------------------------
@@ -57,4 +59,13 @@ public class LoginDAOImpl implements LoginDAO {
 		return login_idCnt;
 	}
 	
+	
+	// 아이디 개수 가져오기
+	@Override
+	public int getLogin_idCnt(LoginDTO loginDTO) {
+		
+		int login_idCnt = this.sqlSession.selectOne("com.naver.erp.dao.LoginDAO.getLogin_idCnt2", loginDTO);
+		
+		return login_idCnt;
+	}
 }
