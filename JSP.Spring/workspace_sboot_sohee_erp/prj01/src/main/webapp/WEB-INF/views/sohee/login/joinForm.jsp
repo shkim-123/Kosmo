@@ -44,6 +44,7 @@
 		// 로그인하기 버튼 클릭 시
 		$(".goLoginBtn").click(function(){ location.replace("/login_form.do"); });
 		//-------------------
+		$(".goLoginForm").click(function(){ location.replace("/login_form.do"); });
 	});
 	
 	//=================================================
@@ -70,11 +71,20 @@
 				$(".login_id").focus();
 				--stepCnt; return;
 			} 
+		} else if(step == 3){
+			if(joinCnt != 1) {
+				alert("에러!");
+				--stepCnt; return;
+			}
 		}		
 		//-------------------
 		$(".join_step"+(step-1)).css("display", "none");
 		$(".join_step"+step).css("display", "block");
 		//-------------------
+
+		if(step == 3){
+			$(".goLoginForm").css("display", "none");
+	 	}
 	}
 
 	//=================================================
@@ -91,6 +101,7 @@
 		if(step == 3){
 			if(!emptyCheck($(".pwd"), "비밀번호")){return false;}
 			if(!emptyCheck($(".pwdChk"), "비밀번호 확인")){return false;}
+			if(!pwdCheck()){return false;}
 		}
 		//-------------------
 		return true;
@@ -127,6 +138,25 @@
 				,success: function(json){}
 				,error: function(){alert("서버 통신 에러!");}
 			});
+	}
+
+	//=================================================
+	// 비밀번호, 비밀번호 확인 일치 여부 확인
+	//=================================================
+	function pwdCheck(){
+		var pwd = $(".pwd").val();
+		var pwdChk = $(".pwdChk").val();
+			pwd = $.trim(pwd);
+			pwdChk = $.trim(pwdChk);
+
+		if(pwd != pwdChk){
+			alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요.");
+			$(".pwd").val("");
+			$(".pwdChk").val("");
+			$(".pwd").focus();
+			return false;
+		}
+		return true;
 	}
 
 	
@@ -167,6 +197,8 @@
 		
 		<input type="hidden" name="step" class="step" >
 	</form>
+	
+	<a class="goLoginForm">로그인화면으로 이동</a>
 	
 	
 </div>

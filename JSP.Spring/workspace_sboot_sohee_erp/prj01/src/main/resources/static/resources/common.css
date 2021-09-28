@@ -19,9 +19,9 @@
 .container h2 {
   font-weight: 400;
   line-height: 1.2;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: 76px;
+  margin-left: 0px;
 }
 
 input,
@@ -214,9 +214,12 @@ a:visited {text-decoration:none;color:#330066}
 	background:var(--point-color);
 }
 
-.logoutBtn{
+.logoutBtnWrap{
 	float: right;
 	display: block;
+}
+
+.logoutBtn{
 	font-weight:normal;
 	height:25px;
 }
@@ -256,6 +259,7 @@ a:visited {text-decoration:none;color:#330066}
 ,.religion_th
 ,.gender_th 
 ,.skill_th
+,.goLoginForm
 {
 	cursor: pointer;
 }
@@ -299,7 +303,7 @@ a:visited {text-decoration:none;color:#330066}
 /* 모달 CSS */
 /*==========================================*/
 .modal {
-   opacity: 0; 
+  opacity: 0; 
   visibility: hidden;
   position: fixed;
   top: 0;
@@ -398,10 +402,11 @@ a:visited {text-decoration:none;color:#330066}
 
 .loginContainer {
 	width: 400px;
-	margin-top: 200px;
+	margin-top: 150px;
 }
 
-.loginForm {
+.loginForm
+,.loginBtnWrap {
 	padding: 15px;
 }
 .loginForm .form-control
@@ -412,6 +417,13 @@ a:visited {text-decoration:none;color:#330066}
 {
 	display: block;
 	width: 100%;
+}
+
+.goJoinBtn
+,.naverLoginBtn{
+	width: 100%;
+	margin-top: 10px;
+	font-weight: normal;
 }
 
 
@@ -433,7 +445,10 @@ a:visited {text-decoration:none;color:#330066}
 
 .joinContainer {
 	width: 300px;
-	margin-top: 200px;
+	margin-top: 150px;
+ 	border-radius: 5px;
+  	padding: 2.5em 3em;
+  	border : 1px solid var(--dark-color);
 }
 
 .joinForm h3{
@@ -444,5 +459,7 @@ a:visited {text-decoration:none;color:#330066}
 
 .joinForm button{
 	margin-top : 30px;
+	margin-bottom: 30px;
 }
+
 

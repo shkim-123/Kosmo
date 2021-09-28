@@ -26,10 +26,14 @@ import com.sohee.erp.Util;
 import com.sohee.erp.dao.LoginDAO;
 import com.sohee.erp.dto.LoginDTO;
 import com.sohee.erp.dto.StaffDTO;
+import com.sohee.erp.service.LoginService;
 
 @Controller
 public class LoginController {
 
+	@Autowired
+	private LoginService loginService;
+	
 	@Autowired
 	private LoginDAO loginDAO;
 	
@@ -107,7 +111,7 @@ public class LoginController {
 	//=======================================================
 	@RequestMapping( value="/joinProc.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8" )
 	@ResponseBody
-	public Map<String ,String> insertJoin(LoginDTO loginDTO, @RequestParam(value="step") int step, BindingResult bindingResult){
+	public Map<String ,String> insertLogin(LoginDTO loginDTO, @RequestParam(value="step") int step, BindingResult bindingResult){
 		Map<String, String> map = new HashMap<String, String>();
 		String msg = "";
 		int joinCnt = 0;
@@ -129,7 +133,7 @@ public class LoginController {
 				msg = check_StaffDTO(loginDTO, bindingResult);
 				// 유효성 체크 통과 시 insert
 				if("".equals(msg)) {
-					
+					joinCnt = this.loginService.insertLogin(loginDTO);
 				}
 			}
 			

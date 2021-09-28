@@ -68,4 +68,13 @@ public class LoginDAOImpl implements LoginDAO {
 		
 		return login_idCnt;
 	}
+	
+	// 회원 정보 등록
+	@Override
+	public int insertLogin(LoginDTO loginDTO) {
+		
+		int joinCnt = this.sqlSession.insert("com.naver.erp.dao.LoginDAO.insertLogin", loginDTO);
+		
+		return joinCnt;
+	}
 }

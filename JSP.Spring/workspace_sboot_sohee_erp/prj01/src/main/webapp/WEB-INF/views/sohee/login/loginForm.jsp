@@ -89,11 +89,13 @@
 		<div class="rememberChkWrap">
 			<input type="checkbox" name="is_login" class="rememberChk input-checkbox" value="true" ${empty cookie.login_id.value?'':'checked'}/> 아이디/비밀번호 저장
 		</div>
-		<input type="button" class="loginBtn btn" value="로그인" /> <br>
-		<input type="button" class="naverLoginBtn btn" value="NAVER" />
+		<input type="button" class="loginBtn btn" value="로그인" />
 	</form>
 	
-	<button class="goJoinBtn btn" >아직 아이디가 없으시다면? 회원가입하기</button>
+	<div class="loginBtnWrap">
+		<button class="naverLoginBtn btn">네이버 아이디로 로그인하기</button>
+		<button class="goJoinBtn btn" >아직 아이디가 없으시다면? 회원가입하기</button>
+	</div>
 	
 </div>
 </center>

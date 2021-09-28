@@ -11,4 +11,6 @@ public interface LoginDAO {
 	// 아이디 개수 가져오기
 	int getLogin_idCnt(LoginDTO loginDTO);
 	
+	// 회원 정보 등록
+	int insertLogin(LoginDTO loginDTO);
 }

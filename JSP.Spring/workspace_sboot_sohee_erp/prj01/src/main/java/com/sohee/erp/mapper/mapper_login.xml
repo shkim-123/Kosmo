@@ -11,5 +11,9 @@
 		select count(*) from login where login_id=#{login_id}
 	</select>
 
+	<!-- 회원 정보 등록 -->
+	<insert id="insertLogin" parameterType="com.sohee.erp.dto.LoginDTO">
+		insert into login values((select nvl(max(login_no),0)+1 from login), #{login_id}, #{pwd})
+	</insert>
 
 </mapper>

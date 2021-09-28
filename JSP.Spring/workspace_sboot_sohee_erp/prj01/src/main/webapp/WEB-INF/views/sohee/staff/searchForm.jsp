@@ -843,8 +843,8 @@
 
 
 <div class="container">
-	<button class="logoutBtn btn">로그아웃</button> 
-	
+	<span class="logoutBtnWrap"><b>${login_id}</b>님 안녕하세요😊 <button class="logoutBtn btn">로그아웃</button></span>
+	<br/>
 	<h2>사원 정보 검색</h2>
 
 	<!-- 검색 영역 -->
