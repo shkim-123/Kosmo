@@ -34,16 +34,36 @@ const Counter2 = () => {
     //----------------------------------------------------------
     // 지역변수 add, minus, init 선언하고 화살표 함수 저장하기
     //----------------------------------------------------------
-    const add = () => { setNumber(number+1); };
-    const minus = () => { setNumber(number-1); };
-    const init = () => { setNumber(default_number); };
+    const add = () => { 
+        // 지역변수 number 안의 데이터를 +1 업데이트하기
+        // 이때 setNumber(~) 호출로 업데이트를 한다.
+        // setNumber(~) 호출이 실행되면 함수 컴포넌트는 재호출된다.
+        setNumber(number+1);
+    };
+    const minus = () => { 
+        // 지역변수 number 안의 데이터를 -1 업데이트하기
+        // 이때 setNumber(~) 호출로 업데이트를 한다.
+        // setNumber(~) 호출이 실행되면 함수 컴포넌트는 재호출된다.
+        setNumber(number-1); 
+    };
+    const init = () => { 
+        // 지역변수 number 안의 데이터를 default_number 변수 안의 데이터를 저장하기
+        // 이때 setNumber(~) 호출로 업데이트를 한다.
+        // setNumber(~) 호출이 실행되면 함수 컴포넌트는 재호출된다.
+        setNumber(default_number); 
+    };
 
     return (
         <center>
+            {/* 지역변수 default_number 안의 데이터 표현하기 */}
             시작값: {default_number} <br/>
+            {/* 지역변수 number 안의 데이터 표현하기 */}
             현재값: {number} <br/>
+            {/* 버튼 출력하고 버튼을 클릭하면 add 라는 지역변수 안의 화살표 함수 호출하기 */}
             <button onClick={add}> +1 </button> &nbsp; 
+            {/* 버튼 출력하고 버튼을 클릭하면 minus 라는 지역변수 안의 화살표 함수 호출하기 */}
             <button onClick={minus}> -1 </button> &nbsp; 
+            {/* 버튼 출력하고 버튼을 클릭하면 init 라는 지역변수 안의 화살표 함수 호출하기 */}
             <button onClick={init}> 초기값으로 </button>
         </center>
     )
