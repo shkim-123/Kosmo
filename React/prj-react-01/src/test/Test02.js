@@ -17,8 +17,8 @@ const Test02 = () => {
     // 버튼 클릭할 때 실행할 구문을 내포하고 있다.
     //----------------------------------------------------------
     const add = () => {
-        setNumber(number+1)
-    };
+        setNumber(number+1);
+    }
 
     return (
         <center>

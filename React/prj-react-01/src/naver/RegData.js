@@ -48,15 +48,17 @@ const RegData = () => {
         let val = e.target.value;
         
         // 앞 뒤 공백 제거하고 저장하기1
-        // val = val.trim();
+        val = val.trim();
         
         // 앞 뒤 공백 제거하고 저장하기2
-        while(val.indexOf(" ") == 0){
+        /*
+        while(val.indexOf(" ") == 0){  // 코드에 에러있음
             val = val.substring(1);
         }
         while(val.lastIndexOf(" ") == val.length-1){
             val = val.substring(0, val.length-1);
         }
+        */
 
         setInputText(val);
     };

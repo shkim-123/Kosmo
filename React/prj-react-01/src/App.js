@@ -15,7 +15,7 @@ import Test01 from './test/Test01';
 import Test02 from './test/Test02';
 import Test03 from './test/Test03';
 
-function App() {
+App() = () => {
   return (
     <div>
       {/*---------------------------------------------------*/}
