@@ -69,7 +69,7 @@ const RegData = () => {
     //----------------------------------------------------------
     const add = () => {
         // 만약, 비어있으면 경고하고 함수 중단.
-        if(inputText == null || inputText == undefined || inputText.split(" ").join("") == ""){
+        if(inputText === null || inputText === undefined || inputText.split(" ").join("") === ""){
             alert("값을 입력해 주세요.");
             setInputText("");
 
@@ -79,7 +79,7 @@ const RegData = () => {
         }
 
         // String 객체 메소드 호출 전 null 은 아닌지 확인
-        if(names != null){
+        if(names !== null){
             /*
             // 만약, 중복되어 있으면 경고하고 함수 중단
             for(let i = 0; i < names.length; i++){
@@ -142,7 +142,7 @@ const RegData = () => {
         // names 에 저장된 사용자 정의 객체를 1개씩 꺼내서 아래의 화살표 함수를 호출하여
         // 리턴되는 데이터가 true 일때만 사용자 정의 객체만 복사해 누적하기
         // 즉, 매개변수로 들어온 id와 같지 않은 객체만 골라서 누적하기
-        const nextNames = names.filter(name => name.id != id);
+        const nextNames = names.filter(name => name.id !== id);
 
         // names 지역변수에 nextNames 안의 Array 객체로 갱신하기
         setNames(nextNames);

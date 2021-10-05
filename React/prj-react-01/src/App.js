@@ -11,11 +11,12 @@ import RegData from './naver/RegData';
 import RegData2 from './naver/RegData2';
 import Search from './naver/Search';
 import Search2 from './naver/Search2';
+import Search5 from './naver/Search5';
 import Test01 from './test/Test01';
 import Test02 from './test/Test02';
 import Test03 from './test/Test03';
 
-App() = () => {
+function App() {
   return (
     <div>
       {/*---------------------------------------------------*/}
@@ -31,6 +32,7 @@ App() = () => {
       <Route path="/naver/regData2" component = {RegData2}/>
       <Route path="/naver/search" component = {Search}/>
       <Route path="/naver/search2" component = {Search2}/>
+      <Route path="/naver/search5" component = {Search5}/>
       <Route path="/test/test01" component = {Test01}/>
       <Route path="/test/test02" component = {Test02}/>
       <Route path="/test/test03" component = {Test03}/>
